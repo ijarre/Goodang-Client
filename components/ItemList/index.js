@@ -1,3 +1,2 @@
-import ItemList from "./ItemList";
-
-export {ItemList};
+export * from "./List";
+export * from "./Modal";
