@@ -24,6 +24,10 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   //user add item 
+  const openModal = () => {
+    setShowModal((prev) => !prev);
+  };
+  
   const handleAddItem = (e) => {
     e.preventDefault();
     if (fields.itemName === "") {
@@ -99,9 +103,7 @@ const ItemListPage = () => {
     history.go(0);
   };
 
-  const openModal = () => {
-    setShowModal((prev) => !prev);
-  };
+
 
   //user edit his item
 

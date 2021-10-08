@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { useAuth } from "../../context/AuthContext";
-import api from "../../services/api";
+import { Dialog } from "@headlessui/react";
+import BoxAdded from "../../../assets/img/box-added.png";
+import { HiOutlineX } from "react-icons/hi";
 
 const EditItemModal = ({
   showEditModal,
