@@ -131,6 +131,7 @@ const ItemListPage = () => {
       });
     });
   }, []);
+  
   const { id } = useParams();
   const { currentUser } = useAuth();
   const history = useHistory();
