@@ -9,7 +9,7 @@ const ItemList = ({
   handleEdit,
   handleSearch,
   isOpen,
-  setIsOpen
+  setIsOpen,
 }) => {
   const inputElement = useRef("");
 
@@ -17,7 +17,8 @@ const ItemList = ({
     items.searchKeyword(inputElement.current.value);
   };
   return (
-    <div>
+    <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
+      <h1 className="ml-4 font-bold text-2xl">Item List</h1>
       <div className="mt-5">
         <div action="" className="text-left my-2 flex">
           <div className="bg-grey-200 rounded-md ml-4">
@@ -145,7 +146,6 @@ const ItemList = ({
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
 
           <div className="bg-white p-6 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
-            
             <Dialog.Title as="div" className="text-md">
               Are you sure want to delete this item?
             </Dialog.Title>

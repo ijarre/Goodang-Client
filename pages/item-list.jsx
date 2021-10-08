@@ -5,7 +5,8 @@ import { ItemList } from "../../components";
 import api from "../../services/api";
 import { useHistory } from "react-router";
 import { Modal } from "../../components";
-//import { UserAddItem } from "../../components";
+import { EditItemModal } from "../../components";
+import { useParams, useHistory } from "react-router-dom";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
@@ -20,6 +21,7 @@ const ItemListPage = () => {
     stockQuantity: "",
     minimumQuantity: "",
   });
+  const [editField, setEditField] = useState({});
 
   const handleAddItem = (e) => {
     e.preventDefault();
@@ -96,28 +98,70 @@ const ItemListPage = () => {
     setShowModal((prev) => !prev);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await api.post(`/item/update/${id}`, editField, {
+      headers: {
+        Authorization: "bearer " + currentUser.accessToken,
+      },
+    });
+    history.push("/item-list");
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditField({ ...editField, [name]: value });
+  };
+
+  useEffect(() => {
+    const getItem = async () => {
+      const response = await api.get(`/item/${id}`, {
+        headers: {
+          Authorization: "bearer " + currentUser.accessToken,
+        },
+      });
+      return response.data;
+    };
+    getItem().then((res) => {
+      const { itemName, minimumQuantity, unit } = res.data;
+      setEditField({
+        ...editField,
+        itemName,
+        minimumQuantity,
+        unit,
+      });
+    });
+  }, []);
+  const { id } = useParams();
+  const { currentUser } = useAuth();
+  const history = useHistory();
+
   return (
-    <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
-      <h1 className="ml-4 font-bold text-2xl">Item List</h1>
+    <div>
       <Modal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          fields={fields}
-          userAddItem={userAddItem}
-          handleAddItem={handleAddItem}
-          handleInputChange={handleInputChange}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
-        <ItemList
-          items={items}
-          handleDelete={handleDelete}
-          openModal={openModal}
-          term={searchTerm}
-          searchKeyword={handleSearch}
-        />
-        
-        
+        showModal={showModal}
+        setShowModal={setShowModal}
+        fields={fields}
+        userAddItem={userAddItem}
+        handleAddItem={handleAddItem}
+        handleInputChange={handleInputChange}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
+      <EditItemModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+      />
+      <ItemList
+        items={items}
+        handleDelete={handleDelete}
+        openModal={openModal}
+        term={searchTerm}
+        searchKeyword={handleSearch}
+      />
     </div>
   );
 };
