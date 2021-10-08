@@ -12,6 +12,7 @@ const ItemListPage = () => {
   const [searchTerm, setSearchTerm] = useState();
   const [searchResult, setSearchResult] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState({
@@ -22,6 +23,7 @@ const ItemListPage = () => {
   });
   const [editField, setEditField] = useState({});
 
+  //user add item 
   const handleAddItem = (e) => {
     e.preventDefault();
     if (fields.itemName === "") {
@@ -54,6 +56,7 @@ const ItemListPage = () => {
 
   const history = useHistory();
 
+  //user read his items
   useEffect(() => {
     const getAllItems = async () => {
       const response = await api.get("/item/1", {
@@ -69,6 +72,7 @@ const ItemListPage = () => {
     });
   }, [currentUser.accessToken]);
 
+  //user search his item
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
     if (searchTerm !== "") {
@@ -84,6 +88,8 @@ const ItemListPage = () => {
     }
   };
 
+  //user delete his item
+
   const handleDelete = async (id) => {
     await api.get(`/item/delete/${id}`, {
       headers: {
@@ -95,6 +101,12 @@ const ItemListPage = () => {
 
   const openModal = () => {
     setShowModal((prev) => !prev);
+  };
+
+  //user edit his item
+
+  const openEditModal = () => {
+    setShowEditModal((prev) => !prev);
   };
 
   const handleSubmit = async (e) => {
@@ -145,8 +157,8 @@ const ItemListPage = () => {
         setIsOpen={setIsOpen}
       />
       <EditItemModal
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showEditModal={showEditModal}
+        setShowEditModal={setShowEditModal}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         handleSubmit={handleSubmit}
@@ -156,6 +168,7 @@ const ItemListPage = () => {
         items={items}
         handleDelete={handleDelete}
         openModal={openModal}
+        openEditModal={openEditModal}
         term={searchTerm}
         searchKeyword={handleSearch}
       />

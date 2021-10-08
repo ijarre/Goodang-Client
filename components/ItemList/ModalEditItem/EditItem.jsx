@@ -4,8 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 
 const EditItemModal = ({
-  showModal,
-  setShowModal,
+  showEditModal,
+  setShowEditModal,
   isOpen,
   setIsOpen,
   handleChange,
@@ -15,17 +15,17 @@ const EditItemModal = ({
 
   const closeModal = (e) => {
     if (modalRef.current === e.target) {
-      setShowModal(false);
+      setShowEditModal(false);
     }
   };
 
   const keyPress = useCallback(
     (e) => {
-      if (e.key === "Click" && showModal) {
-        setShowModal(false);
+      if (e.key === "Click" && showEditModal) {
+        setShowEditModal(false);
       }
     },
-    [setShowModal, showModal],
+    [setShowEditModal, showEditModal],
   );
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const EditItemModal = ({
 
   return (
     <>
-      {showModal ? (
+      {showEditModal ? (
         <div
           className="min-h-screen w-10/12 h-3/4 bg-transparent fixed flex justify-center items-center"
           onClick={closeModal}
@@ -44,14 +44,14 @@ const EditItemModal = ({
         >
           <div
             className="w-10/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
-            showModal={showModal}
+            showEditModal={showEditModal}
           >
             <div className="flex-col mt-9 ml-80 justify-center items-center bg-gray-50">
               <HiOutlineX
                 as="div"
                 aria-label="Close modal"
                 className="cursor-pointer absolute top-4 right-4 p-0 z-10 "
-                onClick={() => setShowModal((prev) => !prev)}
+                onClick={() => setShowEditModal((prev) => !prev)}
               />
               <div className="min-h-screen mx-auto max-w-screen-xl bg-white">
                 <div className="form bg-grey-300 mx-20 md:w-full md:h-screen md:flex ">
@@ -131,7 +131,7 @@ const EditItemModal = ({
                           <button
                             type="submit"
                             className="md:text-sm bg-red-200 px-5 py-2 ml-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-red-400 active:bg-yellow-200"
-                            onClick={() => setShowModal((prev) => !prev)}
+                            onClick={() => setShowEditModal((prev) => !prev)}
                           >
                             Cancel
                           </button>
