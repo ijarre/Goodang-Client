@@ -3,7 +3,6 @@ import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { ItemList } from "../../components";
 import api from "../../services/api";
-import { useHistory } from "react-router";
 import { Modal } from "../../components";
 import { EditItemModal } from "../../components";
 import { useParams, useHistory } from "react-router-dom";
