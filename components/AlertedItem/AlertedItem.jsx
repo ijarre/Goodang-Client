@@ -64,7 +64,7 @@ const AlertedItem = ({ alert }) => {
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-sm">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          not yet
+                          {el.Categories[0].categoryName}
                         </span>
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap text-center text-sm">

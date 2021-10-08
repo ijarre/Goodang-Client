@@ -58,7 +58,6 @@ const DashboardPage = () => {
       getAlertFromDB().then((alert) => {
         console.log(alert);
         setAlert(alert.data);
-        console.log(alert.data);
       });
     } else {
       setAssetValue({});
