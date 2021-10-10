@@ -1,8 +1,8 @@
 import React from "react";
-import Content from "../components/LayoutLandingPage/Content/Content";
-import Feature from "../components/LayoutLandingPage/Feature/Feature";
-import FreeTrialLayout from "../components/LayoutLandingPage/FreeTrialLayout/FreeTrialLayout";
-import Footer from "../components/LayoutLandingPage/Footer/Footer"
+import { Content } from "../components";
+import { Feature } from "../components";
+import { FreeTrialLayout } from "../components";
+import { Footer } from "../components"
 
 const LandingPage = () => {
     return (
