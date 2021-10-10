@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import { ItemList } from "../../components";
-import api from "../../services/api";
-import { Modal } from "../../components";
-import { EditItemModal } from "../../components";
+import { ItemList } from "../components";
+import api from "../services/api";
+import { Modal } from "../components";
+import { EditItemModal } from "../components";
 import { useParams, useHistory } from "react-router-dom";
 
 const ItemListPage = () => {
