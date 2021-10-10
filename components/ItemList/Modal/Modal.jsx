@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import { HiOutlineX } from "react-icons/hi";
-import BoxAdded from "../../../assets/img/box-added.png";
+import BoxAdded from "../../../public/images/box-added.png";
 import { Dialog } from "@headlessui/react";
 
 const Modal = ({

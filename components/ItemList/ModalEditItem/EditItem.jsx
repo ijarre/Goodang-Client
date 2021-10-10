@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
-import BoxAdded from "../../../assets/img/box-added.png";
+import BoxAdded from "../../../public/images/box-added.png"
 import { HiOutlineX } from "react-icons/hi";
 
 const EditItemModal = ({
