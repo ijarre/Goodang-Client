@@ -17,8 +17,13 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
   const [current, setCurrent] = useState();
 
   useEffect(() => {
-    setCurrent(router.pathname);
-  }, [router.pathname]);
+    if (router.pathname === "/transaction/[trxType]") {
+      const { trxType } = router.query;
+      setCurrent("/transaction/" + trxType);
+    } else {
+      setCurrent(router.pathname);
+    }
+  }, [router.pathname, router.query]);
 
   const publicNav = [
     {
