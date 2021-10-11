@@ -1,5 +1,7 @@
 import { ArrowSmRightIcon } from "@heroicons/react/outline";
 import React from "react";
+import Image from "next/image";
+import imagePlaceholder from "../../../public/images/image-placeholder.svg";
 
 const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
   return (
@@ -38,7 +40,12 @@ const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
             return (
               <tr key={el.id}>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <img src={el.image} alt="" className="w-20 h-20" />
+                  <Image
+                    width="60"
+                    height="40"
+                    src={el.image ? el.image : imagePlaceholder}
+                    alt=""
+                  />
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap text-base">
                   {el.itemName}
