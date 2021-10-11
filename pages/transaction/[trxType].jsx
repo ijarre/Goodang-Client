@@ -48,7 +48,6 @@ const TransactionPage = () => {
 
   useEffect(() => {
     setItems(data?.data);
-    console.log(data);
   }, [data]);
 
   const handleAddItemToCart = (id) => {

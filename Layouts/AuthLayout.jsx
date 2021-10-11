@@ -28,9 +28,11 @@ const AuthLayout = ({ children }) => {
       dispatch(setLoading({ loading: true }));
     });
     router.events.on("routeChangeComplete", () => {
-      dispatch(setLoading({ loading: false }));
+      if (isAuthenticated) {
+        dispatch(setLoading({ loading: false }));
+      }
     });
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
   useEffect(() => {
     dispatch(setLoading({ loading: true }));
     onAuthStateChanged(auth, (user) => {
@@ -38,7 +40,6 @@ const AuthLayout = ({ children }) => {
         dispatch(
           setCurrentUser({ accessToken: user.accessToken, uid: user.uid }),
         );
-        dispatch(setLoading({ loading: false }));
       } else {
         dispatch(removeCurrentUser());
         dispatch(setLoading({ loading: false }));
@@ -49,9 +50,9 @@ const AuthLayout = ({ children }) => {
   useEffect(() => {
     if (!warehouseId && uid) {
       getWarehouseId(uid, accessToken).then((id) => {
-        console.log("here");
         if (!!id) {
           dispatch(setWarehouseId({ warehouseId: id }));
+          dispatch(setLoading({ loading: false }));
         } else {
           router.push("/register-warehouse");
         }
