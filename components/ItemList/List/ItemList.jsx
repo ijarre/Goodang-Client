@@ -6,9 +6,10 @@ const ItemList = ({
   // handleDelete,
   openModal,
   openEditModal,
+  openDeleteModal,
   // handleSearch,
-  confirmOpen,
-  setConfirmOpen,
+  // confirmOpen,
+  // setConfirmOpen,
 }) => {
   const inputElement = useRef("");
 
@@ -124,7 +125,7 @@ const ItemList = ({
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
-                      onClick={Dialog}
+                      onClick={openDeleteModal}
                     >
                       Delete
                     </button>
@@ -135,34 +136,6 @@ const ItemList = ({
           })}
         </tbody>
       </table>
-      {/* <div className="flex items-center justify-center">
-        <Dialog
-          as="div"
-          className="fixed flex inset-0 items-center justify-center"
-          onClose={() => setConfirmOpen(false)}
-          // key={el.id}
-        >
-          <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-
-          <div className="bg-white p-6 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
-            <Dialog.Title as="div" className="text-md">
-              Are you sure want to delete this item?
-            </Dialog.Title>
-            <button
-              className="md:text-sm bg-white mt-3 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-blue-200"
-              // onClick={() => handleDelete(el.id)}
-            >
-              Yes
-            </button>
-            <button
-              className="md:text-sm bg-white mt-3 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-red-600"
-              onClick={() => setConfirmOpen(false)}
-            >
-              No
-            </button>
-          </div>
-        </Dialog>
-      </div> */}
     </div>
   );
 };

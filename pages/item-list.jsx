@@ -5,6 +5,7 @@ import { ItemList } from "../components";
 import api from "../services/api";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
+import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
 
 const ItemListPage = () => {
@@ -13,6 +14,7 @@ const ItemListPage = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState({
@@ -24,12 +26,12 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   const router = useRouter();
- 
-  //user add item 
+
+  //user add item
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
-  
+
   const handleAddItem = (e) => {
     e.preventDefault();
     if (fields.itemName === "") {
@@ -96,16 +98,18 @@ const ItemListPage = () => {
 
   //user delete his item
 
-  const handleDelete = async (id) => {
-    await api.get(`/item/delete/${id}`, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
-      },
-    });
-    router.go(0);
+  // const handleDelete = async (id) => {
+  //   await api.get(`/item/delete/${id}`, {
+  //     headers: {
+  //       Authorization: "bearer " + currentUser.accessToken,
+  //     },
+  //   });
+  //   router.go(0);
+  // };
+
+  const openDeleteModal = () => {
+    setShowDeleteModal((prev) => !prev);
   };
-
-
 
   //user edit his item
 
@@ -146,9 +150,8 @@ const ItemListPage = () => {
       });
     });
   }, []);
-  
+
   const { id } = router.query;
-  //const { id } = useParams();
 
   return (
     <div>
@@ -171,11 +174,19 @@ const ItemListPage = () => {
         handleSubmit={handleSubmit}
         handleChange={handleChange}
       />
+      <DeleteModal
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        // handleDelete={handleDelete}
+      />
       <ItemList
         items={items}
         handleDelete={handleDelete}
         openModal={openModal}
         openEditModal={openEditModal}
+        openDeleteModal={openDeleteModal}
         term={searchTerm}
         searchKeyword={handleSearch}
       />

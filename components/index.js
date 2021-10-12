@@ -9,5 +9,3 @@ export * from "./UpdateProfile";
 export * from "./Navbar";
 export * from "./LayoutLandingPage";
 export * from "./ItemList";
-// export * from "./AddItem";
-// export * from "./EditItem";
