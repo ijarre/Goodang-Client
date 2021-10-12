@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Dashboard } from "../components";
+import { useSelector } from "react-redux";
+import { getWarehouseId } from "../services/getWarehouseId";
 import api from "../services/api";
 
-const DashboardPage = () => {
-  const [assetValue, setAssetValue] = useState({});
-  const [history, setHistory] = useState();
-  const [alert, setAlert] = useState();
-  const [stockIn, setStockIn] = useState({});
-  const [stockOut, setStockOut] = useState({});
-  const [audit, setAudit] = useState({});
-  const [error, setError] = useState();
+const DashboardPage = ({
+  assetValue,
+  stockIn,
+  stockOut,
+  audit,
+  history,
+  alert,
+}) => {
   const currentUser = useSelector((state) => state.user.currentUser);
+  const { warehouseId } = currentUser;
+
+  console.log("asset", assetValue);
+  console.log("stockIn", stockIn);
+  console.log("stockOut", stockOut);
+  console.log("audit", audit);
+  console.log("history", history);
+  console.log("alert", alert);
+
   var today = new Date(),
     date =
       today.getFullYear() +
@@ -24,136 +34,6 @@ const DashboardPage = () => {
     currentDate: Date().toLocaleString(),
   });
 
-  useEffect(() => {
-    if (currentUser) {
-      getAssetFromDB().then((asset) => {
-        setAssetValue({
-          totalAssetItems: asset.data[0].countItem,
-          totalAssetQuantities: asset.data[0].totalQuantity,
-        });
-      });
-      getStockInFromDB().then((stockin) => {
-        console.log(stockin);
-        setStockIn({
-          totalStockInItems: stockin.data[0].countItems,
-          totalStockInQuantities: stockin.data[0].totalQuantity,
-        });
-      });
-      getStockOutFromDB().then((stockout) => {
-        setStockOut({
-          totalStockOutItems: stockout.data[0].countItems,
-          totalStockOutQuantities: stockout.data[0].totalQuantity,
-        });
-      });
-      getAuditFromDB().then((audit) => {
-        setAudit({
-          totalAuditItems: audit.data[0].countItems,
-          totalAuditQuantities: audit.data[0].totalQuantity,
-        });
-      });
-      getHistoryFromDB().then((history) => {
-        setHistory(history.data);
-      });
-      getAlertFromDB().then((alert) => {
-        console.log(alert);
-        setAlert(alert.data);
-      });
-    } else {
-      setAssetValue({});
-      setStockIn({});
-      setStockOut({});
-      setAudit({});
-    }
-    // getAlertFromDB();
-  }, []);
-
-  const getAssetFromDB = async () => {
-    try {
-      const assetFromDB = await api.get(`/dashboard/totalAsset/1`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return assetFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const getStockInFromDB = async () => {
-    try {
-      const stockInFromDB = await api.get(
-        `/dashboard/totalTransaction/1?transactionType=Stock In`,
-        {
-          headers: {
-            Authorization: "bearer " + currentUser.accessToken,
-          },
-        },
-      );
-      return stockInFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const getStockOutFromDB = async () => {
-    try {
-      const stockOutFromDB = await api.get(
-        `/dashboard/totalTransaction/1?transactionType=Stock Out`,
-        {
-          headers: {
-            Authorization: "bearer " + currentUser.accessToken,
-          },
-        },
-      );
-      return stockOutFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const getAuditFromDB = async () => {
-    try {
-      const auditFromDB = await api.get(
-        `/dashboard/totalTransaction/1?transactionType=Audit`,
-        {
-          headers: {
-            Authorization: "bearer " + currentUser.accessToken,
-          },
-        },
-      );
-      return auditFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const getHistoryFromDB = async () => {
-    try {
-      const historyFromDB = await api.get(`/transaction/1`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return historyFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const getAlertFromDB = async () => {
-    try {
-      const alertFromDB = await api.get(`/dashboard/alertedItems/1`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return alertFromDB.data;
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   return (
     <div>
       <Dashboard
@@ -164,9 +44,75 @@ const DashboardPage = () => {
         stockIn={stockIn}
         stockOut={stockOut}
         audit={audit}
+        warehouseId={warehouseId}
       />
     </div>
   );
 };
+
+export async function getServerSideProps({ req }) {
+  const token = req.cookies.token;
+  const uid = req.cookies.uid;
+  const warehouseId = await getWarehouseId(uid, token);
+
+  const getAssetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
+    headers: {
+      Authorization: "bearer " + token,
+    },
+  });
+
+  const getStockInFromDB = await api.get(
+    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock In`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
+    },
+  );
+
+  const getStockOutFromDB = await api.get(
+    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock Out`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
+    },
+  );
+
+  const getAuditFromDB = await api.get(
+    `/dashboard/totalTransaction/${warehouseId}?transactionType=Audit`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
+    },
+  );
+
+  const getHistoryFromDB = await api.get(`/transaction/${warehouseId}`, {
+    headers: {
+      Authorization: "bearer " + token,
+    },
+  });
+
+  const getAlertFromDB = await api.get(
+    `/dashboard/alertedItems/${warehouseId}`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
+    },
+  );
+
+  return {
+    props: {
+      assetValue: getAssetFromDB.data.data,
+      stockIn: getStockInFromDB.data.data,
+      stockOut: getStockOutFromDB.data.data,
+      audit: getStockOutFromDB.data.data,
+      history: getHistoryFromDB.data.data,
+      alert: getAlertFromDB.data.data,
+    },
+  };
+}
 
 export default DashboardPage;

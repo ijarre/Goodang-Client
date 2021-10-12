@@ -24,7 +24,7 @@ const EditItem = () => {
         unit,
       });
     });
-  }, []);
+  }, [currentUser.accessToken, editField, id]);
   const { id } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
   const history = useHistory();
