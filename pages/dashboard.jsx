@@ -29,6 +29,7 @@ const DashboardPage = () => {
   useEffect(() => {
     if (currentUser) {
       getAssetFromDB().then((asset) => {
+        console.log(asset);
         setAssetValue({
           totalAssetItems: asset?.data[0].countItem,
           totalAssetQuantities: asset?.data[0].totalQuantity,
