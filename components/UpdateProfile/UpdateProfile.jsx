@@ -103,10 +103,7 @@ const UpdateProfile = ({ profileDetail }) => {
               "-webkit-transform": "rotate(135deg)",
             }}
           ></i>
-          <a
-            href="/dashboard"
-            className="text-sm text-gray-900 hover:text-gray-500"
-          >
+          <a className="text-sm text-gray-900 hover:text-gray-500">
             Back to dashboard
           </a>
         </div>

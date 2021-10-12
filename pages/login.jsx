@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { LoginRegisterForm } from "../components";
-import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
+import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
+import app from "../firebase";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -13,7 +14,7 @@ const Login = () => {
     password: "",
     confirmPassword: "",
   });
-  const { signup, login } = useAuth();
+  const auth = getAuth(app);
   const router = useRouter();
 
   const handleSignin = async (e) => {
@@ -21,7 +22,11 @@ const Login = () => {
     try {
       setError("");
       setLoading(true);
-      const res = await login(fields.email, fields.password);
+      const res = await signInWithEmailAndPassword(
+        auth,
+        fields.email,
+        fields.password,
+      );
       if (res) {
         router.push("/");
       }
@@ -29,27 +34,6 @@ const Login = () => {
       setError(err.message);
     }
     setLoading(false);
-  };
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    if (fields.password !== fields.confirmPassword) {
-      setLoading(true);
-      setError("Password does not match");
-    } else {
-      setError("");
-    }
-    if (error === "") {
-      try {
-        setError("");
-        setLoading(true);
-        await signup(fields);
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-
-    setLoading(false);
-    router.push("/");
   };
 
   const handleInputChange = (e) => {
@@ -63,7 +47,6 @@ const Login = () => {
         fields={fields}
         handleInputChange={handleInputChange}
         handleSignin={handleSignin}
-        handleSignup={handleSignup}
         loading={loading}
         error={error}
       />

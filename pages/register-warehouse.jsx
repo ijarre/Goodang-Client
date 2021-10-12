@@ -7,16 +7,17 @@ import React, {
   Fragment,
   useRef,
 } from "react";
-import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import { useRouter } from "next/router";
+import { setWarehouseId } from "../features/userSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const RegisterWarehousePage = () => {
-  const [loading, setLoading] = useState(false);
   const [warehouseData, setWarehouseData] = useState();
   const [createForm, setCreateForm] = useState("");
   const [selected, setSelected] = useState();
@@ -26,7 +27,8 @@ const RegisterWarehousePage = () => {
   const [openJoin, setOpenJoin] = useState(false);
   const [searchForm, setSearchForm] = useState("");
 
-  const { currentUser, setCurrentUser } = useAuth();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
   const router = useRouter();
 
   const getWarehouses = useCallback(async () => {
@@ -41,12 +43,9 @@ const RegisterWarehousePage = () => {
   useEffect(() => {
     setCanCreate(false);
 
-    setLoading(true);
     getWarehouses().then((warehouses) => {
       setWarehouseData(warehouses.data);
     });
-
-    setLoading(false);
   }, [getWarehouses]);
 
   //NEED TO CONFIGURE IF USER PRESS GO TO DASHBOARD, USEEFFECT BELOW NOT TRIGGERED
@@ -77,7 +76,7 @@ const RegisterWarehousePage = () => {
         },
       )
       .then((response) => {
-        setCurrentUser({ ...currentUser, warehouseId: response.data.data.id });
+        dispatch(setWarehouseId({ warehouseId: response.data.data.id }));
       })
       .then(() => {
         console.log(currentUser);

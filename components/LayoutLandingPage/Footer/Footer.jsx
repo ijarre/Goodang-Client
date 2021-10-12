@@ -1,17 +1,18 @@
 import React from "react";
+import Image from "next/image";
 
 const Footer = () => {
   return (
     <div className="bg-dongker flex justify-center mt-20">
       <div className="relative">
-        <img
+        <Image
           src="images/logo-vertical-white.svg"
           className="h-28 ml-36 w-auto"
           alt=""
         />
         <div className=" justify-center flex gap-10 h-2">
           <div className="flex flex-row space-x-8 items-center justify-between">
-            <a href="/">
+            <a>
               <svg
                 className="w-4"
                 viewBox="0 0 6 12"
@@ -24,7 +25,7 @@ const Footer = () => {
                 />
               </svg>
             </a>
-            <a href="/">
+            <a>
               <svg
                 className="w-7"
                 viewBox="0 0 12 13"
@@ -45,7 +46,7 @@ const Footer = () => {
                 />
               </svg>
             </a>
-            <a href="/">
+            <a>
               <svg
                 className="w-8"
                 viewBox="0 0 13 9"

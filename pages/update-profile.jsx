@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useAuth } from "../context/AuthContext";
 import { UpdateProfile } from "../components";
 import api from "../services/api";
 
 const UpdateProfilePage = () => {
-  const { currentUser } = useAuth();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const [profileDetail, setProfileDetail] = useState({});
 

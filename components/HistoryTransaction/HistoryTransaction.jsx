@@ -93,7 +93,10 @@ const HistoryTransaction = ({ history }) => {
                       <td className="px-6 py-3 whitespace-nowrap text-sm">
                         {el.Item?.Categories?.map((el) => {
                           return (
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <span
+                              key={i}
+                              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                            >
                               {el.categoryName}
                             </span>
                           );

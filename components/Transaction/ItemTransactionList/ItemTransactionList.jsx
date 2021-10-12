@@ -1,11 +1,14 @@
 import React from "react";
 import { PlusIcon, MinusIcon } from "@heroicons/react/outline";
+import Image from "next/image";
+import imagePlaceholder from "../../../public/images/image-placeholder.svg";
 
 const ItemTransactionList = ({
   items,
   handleAddItemToCart,
   cartItems,
   handleRemoveItemFromCart,
+  loadingData,
 }) => {
   const isObjectInArray = (obj, arr) => {
     let output = false;
@@ -17,7 +20,9 @@ const ItemTransactionList = ({
     }
     return output;
   };
-
+  if (loadingData) {
+    return "loading data...";
+  }
   return (
     <table className="w-full">
       <thead className="bg-gray-100">
@@ -57,8 +62,10 @@ const ItemTransactionList = ({
           return (
             <tr key={el.id}>
               <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
-              <td>
-                <img className="h-10 w-10 ml-5 " src={el.image} alt="" />
+              <td className="flex ">
+                <div className="w-10 h-10 ml-5 relative top-2">
+                  <Image src={el.image ? el.image : imagePlaceholder} alt="" />
+                </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {el?.Categories?.map((category) => {
@@ -85,7 +92,7 @@ const ItemTransactionList = ({
                   </button>
                 ) : (
                   <button
-                    className="rounded-full bg-orange hover:bg-yellow-400 p-1"
+                    className="rounded-full bg-yellow-300 hover:bg-yellow-500 hover:scale-105 p-1"
                     onClick={() => handleAddItemToCart(el.id)}
                   >
                     <PlusIcon className="w-5" />

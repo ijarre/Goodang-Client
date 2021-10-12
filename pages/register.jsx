@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { LoginRegisterForm } from "../components";
 import { useRouter } from "next/router";
-import { useAuth } from "../context/AuthContext";
-import { updateCurrentUser } from "@firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateCurrentUser,
+} from "@firebase/auth";
+import app from "../firebase";
 
 const Register = () => {
   const [error, setError] = useState("");
@@ -14,21 +18,9 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const { signup, login, currentUser } = useAuth();
+  const auth = getAuth(app);
   const router = useRouter();
 
-  const handleSignin = async (e) => {
-    e.preventDefault();
-    try {
-      setError("");
-      setLoading(true);
-      await login(fields.email, fields.password);
-      router.push("/");
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
   const handleSignup = async (e) => {
     e.preventDefault();
     if (fields.password !== fields.confirmPassword) {
@@ -41,7 +33,18 @@ const Register = () => {
       try {
         setError("");
         setLoading(true);
-        await signup(fields);
+        const data = await createUserWithEmailAndPassword(
+          auth,
+          fields.email,
+          fields.password,
+        );
+        await registerToDB({
+          id: data.user.uid,
+          firstName: fields.firstName,
+          lastName: fields.lastName,
+          email: fields.email,
+          password: fields.password,
+        });
 
         router.push("/");
       } catch (err) {
@@ -50,6 +53,15 @@ const Register = () => {
     }
 
     setLoading(false);
+  };
+
+  const registerToDB = async (data) => {
+    try {
+      const response = await api.post("/user", data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -62,7 +74,6 @@ const Register = () => {
         isSignup={true}
         fields={fields}
         handleInputChange={handleInputChange}
-        handleSignin={handleSignin}
         handleSignup={handleSignup}
         loading={loading}
         error={error}

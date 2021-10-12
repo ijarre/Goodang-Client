@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import Link from "next/link";
-import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 
 const EditItem = () => {
@@ -25,9 +24,9 @@ const EditItem = () => {
         unit,
       });
     });
-  }, []);
+  }, [currentUser.accessToken, editField, id]);
   const { id } = useParams();
-  const { currentUser } = useAuth();
+  const currentUser = useSelector((state) => state.user.currentUser);
   const history = useHistory();
 
   const handleSubmit = async (e) => {

@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { ItemPicker, TransactionMaker } from "../../components";
-import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 import { useRouter } from "next/router";
 import { getWarehouseId } from "../../services/getWarehouseId";
+import { useSelector } from "react-redux";
+import { useItems } from "../../hooks/useItems";
+import { useQuery, useQueryClient, useMutation } from "react-query";
+import { getAllItems } from "../../services/getAllItems";
+import { postTransaction } from "../../services/postTransaction";
 
 const TransactionPage = () => {
   const [trx, setTrx] = useState("");
@@ -15,8 +19,15 @@ const TransactionPage = () => {
   const router = useRouter();
   const { trxType } = router.query;
 
-  const { currentUser, warehouseId } = useAuth();
-
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const loading = useSelector((state) => state.app.loading);
+  const { data, isLoading } = useQuery(
+    "items",
+    () => getAllItems(currentUser.warehouseId, currentUser.accessToken),
+    { enabled: !!currentUser.warehouseId },
+  );
+  const queryClient = useQueryClient();
   const querySwitch = useCallback((input) => {
     switch (input) {
       case "stock-in":
@@ -29,26 +40,16 @@ const TransactionPage = () => {
         return "";
     }
   }, []);
+
   useEffect(() => {
     let state = querySwitch(trxType);
     setTrx(state);
   }, [querySwitch, trxType]);
 
   useEffect(() => {
-    const getAllItems = async (whID) => {
-      const response = await api.get(`/item/${whID}`, {
-        headers: {
-          Authorization: "Bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getWarehouseId(currentUser.uid, currentUser.accessToken)
-      .then((id) => getAllItems(id))
-      .then((res) => {
-        setItems(res.data);
-      });
-  }, []);
+    setItems(data?.data);
+    console.log(data);
+  }, [data]);
 
   const handleAddItemToCart = (id) => {
     const selected = items.filter((el) => el.id === id)[0];
@@ -64,28 +65,35 @@ const TransactionPage = () => {
     setQuantity(updatedQty);
   };
 
-  const transactionRequest = async (type, id, data) => {
-    const switchType = () => {
-      switch (type) {
-        case "Stock In":
-          return `/transaction/stockin/${id}`;
-        case "Stock Out":
-          return `/transaction/stockout/${id}`;
+  // const transactionRequest = async (type, id, data) => {
+  //   const switchType = () => {
+  //     switch (type) {
+  //       case "Stock In":
+  //         return `/transaction/stockin/${id}`;
+  //       case "Stock Out":
+  //         return `/transaction/stockout/${id}`;
 
-        case "Audit":
-          return `/transaction/audit/${id}`;
-      }
-    };
-    try {
-      await api.post(switchType(), data, {
-        headers: {
-          Authorization: "Bearer " + currentUser.accessToken,
-        },
-      });
-    } catch (err) {
-      setError(err);
-    }
-  };
+  //       case "Audit":
+  //         return `/transaction/audit/${id}`;
+  //       default:
+  //         return;
+  //     }
+  //   };
+  //   try {
+  //     await api.post(switchType(), data, {
+  //       headers: {
+  //         Authorization: "Bearer " + currentUser.accessToken,
+  //       },
+  //     });
+  //   } catch (err) {
+  //     setError(err);
+  //   }
+  // };
+  const { mutate } = useMutation(({ type, id, data, token }) => {
+    postTransaction(type, id, data, token).then(() =>
+      queryClient.invalidateQueries("items"),
+    );
+  });
 
   const handleTransactionSubmit = (e) => {
     e.preventDefault();
@@ -104,9 +112,25 @@ const TransactionPage = () => {
           note: note,
         };
         if (trx === "Audit") {
-          transactionRequest(trx, el.id, dataAudit);
+          mutate({
+            type: trx,
+            id: el.id,
+            data: dataAudit,
+            token: currentUser.accessToken,
+          });
+          // transactionRequest(trx, el.id, dataAudit).then(() =>
+          //   queryClient.invalidateQueries("items"),
+          // );
         } else {
-          transactionRequest(trx, el.id, data);
+          mutate({
+            type: trx,
+            id: el.id,
+            data,
+            token: currentUser.accessToken,
+          });
+          // transactionRequest(trx, el.id, data).then(() =>
+          //   queryClient.invalidateQueries("items"),
+          // );
         }
       });
     } catch (err) {
@@ -116,6 +140,9 @@ const TransactionPage = () => {
     setCartItems([]);
   };
 
+  if (!isAuthenticated && !loading) {
+    router.push("/");
+  }
   return (
     <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left px-7 py-4 flex flex-col ">
       <h1 className="text-2xl font-semibold mb-4 mt-16">Transaction / {trx}</h1>
@@ -135,6 +162,7 @@ const TransactionPage = () => {
             handleRemoveItemFromCart={handleRemoveItemFromCart}
             cartItems={cartItems}
             error={error}
+            loadingData={isLoading}
           />
         </div>
         <div className="row-span-2  pl-3">

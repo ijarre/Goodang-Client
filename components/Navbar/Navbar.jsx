@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import Link from "next/link";
 import Image from "next/image";
 import LogoHorizontal from "../../public/images/logo-horizontal-white.svg";
+import { useRouter } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -12,11 +13,13 @@ function classNames(...classes) {
 
 export default function Navbar({ isAuthenticated, handleLogout }) {
   const history = useHistory();
+  const router = useRouter();
   const [current, setCurrent] = useState();
 
   useEffect(() => {
-    setCurrent(window.location.pathname);
-  }, [window.location.pathname]);
+    setCurrent(router.pathname);
+  }, [router.pathname]);
+
   const publicNav = [
     {
       name: "Register",
