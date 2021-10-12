@@ -4,17 +4,17 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <div className="bg-dongker flex  h-20 justify-items-start md:bg-fixed">
+    <div className="bg-dongker flex h-20 justify-items-start md:bg-fixed">
 
       <div className="h-12 flex w-44 ml-20 mt-5">
         <Image src={PhotoFive} className="" alt="" />
       </div>
 
-      <div className="text-white racking-widest relative mt-12 ml-96">
+      <div className="text-white racking-widest relative mt-10 ml-64">
         <span>Copyright © 2021 Goodang Inc Developer. All Rights Reserved</span>
       </div>
 
-      <div className="flex mt-3 ml-96 pl-16">
+      <div className="flex mt-2 ml-80">
         <div className="flex flex-row space-x-9 items-center justify-between">
           <a href="/">
             <svg className="w-3" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">

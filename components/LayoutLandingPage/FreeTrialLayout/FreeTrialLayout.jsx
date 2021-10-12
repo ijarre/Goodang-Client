@@ -8,10 +8,10 @@ const FreeTrialLayout = () => {
     <div className="mx-10">
 
       <div className="text-center transform hover:scale-110">
-        <span className="text-4xl font-semibold tracking-widest">BENEFIT</span>
+        <span className="text-7xl font-semibold tracking-widest">BENEFIT</span>
       </div>
 
-      <div className="relative grid grid-cols-2 gap-2 place-items-start mx-12 my-28">
+      <div className="relative grid grid-cols-2 gap-2 place-items-start mx-12 my-10">
         <div className="h-40 space-y-4 absolute ml-9 mt-20 ">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
