@@ -98,14 +98,14 @@ const ItemListPage = () => {
 
   //user delete his item
 
-  // const handleDelete = async (id) => {
-  //   await api.get(`/item/delete/${id}`, {
-  //     headers: {
-  //       Authorization: "bearer " + currentUser.accessToken,
-  //     },
-  //   });
-  //   router.go(0);
-  // };
+  const handleDelete = async (id) => {
+    await api.get(`/item/delete/${id}`, {
+      headers: {
+        Authorization: "bearer " + currentUser.accessToken,
+      },
+    });
+    router.go(0);
+  };
 
   const openDeleteModal = () => {
     setShowDeleteModal((prev) => !prev);
@@ -179,7 +179,7 @@ const ItemListPage = () => {
         setShowDeleteModal={setShowDeleteModal}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        // handleDelete={handleDelete}
+        handleDelete={handleDelete}
       />
       <ItemList
         items={items}

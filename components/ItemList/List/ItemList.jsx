@@ -1,15 +1,12 @@
 import React, { useRef } from "react";
-import { Dialog } from "@headlessui/react";
+import { SearchIcon } from "@heroicons/react/outline";
 
 const ItemList = ({
   items,
-  // handleDelete,
   openModal,
   openEditModal,
   openDeleteModal,
   // handleSearch,
-  // confirmOpen,
-  // setConfirmOpen,
 }) => {
   const inputElement = useRef("");
 
@@ -21,7 +18,22 @@ const ItemList = ({
       <h1 className="ml-4 font-bold text-2xl">Item List</h1>
       <div className="mt-5">
         <div action="" className="text-left my-2 flex">
-          <div className="bg-grey-200 rounded-md ml-4">
+          <div className="shadow flex items-start mb-4">
+            <input
+              className="w-full rounded p-2"
+              type="text"
+              placeholder="Search..."
+              ref={inputElement}
+              // value={items.term}
+              id=""
+              onChange={getSearchTerm}
+            />
+            <button className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
+              <SearchIcon className="w-6 mr-1" />
+              Search
+            </button>
+          </div>
+          {/* <div className="bg-grey-200 rounded-md ml-4">
             <label className=" text-gray-500 ml-1" htmlFor="filterByCategory">
               Filter
             </label>
@@ -32,22 +44,7 @@ const ItemList = ({
               placeholder="Filter Category"
             />
             <i className="filter"></i>
-          </div>
-          <div className="bg-grey-200 rounded-md ml-4">
-            <label className="text-gray-500 ml-1" htmlFor="searchByItemName">
-              Search
-            </label>
-            <input
-              className="text-sm bg-white block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-              ref={inputElement}
-              // value={items.term}
-              type="text"
-              id=""
-              placeholder="Search Item"
-              onChange={getSearchTerm}
-            />
-            <i className="search"></i>
-          </div>
+          </div> */}
         </div>
         <div className="md:col-span-5 text-right">
           <div className="inline-flex items-end mr-5 mb-1">
@@ -119,8 +116,10 @@ const ItemList = ({
                 </td>
                 <td className="px-6 py-4 ml-20">
                   <span className="mr-6">
-                    <button className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
-                    onClick={openEditModal}>
+                    <button
+                      className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
+                      onClick={openEditModal}
+                    >
                       Edit
                     </button>
                     <button

@@ -19,7 +19,7 @@ const DeleteModal = ({
 
   const keyPress = useCallback(
     (e) => {
-      if (e.key === "Click" && showModal) {
+      if (e.key === "Click" && showDeleteModal) {
         setShowDeleteModal(false);
       }
     },
@@ -33,7 +33,7 @@ const DeleteModal = ({
 
   return (
     <>
-      {showModal ? (
+      {showDeleteModal ? (
         <div
           className="min-h-screen w-10/12 h-3/4 bg-transparent fixed flex justify-center items-center"
           onClick={closeModal}
@@ -41,7 +41,7 @@ const DeleteModal = ({
         >
           <div
             className="w-10/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
-            showModal={showModal}
+            showDeleteModal={showDeleteModal}
           >
             <div className="flex-col mt-9 ml-80 justify-center items-center bg-gray-50">
               <HiOutlineX
