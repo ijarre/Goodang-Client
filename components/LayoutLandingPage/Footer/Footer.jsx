@@ -14,7 +14,7 @@ const Footer = () => {
         <span>Copyright © 2021 Goodang Inc Developer. All Rights Reserved</span>
       </div>
 
-      <div className="flex mt-2 ml-80">
+      <div className="flex mt-2 ml-64">
         <div className="flex flex-row space-x-9 items-center justify-between">
           <a href="/">
             <svg className="w-3" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
