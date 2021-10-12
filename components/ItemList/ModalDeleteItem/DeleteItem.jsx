@@ -5,7 +5,7 @@ import { Dialog } from "@headlessui/react";
 const DeleteModal = ({
   showDeleteModal,
   setShowDeleteModal,
-  // handleDelete,
+  handleDelete,
   isOpen,
   setIsOpen,
 }) => {
@@ -48,12 +48,12 @@ const DeleteModal = ({
                 as="div"
                 aria-label="Close modal"
                 className="cursor-pointer absolute top-4 right-4 p-0 z-10 "
-                onClick={() => setShowModal((prev) => !prev)}
+                onClick={() => setShowDeleteModal((prev) => !prev)}
               />
               <div>
                   <h1>Are you sure want delete this item?</h1>
-                  <button type="">Yes</button>
-                  <button>No</button>
+                  <button onClick={() => handleDelete(item.id)} type="submit">Yes</button>
+                  <button onClick={()=>setShowDeleteModal((prev) => !prev)}>No</button>
               </div>
               <div className="flex items-center justify-center">
                 <Dialog
