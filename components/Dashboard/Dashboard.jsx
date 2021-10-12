@@ -30,26 +30,26 @@ const Dashboard = ({
             <div className="flex flex-1 space-x-4 w-auto ml-5 mt-3">
               <Card
                 title="Total Asset"
-                value_items={assetValue.totalAssetItems}
-                value_categories={assetValue.totalAssetQuantities}
+                value_items={assetValue[0].countItem}
+                value_categories={assetValue[0].totalQuantity}
                 colorbg="bg-yellow-300"
               />
               <Card
                 title="Stock In Today"
-                value_items={stockIn.totalStockInItems}
-                value_categories={stockIn.totalStockInQuantities}
+                value_items={stockIn[0].countItems}
+                value_categories={stockIn[0].totalQuantity}
                 colorbg="bg-blue-200"
               />
               <Card
                 title="Stock Out Today"
-                value_items={stockOut.totalStockOutItems}
-                value_categories={stockOut.totalStockOutQuantities}
+                value_items={stockOut[0].countItems}
+                value_categories={stockOut[0].totalQuantity}
                 colorbg="bg-violet-300"
               />
               <Card
                 title="Audit Today"
-                value_items={audit.totalAuditItems}
-                value_categories={audit.totalAuditQuantities}
+                value_items={audit[0].countItems}
+                value_categories={audit[0].totalQuantity}
                 colorbg="bg-lime-300"
               />
             </div>
