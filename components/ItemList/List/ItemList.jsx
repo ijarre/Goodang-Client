@@ -1,15 +1,14 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 
 const ItemList = ({
   items,
-  handleDelete,
+  // handleDelete,
   openModal,
-  handleEdit,
-  handleSearch,
-  isOpen,
-  setIsOpen,
+  openEditModal,
+  // handleSearch,
+  confirmOpen,
+  setConfirmOpen,
 }) => {
   const inputElement = useRef("");
 
@@ -119,12 +118,13 @@ const ItemList = ({
                 </td>
                 <td className="px-6 py-4 ml-20">
                   <span className="mr-6">
-                    <button className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5">
-                      <Link to={`/edit-item/${el.id}`}>Edit</Link>
+                    <button className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
+                    onClick={openEditModal}>
+                      Edit
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
-                      type="submit"
+                      onClick={Dialog}
                     >
                       Delete
                     </button>
@@ -135,13 +135,12 @@ const ItemList = ({
           })}
         </tbody>
       </table>
-      <div className="flex items-center justify-center">
+      {/* <div className="flex items-center justify-center">
         <Dialog
           as="div"
           className="fixed flex inset-0 items-center justify-center"
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-          key={el.id}
+          onClose={() => setConfirmOpen(false)}
+          // key={el.id}
         >
           <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
 
@@ -151,19 +150,19 @@ const ItemList = ({
             </Dialog.Title>
             <button
               className="md:text-sm bg-white mt-3 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-blue-200"
-              onClick={() => handleDelete(el.id)}
+              // onClick={() => handleDelete(el.id)}
             >
               Yes
             </button>
             <button
               className="md:text-sm bg-white mt-3 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-red-600"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setConfirmOpen(false)}
             >
-              <Link to="/item-list">No</Link>
+              No
             </button>
           </div>
         </Dialog>
-      </div>
+      </div> */}
     </div>
   );
 };

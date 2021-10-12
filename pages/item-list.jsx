@@ -5,7 +5,7 @@ import { ItemList } from "../components";
 import api from "../services/api";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
-import { useParams, useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
@@ -23,6 +23,8 @@ const ItemListPage = () => {
   });
   const [editField, setEditField] = useState({});
 
+  const router = useRouter();
+ 
   //user add item 
   const openModal = () => {
     setShowModal((prev) => !prev);
@@ -58,7 +60,7 @@ const ItemListPage = () => {
     );
   };
 
-  const history = useHistory();
+  // const history = useHistory();
 
   //user read his items
   useEffect(() => {
@@ -100,7 +102,7 @@ const ItemListPage = () => {
         Authorization: "bearer " + currentUser.accessToken,
       },
     });
-    history.go(0);
+    router.go(0);
   };
 
 
@@ -118,7 +120,7 @@ const ItemListPage = () => {
         Authorization: "bearer " + currentUser.accessToken,
       },
     });
-    history.push("/item-list");
+    router.push("/item-list");
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -144,7 +146,9 @@ const ItemListPage = () => {
       });
     });
   }, []);
-  const { id } = useParams();
+  
+  const { id } = router.query;
+  //const { id } = useParams();
 
   return (
     <div>
@@ -161,6 +165,7 @@ const ItemListPage = () => {
       <EditItemModal
         showEditModal={showEditModal}
         setShowEditModal={setShowEditModal}
+        editField={editField}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         handleSubmit={handleSubmit}

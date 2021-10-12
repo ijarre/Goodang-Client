@@ -79,7 +79,7 @@ const Modal = ({
                       <label htmlFor="image">Insert Image</label>
                       <div>
                         <button
-                          type="submit"
+                          type=""
                           className="md:text-sm bg-gray-100 px-1 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200"
                         >
                           Add Image

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Dialog } from "@headlessui/react";
-import BoxAdded from "../../../public/images/box-added.png"
+import BoxAdded from "../../../public/images/box-added.png";
 import { HiOutlineX } from "react-icons/hi";
 
 const EditItemModal = ({
@@ -9,7 +9,8 @@ const EditItemModal = ({
   isOpen,
   setIsOpen,
   handleChange,
-  handleSubmit
+  handleSubmit,
+  editField,
 }) => {
   const modalRef = useRef();
 
@@ -33,7 +34,6 @@ const EditItemModal = ({
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
-
   return (
     <>
       {showEditModal ? (
@@ -53,94 +53,90 @@ const EditItemModal = ({
                 className="cursor-pointer absolute top-4 right-4 p-0 z-10 "
                 onClick={() => setShowEditModal((prev) => !prev)}
               />
-              <div className="min-h-screen mx-auto max-w-screen-xl bg-white">
-                <div className="form bg-grey-300 mx-20 md:w-full md:h-screen md:flex ">
-                  <div className="pl-28 pr-24 h-screen w-4/5">
-                    <div className="mt-10 mx-auto">
-                      <p className="font-light text-grey-900 pt-10">
-                        Edit Item
-                      </p>
-                      <h1 className="font-bold text-gray-900 md:text-2xl">
-                        Item Info
-                      </h1>
-                    </div>
+              
+                <div className="">
+                  <div className="mt-10 mx-auto">
+                    <p className="font-light text-grey-900 pt-10">Edit Item</p>
+                    <h1 className="font-bold text-gray-900 md:text-2xl">
+                      Item Info
+                    </h1>
+                  </div>
 
-                    <div className="pt-10">
-                      <form
-                        onSubmit={handleSubmit}
-                        className="mb-10 mx-auto space-y-3"
-                      >
-                        <div className="md:flex space-x-4 text-gray-900">
-                          <div className="md:w-1/2 space-y-1 md:text-sm">
-                            <label htmlFor="itemName">Item Name</label>
-                            <input
-                              id="itemName"
-                              className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-                              type="text"
-                              placeholder="item name"
-                              name="itemName"
-                              value={editField.itemName}
-                              onChange={handleChange}
-                            />
-                          </div>
+                  <div className="pt-10">
+                    <form
+                      onSubmit={handleSubmit}
+                      className="mb-10 mx-auto space-y-3"
+                    >
+                      <div className="md:flex space-x-4 text-gray-900">
+                        <div className="md:w-1/2 space-y-1 md:text-sm">
+                          <label htmlFor="itemName">Item Name</label>
+                          <input
+                            id="itemName"
+                            className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
+                            type="text"
+                            placeholder="item name"
+                            name="itemName"
+                            value={editField.itemName}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <div>
-                          <div className="md:w-1/2 space-y-1 md:text-sm">
-                            <label htmlFor="unit">Unit</label>
-                            <span className="text-grey-700"></span>
-                            <select
-                              id="Unit"
-                              className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-                              type="text"
-                              placeholder="unit"
-                              name="Unit"
-                              value={editField.unit}
-                              onChange={handleChange}
-                            >
-                              <option className="text-grey-700">Select</option>
-                              <option>pcs</option>
-                              <option>ea</option>
-                              <option>Kg</option>
-                              <option>tonne</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div>
-                          <div className="space-y-1 md:text-sm text-gray-900 md:w-1/2">
-                            <label htmlFor="minimumQuantity">Minimum Qty</label>
-                            <input
-                              id="minimumQuantity"
-                              className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-                              type="text"
-                              placeholder="0"
-                              name="minimumQuantity"
-                              value={editField.minimumQuantity}
-                              onChange={handleChange}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="py-4">
-                          <button
-                            type="submit"
-                            className="md:text-sm bg-blue-200 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-blue-400 active:bg-yellow-200"
+                      </div>
+                      <div>
+                        <div className="md:w-1/2 space-y-1 md:text-sm">
+                          <label htmlFor="unit">Unit</label>
+                          <span className="text-grey-700"></span>
+                          <select
+                            id="Unit"
+                            className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
+                            type="text"
+                            placeholder="unit"
+                            name="Unit"
+                            value={editField.unit}
+                            onChange={handleChange}
                           >
-                            Submit
-                          </button>
-                          <button
-                            type="submit"
-                            className="md:text-sm bg-red-200 px-5 py-2 ml-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-red-400 active:bg-yellow-200"
-                            onClick={() => setShowEditModal((prev) => !prev)}
-                          >
-                            Cancel
-                          </button>
+                            <option className="text-grey-700">Select</option>
+                            <option>pcs</option>
+                            <option>ea</option>
+                            <option>Kg</option>
+                            <option>tonne</option>
+                          </select>
                         </div>
-                      </form>
-                    </div>
+                      </div>
+
+                      <div>
+                        <div className="space-y-1 md:text-sm text-gray-900 md:w-1/2">
+                          <label htmlFor="minimumQuantity">Minimum Qty</label>
+                          <input
+                            id="minimumQuantity"
+                            className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
+                            type="text"
+                            placeholder="0"
+                            name="minimumQuantity"
+                            value={editField.minimumQuantity}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="py-4">
+                        <button
+                          type="submit"
+                          className="md:text-sm bg-blue-200 px-5 py-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-blue-400 active:bg-yellow-200"
+                        >
+                          Submit
+                        </button>
+                        <button
+                          type="submit"
+                          className="md:text-sm bg-red-200 px-5 py-2 ml-2 rounded-xl text-gray-700 hover:text-gray-700 hover:bg-red-400 active:bg-yellow-200"
+                          onClick={() => setShowEditModal((prev) => !prev)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
-              </div>
+              
               <div className="flex items-center justify-center">
                 <Dialog
                   as="div"
