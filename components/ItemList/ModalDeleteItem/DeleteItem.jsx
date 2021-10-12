@@ -51,7 +51,7 @@ const DeleteModal = ({
                 onClick={() => setShowDeleteModal((prev) => !prev)}
               />
               <div>
-                  <h1>Are you sure want delete this item?</h1>
+                  <h1>Are you sure want to delete this item?</h1>
                   <button onClick={() => handleDelete(item.id)} type="submit">Yes</button>
                   <button onClick={()=>setShowDeleteModal((prev) => !prev)}>No</button>
               </div>
