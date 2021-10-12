@@ -19,7 +19,6 @@ const ssr = ({ value }) => {
 export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
-  console.log(token);
   const warehouseId = await getWarehouseId(uid, token);
 
   const assetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
