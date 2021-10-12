@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dialog } from "@headlessui/react";
 import Link from "next/link";
+import Image from "next/image";
 
 const AddItem = ({
   handleInputChange,
@@ -37,8 +38,7 @@ const AddItem = ({
                   />
                 </div>
                 <div className="block md:w-20 ml-30">
-                  <img src={PlusSign} alt="" />
-                  <Image src="images/plus-sign.png" />
+                  <Image src="images/plus-sign.png" alt="" />
                 </div>
               </div>
               <div>
@@ -118,7 +118,7 @@ const AddItem = ({
 
               <div className="bg-white p-6 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
                 <div className="w-18 my-3">
-                  <Image src="images/box-added.png" />
+                  <Image src="images/box-added.png" alt="" />
                 </div>
                 <Dialog.Title as="div" className="text-md">
                   Item Added!

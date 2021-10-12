@@ -2,6 +2,7 @@ import React from "react";
 import PhotoOne from "../../../assets/img/image5.png";
 import PhotoTwo from "../../../assets/img/image6.png";
 import PhotoTree from "../../../assets/img/image7.png";
+import Image from "next/image";
 import Link from "next/link";
 const Feature = ({ ...otherProps }) => {
   return (
@@ -13,7 +14,7 @@ const Feature = ({ ...otherProps }) => {
       <div className="container items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 max-w-screen-lg mt-16">
         <div className="flex flex-col rounded-lg shadow-xl lg:mb-16">
           <div className="p-6 flex flex-col items-center">
-            <img src={PhotoOne} className="" alt="" />
+            <Image src={PhotoOne} className="" alt="" />
             <div className="p-6 flex flex-col items-center">
               <ul>
                 <li className="list-none">
@@ -42,7 +43,7 @@ const Feature = ({ ...otherProps }) => {
 
         <div className="flex flex-col rounded-lg shadow-xl lg:mb-16">
           <div className="p-6 flex flex-col items-center">
-            <img src={PhotoTwo} className="" alt="" />
+            <Image src={PhotoTwo} className="" alt="" />
             <div className="p-6 flex flex-col items-center">
               <ul>
                 <li className="list-none">
@@ -71,7 +72,7 @@ const Feature = ({ ...otherProps }) => {
 
         <div className="flex flex-col rounded-lg shadow-xl lg:mb-16 ">
           <div className="p-6 flex flex-col items-center">
-            <img src={PhotoTree} className="" alt="" />
+            <Image src={PhotoTree} className="" alt="" />
             <div className="p-6 flex flex-col items-center">
               <ul>
                 <li className="list-none">
