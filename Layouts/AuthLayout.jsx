@@ -13,6 +13,7 @@ import { LoadingPage } from "../components";
 import { setLoading } from "../features/appSlice";
 import { getWarehouseId } from "../services/getWarehouseId";
 import router from "next/router";
+import cookieCutter from "cookie-cutter";
 
 const AuthLayout = ({ children }) => {
   const auth = getAuth(app);
@@ -35,6 +36,8 @@ const AuthLayout = ({ children }) => {
     dispatch(setLoading({ loading: true }));
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        cookieCutter.set("token", user.accessToken);
+        cookieCutter.set("uid", user.uid);
         dispatch(
           setCurrentUser({ accessToken: user.accessToken, uid: user.uid }),
         );

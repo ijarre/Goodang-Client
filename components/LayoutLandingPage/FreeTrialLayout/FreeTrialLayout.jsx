@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const FreeTrialLayout = () => {
   return (
@@ -75,7 +76,7 @@ const FreeTrialLayout = () => {
           <br />
           <span className="">add up to 900 items adn categories</span>
         </div>
-        <img src={"images/image8.png"} className="max-w-prose" alt="" />
+        <Image src={"images/image8.png"} className="max-w-prose" alt="" />
       </div>
     </div>
   );
