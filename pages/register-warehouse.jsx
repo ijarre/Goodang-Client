@@ -25,6 +25,7 @@ const RegisterWarehousePage = () => {
   const [notification, setNotification] = useState();
   const [openCreate, setOpenCreate] = useState(false);
   const [openJoin, setOpenJoin] = useState(false);
+  const [loading,setLoading] = useState(false)
   const [searchForm, setSearchForm] = useState("");
 
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ const getWarehouseId = async (uid, token) => {
       Authorization: "Bearer " + token,
     },
   });
-  return response.data.data.warehouseId;
+  return response?.data?.data?.warehouseId;
 };
 
 export { getWarehouseId };

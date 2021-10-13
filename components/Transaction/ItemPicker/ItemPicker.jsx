@@ -45,7 +45,7 @@ const ItemPicker = ({
             </p>
           </div>
         ) : (
-          <div className="">
+          <div className="h-96 overflow-y-scroll">
             <ItemTransactionList
               items={items}
               handleAddItemToCart={handleAddItemToCart}
