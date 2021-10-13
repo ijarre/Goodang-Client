@@ -17,11 +17,11 @@ const HistoryTransaction = ({ history }) => {
   return (
     <>
       <div className="flex-col w-full h-96 bg-white rounded-xl border border-gray-300 p-4">
-        <div className="flex">
+        <div className="flex pb-3">
           <button onClick={refreshPage}>
             <RefreshIcon className="flex w-4 h-4 bg-blue-400 rounded" />
           </button>
-          <div className="flex ml-2 text-sm text-gray-900 md:text-m pb-3 font-bold">
+          <div className="flex ml-2 text-sm text-gray-900 md:text-m font-bold">
             Transaction History
           </div>
         </div>

@@ -7,8 +7,9 @@ const UpdateProfile = ({
   warehouseId,
   handleInputChange,
   updateUserToDB,
+  setIsOpen,
+  isOpen,
 }) => {
-  let [isOpen, setIsOpen] = useState(false);
   return (
     <div className="form bg-main md:w-full md:h-screen font-sans md:flex">
       <div className="w-5/7 pl-24 pr-16 pt-10 md:flex items-center">

@@ -4,6 +4,7 @@ import api from "../services/api";
 import { useSelector } from "react-redux";
 
 const UpdateProfilePage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
 
@@ -25,12 +26,15 @@ const UpdateProfilePage = () => {
 
   const updateUserToDB = async (e) => {
     e.preventDefault();
-    await api.post(`/user/update/${currentUser.uid}`, profileDetail, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
-      },
-    });
-    console.log(profileDetail);
+    try {
+      await api.post(`/user/update/${currentUser.uid}`, profileDetail, {
+        headers: {
+          Authorization: "bearer " + currentUser.accessToken,
+        },
+      });
+      setIsOpen(true);
+      console.log(profileDetail);
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -55,6 +59,8 @@ const UpdateProfilePage = () => {
         warehouseId={warehouseId}
         handleInputChange={handleInputChange}
         updateUserToDB={updateUserToDB}
+        setIsOpen={setIsOpen}
+        isOpen={isOpen}
       />
     </div>
   );
