@@ -15,7 +15,7 @@ const Footer = () => {
 
       <div className="flex mt-2 ml-64 mr-7">
         <div className="flex flex-row space-x-9 items-center justify-between">
-          <a href="/">
+          <a>
             <svg
               className="w-3"
               viewBox="0 0 6 12"
@@ -28,7 +28,7 @@ const Footer = () => {
               />
             </svg>
           </a>
-          <a href="/">
+          <a>
             <svg
               className="w-5"
               viewBox="0 0 12 13"
@@ -49,7 +49,7 @@ const Footer = () => {
               />
             </svg>
           </a>
-          <a href="/">
+          <a>
             <svg
               className="w-6"
               viewBox="0 0 13 9"
