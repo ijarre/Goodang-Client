@@ -26,6 +26,21 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   const router = useRouter();
+  //user read his items
+  useEffect(() => {
+    // const getAllItems = async () => {
+    //   const response = await api.get("/item/1?page=1&size=10", {
+    //     headers: {
+    //       Authorization: "bearer " + currentUser.accessToken,
+    //     },
+    //   });
+    //   return response.data;
+    // };
+    // getAllItems().then((data) => {
+    //   setItems(data.data);
+    // });
+    console.log("asdds");
+  }, [currentUser?.accessToken]);
 
   //user add item
   const openModal = () => {
@@ -63,22 +78,6 @@ const ItemListPage = () => {
   };
 
   // const history = useHistory();
-
-  //user read his items
-  useEffect(() => {
-    const getAllItems = async () => {
-      const response = await api.get("/item/1?page=1&size=10", {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getAllItems().then((data) => {
-      setItems(data.data);
-      console.log(items);
-    });
-  }, [currentUser.accessToken]);
 
   //user search his item
   const handleSearch = (searchTerm) => {
