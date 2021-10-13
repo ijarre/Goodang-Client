@@ -67,7 +67,7 @@ const ItemListPage = () => {
   //user read his items
   useEffect(() => {
     const getAllItems = async () => {
-      const response = await api.get("/item/1", {
+      const response = await api.get("/item/1?page=1&size=10", {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
         },
