@@ -17,8 +17,13 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
   const [current, setCurrent] = useState();
 
   useEffect(() => {
-    setCurrent(router.pathname);
-  }, [router.pathname]);
+    if (router.pathname === "/transaction/[trxType]") {
+      const { trxType } = router.query;
+      setCurrent("/transaction/" + trxType);
+    } else {
+      setCurrent(router.pathname);
+    }
+  }, [router.pathname, router.query]);
 
   const publicNav = [
     {
@@ -52,7 +57,7 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
   ];
 
   return (
-    <Disclosure as="nav" className="bg-dongker w-full h-16 fixed ">
+    <Disclosure as="nav" className="bg-dongker w-full h-16 fixed z-50">
       <>
         <div className="max-w-7xl mx-auto bg-dongker ">
           <div className="relative flex items-center justify-between h-16">
