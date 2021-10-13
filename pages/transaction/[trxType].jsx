@@ -102,13 +102,13 @@ const TransactionPage = () => {
         const data = {
           userId: currentUser.uid,
           stockQuantityNow: el.stockQuantity,
-          transactionQuantity: quantity[el.itemName],
+          transactionQuantity: quantity[el.id],
           note: note,
         };
         const dataAudit = {
           userId: currentUser.uid,
           stockQuantity: el.stockQuantity,
-          actualStockQuantity: quantity[el.itemName],
+          actualStockQuantity: quantity[el.id],
           note: note,
         };
         if (trx === "Audit") {
