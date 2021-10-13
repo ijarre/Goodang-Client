@@ -51,7 +51,7 @@ const Register = () => {
           console.log(err.message);
         }
 
-        router.push("/");
+        router.push("/register-warehouse");
       } catch (err) {
         setError(err.message);
       }
