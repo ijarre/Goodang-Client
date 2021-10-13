@@ -69,8 +69,8 @@ const ItemListPage = () => {
     e.preventDefault();
     setIsOpen(true);
     await axios.post(
-      "https://nameless-sands-57704.herokuapp.com/v1/item",
-      fields,
+      `https://nameless-sands-57704.herokuapp.com/v1/item`,
+      { ...fields, warehouseId: currentUser.warehouseId },
       {
         headers: {
           Authorization: "Bearer " + currentUser.accessToken,
