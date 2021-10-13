@@ -25,7 +25,7 @@ const ItemTransactionList = ({
   }
   return (
     <table className="w-full">
-      <thead className="bg-gray-100">
+      <thead className="bg-gray-100 sticky top-0 z-40">
         <tr>
           <th
             scope="col"
@@ -57,7 +57,7 @@ const ItemTransactionList = ({
           </th>
         </tr>
       </thead>
-      <tbody className="overflow-y-scroll divide-y">
+      <tbody className=" divide-y">
         {items?.map((el) => {
           return (
             <tr key={el.id}>

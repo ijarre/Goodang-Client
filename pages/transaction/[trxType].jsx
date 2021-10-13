@@ -52,8 +52,9 @@ const TransactionPage = () => {
 
   const handleAddItemToCart = (id) => {
     const selected = items.filter((el) => el.id === id)[0];
+    console.log(selected);
     setCartItems([...cartItems, selected]);
-    setQuantity({ ...quantity, [selected.itemName]: 1 });
+    setQuantity({ ...quantity, [selected.id]: 1 });
   };
   const handleRemoveItemFromCart = (id, name) => {
     const updatedCart = cartItems.filter((el) => el.id !== id);
@@ -175,7 +176,7 @@ const TransactionPage = () => {
 
         <form
           onSubmit={handleTransactionSubmit}
-          className="col-span-3 flex justify-start row-start-3  items-end flex-col"
+          className="col-span-3 flex justify-start row-start-3  items-end flex-col relative bottom-20"
         >
           <textarea
             value={note}
