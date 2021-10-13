@@ -94,12 +94,12 @@ const UpdateProfile = ({
                             </div> */}
             <div className="py-4">
               <button
-                type="button submit"
+                type="submit"
                 className="md:text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsOpen(true);
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setIsOpen(true);
+                // }}
               >
                 Update
               </button>

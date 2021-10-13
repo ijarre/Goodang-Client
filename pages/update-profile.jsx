@@ -24,11 +24,13 @@ const UpdateProfilePage = () => {
   }, [currentUser.accessToken, currentUser.uid]);
 
   const updateUserToDB = async (e) => {
+    e.preventDefault();
     await api.post(`/user/update/${currentUser.uid}`, profileDetail, {
       headers: {
         Authorization: "bearer " + currentUser.accessToken,
       },
     });
+    console.log(profileDetail);
   };
 
   useEffect(() => {
