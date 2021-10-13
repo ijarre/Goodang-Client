@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ItemList } from "../components";
 import api from "../services/api";
+import { useSelector } from "react-redux";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
@@ -46,7 +46,7 @@ const ItemListPage = () => {
     setFields({ ...fields, [name]: value });
   };
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector((state) => state.user);
 
   const userAddItem = async (e) => {
     e.preventDefault();
