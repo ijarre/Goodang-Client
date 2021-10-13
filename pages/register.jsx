@@ -7,6 +7,7 @@ import {
   updateCurrentUser,
 } from "@firebase/auth";
 import app from "../firebase";
+import api from "../services/api";
 
 const Register = () => {
   const [error, setError] = useState("");
@@ -38,13 +39,17 @@ const Register = () => {
           fields.email,
           fields.password,
         );
-        await registerToDB({
-          id: data.user.uid,
-          firstName: fields.firstName,
-          lastName: fields.lastName,
-          email: fields.email,
-          password: fields.password,
-        });
+        try {
+          await registerToDB({
+            id: data.user.uid,
+            firstName: fields.firstName,
+            lastName: fields.lastName,
+            email: fields.email,
+            password: fields.password,
+          });
+        } catch (err) {
+          console.log(err.message);
+        }
 
         router.push("/");
       } catch (err) {
