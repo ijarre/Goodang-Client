@@ -6,25 +6,25 @@ import api from "../../services/api";
 const EditItem = () => {
   const [editField, setEditField] = useState({});
 
-  useEffect(() => {
-    const getItem = async () => {
-      const response = await api.get(`/item/${id}`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getItem().then((res) => {
-      const { itemName, minimumQuantity, unit } = res.data;
-      setEditField({
-        ...editField,
-        itemName,
-        minimumQuantity,
-        unit,
-      });
-    });
-  }, [currentUser.accessToken, editField, id]);
+  // useEffect(() => {
+  //   const getItem = async () => {
+  //     const response = await api.get(`/item/${id}`, {
+  //       headers: {
+  //         Authorization: "bearer " + currentUser.accessToken,
+  //       },
+  //     });
+  //     return response.data;
+  //   };
+  //   getItem().then((res) => {
+  //     const { itemName, minimumQuantity, unit } = res.data;
+  //     setEditField({
+  //       ...editField,
+  //       itemName,
+  //       minimumQuantity,
+  //       unit,
+  //     });
+  //   });
+  // }, [currentUser.accessToken, editField, id]);
   const { id } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
   const history = useHistory();
