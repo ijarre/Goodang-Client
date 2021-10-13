@@ -11,3 +11,4 @@ export * from "./LayoutLandingPage";
 export * from "./ItemList";
 export * from "./AddItem";
 export * from "./EditItem";
+export * from "./LoadingPage";

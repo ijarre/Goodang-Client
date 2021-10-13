@@ -8,6 +8,7 @@ const ItemPicker = ({
   handleAddItemToCart,
   cartItems,
   handleRemoveItemFromCart,
+  loadingData,
 }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -37,19 +38,20 @@ const ItemPicker = ({
         {items?.length === 0 ? (
           <div className="">
             <p className="text-gray-500 text-center ">
-              You don't have item in your inventory, start adding them{" "}
+              {"You don't have item in your inventory, start adding them"}
               <Link href="/item-list">
                 <a className="text-blue-600 italic">here</a>
               </Link>
             </p>
           </div>
         ) : (
-          <div className="">
+          <div className="h-96 overflow-y-scroll">
             <ItemTransactionList
               items={items}
               handleAddItemToCart={handleAddItemToCart}
               cartItems={cartItems}
               handleRemoveItemFromCart={handleRemoveItemFromCart}
+              loadingData={loadingData}
             />
           </div>
         )}
