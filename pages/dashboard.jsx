@@ -88,14 +88,17 @@ export async function getServerSideProps({ req }) {
     },
   );
 
-  const getHistoryFromDB = await api.get(`/transaction/${warehouseId}`, {
-    headers: {
-      Authorization: "bearer " + token,
+  const getHistoryFromDB = await api.get(
+    `/transaction/${warehouseId}?page=1&size=5`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
     },
-  });
+  );
 
   const getAlertFromDB = await api.get(
-    `/dashboard/alertedItems/${warehouseId}`,
+    `/dashboard/alertedItems/${warehouseId}?page=1&size=5`,
     {
       headers: {
         Authorization: "bearer " + token,
