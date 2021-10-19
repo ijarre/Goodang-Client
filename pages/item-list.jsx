@@ -7,6 +7,7 @@ import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
+import { getWarehouseId } from "../services/getWarehouseId";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
@@ -26,6 +27,8 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   const router = useRouter();
+  const { warehouseId } = currentUser;
+  const { currentUser } = useAuth();
 
   //user add item
   const openModal = () => {
@@ -46,7 +49,7 @@ const ItemListPage = () => {
     setFields({ ...fields, [name]: value });
   };
 
-  const { currentUser } = useAuth();
+
 
   const userAddItem = async (e) => {
     e.preventDefault();
@@ -62,7 +65,6 @@ const ItemListPage = () => {
     );
   };
 
-  // const history = useHistory();
 
   //user read his items
   useEffect(() => {
