@@ -6,8 +6,8 @@ import imagePlaceholder from "../../../public/images/image-placeholder.svg";
 const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
   return (
     <>
-      <p className="text-lg font-semibold mt-2 mb-1 sticky top-0">{trx} Item</p>
-      <div className="h-5/6 overflow-y-scroll">
+      <p className="text-lg font-semibold mt-2 mb-2 sticky top-0">{trx} Item</p>
+      <div className="overflow-y-auto">
         <div className="l">
           <table className="w-full">
             <thead

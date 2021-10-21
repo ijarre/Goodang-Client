@@ -144,8 +144,8 @@ const TransactionPage = () => {
     router.push("/");
   }
   return (
-    <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left px-7 py-4 flex flex-col ">
-      <h1 className="text-2xl font-semibold mb-4 mt-16">Transaction / {trx}</h1>
+    <div className=" bg-white  mx-auto max-w-screen-xl text-left px-7 py-7 ">
+      <h1 className="text-2xl font-semibold mb-4">Transaction / {trx}</h1>
 
       {/* <ListboxTransaction
         selected={selected}
@@ -153,7 +153,7 @@ const TransactionPage = () => {
         option={option}
         handleListboxChange={handleListboxChange}
       /> */}
-      <div className="min-h-screen grid grid-cols-3">
+      <div className=" grid grid-cols-3">
         <div className="row-span-2 col-span-2 pr-3 ">
           <ItemPicker
             trx={trx}
@@ -176,7 +176,7 @@ const TransactionPage = () => {
 
         <form
           onSubmit={handleTransactionSubmit}
-          className="col-span-3 flex justify-start row-start-3  items-end flex-col relative bottom-20"
+          className="col-span-3 flex justify-start row-start-3  items-end flex-col"
         >
           <textarea
             value={note}
@@ -184,7 +184,7 @@ const TransactionPage = () => {
               setNote(e.target.value);
             }}
             placeholder="Write note"
-            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none h-1/3 bg-gray-100 shadow  "
+            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none  bg-gray-100 shadow  "
             rows="2"
           />
           <div className="flex justify-end row-start-4  mt-3">

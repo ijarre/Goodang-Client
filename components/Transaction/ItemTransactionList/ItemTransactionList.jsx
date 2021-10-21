@@ -29,26 +29,26 @@ const ItemTransactionList = ({
         <tr>
           <th
             scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Item Name
           </th>
 
           <th
             scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Image
           </th>
           <th
             scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Category
           </th>
           <th
             scope="col"
-            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
           >
             Quantity
           </th>
@@ -57,13 +57,15 @@ const ItemTransactionList = ({
           </th>
         </tr>
       </thead>
-      <tbody className=" divide-y">
+      <tbody className=" divide-y ">
         {items?.map((el) => {
           return (
             <tr key={el.id}>
-              <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
-              <td className="flex ">
-                <div className="w-10 h-10 ml-5 relative top-2">
+              <td className="px-6 py-4 whitespace-nowrap text-center">
+                {el.itemName}
+              </td>
+              <td className=" pt-3 flex items-center justify-center">
+                <div className="w-10 ">
                   <Image src={el.image ? el.image : imagePlaceholder} alt="" />
                 </div>
               </td>
@@ -79,8 +81,8 @@ const ItemTransactionList = ({
                   );
                 })}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap ">
-                <span className="ml-5">{el.stockQuantity}</span>
+              <td className="px-6 py-4 whitespace-nowrap text-center">
+                <span className="">{el.stockQuantity}</span>
               </td>
               <td>
                 {isObjectInArray(el, cartItems) ? (
