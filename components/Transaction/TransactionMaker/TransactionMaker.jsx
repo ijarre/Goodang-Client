@@ -7,15 +7,15 @@ const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
   return (
     <>
       <p className="text-lg font-semibold mt-2 mb-2 sticky top-0">{trx} Item</p>
-      <div className="overflow-y-auto">
+      <div className="h-96 overflow-y-scroll">
         <div className="l">
-          <table className="w-full">
+          <table className=" w-full">
             <thead
               className={`${trx === "Stock In" ? "bg-green-100" : ""} ${
                 trx === "Stock Out" ? "bg-red-100" : ""
               }  ${
                 trx === "Audit" ? "bg-blue-100" : ""
-              } rounded shadow sticky top-2 z-40`}
+              } rounded shadow sticky  z-40`}
             >
               <tr>
                 <th

@@ -72,7 +72,7 @@ const AuthLayout = ({ children }) => {
       <div className="min-h-screen">
         <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
         {loading && <LoadingPage />}
-        <div className="h-full bg-main relative top-16 ">
+        <div className="h-full bg-main top-16 relative ">
           {!loading && children}
         </div>
       </div>

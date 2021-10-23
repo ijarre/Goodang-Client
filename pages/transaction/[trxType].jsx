@@ -144,7 +144,7 @@ const TransactionPage = () => {
     router.push("/");
   }
   return (
-    <div className=" bg-white  mx-auto max-w-screen-xl text-left px-7 py-7 ">
+    <div className=" bg-white min-h-screen  mx-auto max-w-screen-xl text-left px-7 py-7 ">
       <h1 className="text-2xl font-semibold mb-4">Transaction / {trx}</h1>
 
       {/* <ListboxTransaction
@@ -153,7 +153,7 @@ const TransactionPage = () => {
         option={option}
         handleListboxChange={handleListboxChange}
       /> */}
-      <div className=" grid grid-cols-3">
+      <div className=" grid grid-cols-3 gap-y-10">
         <div className="row-span-2 col-span-2 pr-3 ">
           <ItemPicker
             trx={trx}
@@ -165,7 +165,7 @@ const TransactionPage = () => {
             loadingData={isLoading}
           />
         </div>
-        <div className="row-span-2  pl-3">
+        <div className="row-span-2 col-span-1 pl-3">
           <TransactionMaker
             trx={trx}
             cartItems={cartItems}

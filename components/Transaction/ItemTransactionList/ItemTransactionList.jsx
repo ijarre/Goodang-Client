@@ -25,7 +25,7 @@ const ItemTransactionList = ({
   }
   return (
     <table className="w-full">
-      <thead className="bg-gray-100 sticky top-0 z-40">
+      <thead className="bg-gray-100 sticky  z-40">
         <tr>
           <th
             scope="col"
