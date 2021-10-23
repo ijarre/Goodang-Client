@@ -15,6 +15,7 @@ const TransactionPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState({});
   const [error, setError] = useState();
+  const [page, setPage] = useState(1);
   const [note, setNote] = useState("");
   const router = useRouter();
   const { trxType } = router.query;
@@ -23,8 +24,8 @@ const TransactionPage = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const loading = useSelector((state) => state.app.loading);
   const { data, isLoading } = useQuery(
-    "items",
-    () => getAllItems(currentUser.warehouseId, currentUser.accessToken),
+    ["items", page],
+    () => getAllItems(currentUser.warehouseId, currentUser.accessToken, page),
     { enabled: !!currentUser.warehouseId },
   );
   const queryClient = useQueryClient();
@@ -163,6 +164,8 @@ const TransactionPage = () => {
             cartItems={cartItems}
             error={error}
             loadingData={isLoading}
+            page={page}
+            setPage={setPage}
           />
         </div>
         <div className="row-span-2 col-span-1 pl-3">

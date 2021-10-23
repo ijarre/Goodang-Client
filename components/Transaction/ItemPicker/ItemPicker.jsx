@@ -1,5 +1,9 @@
 import React from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import { ItemTransactionList } from "../..";
 import Link from "next/link";
 
@@ -9,6 +13,8 @@ const ItemPicker = ({
   cartItems,
   handleRemoveItemFromCart,
   loadingData,
+  page = 1,
+  setPage,
 }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -38,7 +44,7 @@ const ItemPicker = ({
         {items?.length === 0 ? (
           <div className="">
             <p className="text-gray-500 text-center ">
-              {"You don't have item in your inventory, start adding them"}
+              {"You don't have item in your inventory, start adding them "}
               <Link href="/item-list">
                 <a className="text-blue-600 italic">here</a>
               </Link>
@@ -55,6 +61,30 @@ const ItemPicker = ({
             />
           </div>
         )}
+        <div className="flex justify-between px-4 py-2">
+          <div
+            className={`flex ${page !== 1 && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== 1) {
+                setPage((page -= 1));
+              }
+            }}
+          >
+            <ChevronLeftIcon
+              className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+            />
+            <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
+          </div>
+
+          <div className="">Page: {page}</div>
+          <div
+            className="flex cursor-pointer"
+            onClick={() => setPage((page += 1))}
+          >
+            <span>Next</span>
+            <ChevronRightIcon className="w-5" />
+          </div>
+        </div>
       </div>
     </div>
   );
