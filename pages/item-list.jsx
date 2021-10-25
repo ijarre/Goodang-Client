@@ -67,7 +67,7 @@ const ItemListPage = () => {
   };
 
 
-  const { currentUser } = useSelector((state) => state.user);
+  // const { currentUser } = useSelector((state) => state.user);
 
   const userAddItem = async (e) => {
     e.preventDefault();
