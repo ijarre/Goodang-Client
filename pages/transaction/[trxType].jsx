@@ -52,8 +52,7 @@ const TransactionPage = () => {
   }, [data]);
 
   const handleAddItemToCart = (id) => {
-    const selected = items.filter((el) => el.id === id)[0];
-    console.log(selected);
+    const selected = items?.rows.filter((el) => el.id === id)[0];
     setCartItems([...cartItems, selected]);
     setQuantity({ ...quantity, [selected.id]: 1 });
   };

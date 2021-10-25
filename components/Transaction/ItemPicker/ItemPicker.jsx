@@ -20,6 +20,10 @@ const ItemPicker = ({
     return classes.filter(Boolean).join(" ");
   }
 
+  const maxPage = (totalItem, itemPerPage) => {
+    return (totalItem % itemPerPage).toString();
+  };
+
   return (
     <div className={`flex flex-col rows-span-3`}>
       <p className="text-lg font-semibold my-2 ">Select Item(s)</p>
@@ -53,7 +57,7 @@ const ItemPicker = ({
         ) : (
           <div className="h-80 overflow-y-scroll">
             <ItemTransactionList
-              items={items}
+              items={items?.rows}
               handleAddItemToCart={handleAddItemToCart}
               cartItems={cartItems}
               handleRemoveItemFromCart={handleRemoveItemFromCart}
@@ -75,8 +79,13 @@ const ItemPicker = ({
             />
             <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
           </div>
-
-          <div className="">Page: {page}</div>
+          {items ? (
+            <div className="">
+              Page: {page} of {maxPage(items?.count, 5)}
+            </div>
+          ) : (
+            <p>Calculating</p>
+          )}
           <div
             className="flex cursor-pointer"
             onClick={() => setPage((page += 1))}
