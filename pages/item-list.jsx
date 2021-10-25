@@ -13,6 +13,7 @@ const ItemListPage = () => {
   const [items, setItems] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const [searchResult, setSearchResult] = useState([]);
+  s;
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -27,8 +28,9 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   const router = useRouter();
+  const { currentUser } = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
-  const { currentUser } = useAuth();
+  // const { currentUser } = useAuth();
   //user read his items
   useEffect(() => {
     const getAllItems = async () => {
@@ -67,7 +69,6 @@ const ItemListPage = () => {
   };
 
 
-  // const { currentUser } = useSelector((state) => state.user);
 
   const userAddItem = async (e) => {
     e.preventDefault();
@@ -82,7 +83,6 @@ const ItemListPage = () => {
       },
     );
   };
-
 
   //user search his item
   const handleSearch = (searchTerm) => {
@@ -136,25 +136,25 @@ const ItemListPage = () => {
     setEditField({ ...editField, [name]: value });
   };
 
-  useEffect(() => {
-    // const getItem = async () => {
-    //   const response = await api.get(`/item/${id}`, {
-    //     headers: {
-    //       Authorization: "bearer " + currentUser.accessToken,
-    //     },
-    //   });
-    //   return response.data;
-    // };
-    // getItem().then((res) => {
-    //   const { itemName, minimumQuantity, unit } = res.data;
-    //   setEditField({
-    //     ...editField,
-    //     itemName,
-    //     minimumQuantity,
-    //     unit,
-    //   });
-    // });
-  }, []);
+  // useEffect(() => {
+  //   // const getItem = async () => {
+  //   //   const response = await api.get(`/item/${id}`, {
+  //   //     headers: {
+  //   //       Authorization: "bearer " + currentUser.accessToken,
+  //   //     },
+  //   //   });
+  //   //   return response.data;
+  //   // };
+  //   // getItem().then((res) => {
+  //   //   const { itemName, minimumQuantity, unit } = res.data;
+  //   //   setEditField({
+  //   //     ...editField,
+  //   //     itemName,
+  //   //     minimumQuantity,
+  //   //     unit,
+  //   //   });
+  //   // })s;
+  // }, []);
 
   const { id } = router.query;
 
