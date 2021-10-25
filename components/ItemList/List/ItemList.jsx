@@ -5,6 +5,7 @@ const ItemList = ({
   items,
   openModal,
   openEditModal,
+  handleDelete,
   openDeleteModal,
   // handleSearch,
 }) => {
@@ -118,13 +119,13 @@ const ItemList = ({
                   <span className="mr-6">
                     <button
                       className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
-                      onClick={openEditModal}
+                      onClick={() => openEditModal(el)}
                     >
                       Edit
                     </button>
                     <button
                       className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
-                      onClick={openDeleteModal}
+                      onClick={() => handleDelete(el.id)}
                     >
                       Delete
                     </button>

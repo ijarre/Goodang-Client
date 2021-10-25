@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ItemList } from "../components";
 import api from "../services/api";
+import { useSelector } from "react-redux";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
@@ -29,6 +29,23 @@ const ItemListPage = () => {
   const router = useRouter();
   const { warehouseId } = currentUser;
   const { currentUser } = useAuth();
+  //user read his items
+  useEffect(() => {
+    const getAllItems = async () => {
+      const response = await api.get(
+        `/item/${currentUser.warehouseId}?page=1&size=10`,
+        {
+          headers: {
+            Authorization: "bearer " + currentUser.accessToken,
+          },
+        },
+      );
+      return response.data;
+    };
+    getAllItems().then((data) => {
+      setItems(data.data);
+    });
+  }, [currentUser?.accessToken, currentUser?.warehouseId]);
 
   //user add item
   const openModal = () => {
@@ -50,13 +67,14 @@ const ItemListPage = () => {
   };
 
 
+  const { currentUser } = useSelector((state) => state.user);
 
   const userAddItem = async (e) => {
     e.preventDefault();
     setIsOpen(true);
     await axios.post(
-      "https://nameless-sands-57704.herokuapp.com/v1/item",
-      fields,
+      `https://nameless-sands-57704.herokuapp.com/v1/item`,
+      { ...fields, warehouseId: currentUser.warehouseId },
       {
         headers: {
           Authorization: "Bearer " + currentUser.accessToken,
@@ -65,22 +83,6 @@ const ItemListPage = () => {
     );
   };
 
-
-  //user read his items
-  useEffect(() => {
-    const getAllItems = async () => {
-      const response = await api.get("/item/1", {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getAllItems().then((data) => {
-      setItems(data.data);
-      console.log(items);
-    });
-  }, [currentUser.accessToken]);
 
   //user search his item
   const handleSearch = (searchTerm) => {
@@ -106,7 +108,6 @@ const ItemListPage = () => {
         Authorization: "bearer " + currentUser.accessToken,
       },
     });
-    router.go(0);
   };
 
   const openDeleteModal = () => {
@@ -115,13 +116,15 @@ const ItemListPage = () => {
 
   //user edit his item
 
-  const openEditModal = () => {
+  const openEditModal = (el) => {
+    setEditField(el);
     setShowEditModal((prev) => !prev);
+    console.log(el);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post(`/item/update/${id}`, editField, {
+    await api.post(`/item/update/${editField.id}`, editField, {
       headers: {
         Authorization: "bearer " + currentUser.accessToken,
       },
@@ -134,23 +137,23 @@ const ItemListPage = () => {
   };
 
   useEffect(() => {
-    const getItem = async () => {
-      const response = await api.get(`/item/${id}`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getItem().then((res) => {
-      const { itemName, minimumQuantity, unit } = res.data;
-      setEditField({
-        ...editField,
-        itemName,
-        minimumQuantity,
-        unit,
-      });
-    });
+    // const getItem = async () => {
+    //   const response = await api.get(`/item/${id}`, {
+    //     headers: {
+    //       Authorization: "bearer " + currentUser.accessToken,
+    //     },
+    //   });
+    //   return response.data;
+    // };
+    // getItem().then((res) => {
+    //   const { itemName, minimumQuantity, unit } = res.data;
+    //   setEditField({
+    //     ...editField,
+    //     itemName,
+    //     minimumQuantity,
+    //     unit,
+    //   });
+    // });
   }, []);
 
   const { id } = router.query;
