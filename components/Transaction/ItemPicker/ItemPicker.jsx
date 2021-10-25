@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -19,8 +19,14 @@ const ItemPicker = ({
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+  const [maxPage, setMaxPage] = useState();
+  useEffect(() => {
+    if (items) {
+      setMaxPage(maximumPage(items.count, 5));
+    }
+  }, [items]);
 
-  const maxPage = (totalItem, itemPerPage) => {
+  const maximumPage = (totalItem, itemPerPage) => {
     return (totalItem % itemPerPage).toString();
   };
 
@@ -79,13 +85,10 @@ const ItemPicker = ({
             />
             <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
           </div>
-          {items ? (
-            <div className="">
-              Page: {page} of {maxPage(items?.count, 5)}
-            </div>
-          ) : (
-            <p>Calculating</p>
-          )}
+          <div className="">
+            Page: {page} of {maxPage}
+          </div>
+
           <div
             className="flex cursor-pointer"
             onClick={() => setPage((page += 1))}
