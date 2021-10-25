@@ -25,7 +25,7 @@ const RegisterWarehousePage = () => {
   const [notification, setNotification] = useState();
   const [openCreate, setOpenCreate] = useState(false);
   const [openJoin, setOpenJoin] = useState(false);
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [searchForm, setSearchForm] = useState("");
 
   const dispatch = useDispatch();
@@ -65,7 +65,6 @@ const RegisterWarehousePage = () => {
   const okButtonRef = useRef(null);
   const handleCreateWarehouse = (e) => {
     e.preventDefault();
-    console.log("create warehouse");
     api
       .post(
         "/warehouse",
@@ -80,13 +79,11 @@ const RegisterWarehousePage = () => {
         dispatch(setWarehouseId({ warehouseId: response.data.data.id }));
       })
       .then(() => {
-        console.log(currentUser);
         setOpenCreate(true);
       });
   };
 
   const handleJoinWarehouse = () => {
-    console.log(selected.id);
     api
       .post(
         "/user/addWarehouse",
@@ -104,7 +101,6 @@ const RegisterWarehousePage = () => {
 
   const handleCheckName = (e) => {
     e.preventDefault();
-    console.log("checkname");
     setLoading(true);
     if (createForm.length === 0) {
       setNotification("Please Fill Out Warehouse Name");
@@ -121,7 +117,6 @@ const RegisterWarehousePage = () => {
         )
         .then((res) => {
           if (res.data.data.result === false) {
-            console.log(res.data.data);
             setCanCreate(true);
             setNotification("");
           } else {
