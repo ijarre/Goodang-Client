@@ -10,6 +10,7 @@ const Dashboard = ({
   alert,
   history,
   warehouseId,
+  trxPage,
 }) => {
   return (
     <div className="font-sans">
@@ -57,7 +58,7 @@ const Dashboard = ({
 
           <div className="flex mt-5 space-x-5">
             <div className="">
-              <HistoryTransaction history={history} />
+              <HistoryTransaction history={history} trxPage={trxPage} />
             </div>
             <div className="">
               <AlertedItem alert={alert} />
