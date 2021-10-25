@@ -7,13 +7,12 @@ import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
-import { getWarehouseId } from "../services/getWarehouseId";
+// import { getWarehouseId } from "../services/getWarehouseId";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const [searchResult, setSearchResult] = useState([]);
-  s;
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -28,9 +27,10 @@ const ItemListPage = () => {
   const [editField, setEditField] = useState({});
 
   const router = useRouter();
-  const { currentUser } = useSelector((state) => state.user.currentUser);
-  const { warehouseId } = currentUser;
+  const { currentUser } = useSelector((state) => state.user);
+  // const { warehouseId } = currentUser;
   // const { currentUser } = useAuth();
+
   //user read his items
   useEffect(() => {
     const getAllItems = async () => {
