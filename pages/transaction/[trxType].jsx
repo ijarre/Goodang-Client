@@ -196,7 +196,12 @@ const TransactionPage = () => {
             >
               Submit
             </button>
-            <button className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 ">
+            <button
+              className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 "
+              onClick={() => {
+                setCartItems([]);
+              }}
+            >
               Cancel
             </button>
           </div>

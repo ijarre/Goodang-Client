@@ -90,11 +90,23 @@ const ItemPicker = ({
           </div>
 
           <div
-            className="flex cursor-pointer"
-            onClick={() => setPage((page += 1))}
+            className={`flex ${page !== maxPage && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== Number(maxPage)) {
+                setPage((page += 1));
+              }
+            }}
           >
-            <span>Next</span>
-            <ChevronRightIcon className="w-5" />
+            <span
+              className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+            >
+              Next
+            </span>
+            <ChevronRightIcon
+              className={`w-5 ${
+                page == Number(maxPage) ? "text-gray-300" : ""
+              }`}
+            />
           </div>
         </div>
       </div>
