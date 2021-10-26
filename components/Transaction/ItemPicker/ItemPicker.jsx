@@ -1,5 +1,9 @@
-import React from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import React, { useEffect, useState } from "react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import { ItemTransactionList } from "../..";
 import Link from "next/link";
 
@@ -9,10 +13,22 @@ const ItemPicker = ({
   cartItems,
   handleRemoveItemFromCart,
   loadingData,
+  page = 1,
+  setPage,
 }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+  const [maxPage, setMaxPage] = useState();
+  useEffect(() => {
+    if (items) {
+      setMaxPage(maximumPage(items.count, 5));
+    }
+  }, [items]);
+
+  const maximumPage = (totalItem, itemPerPage) => {
+    return (totalItem % itemPerPage).toString();
+  };
 
   return (
     <div className={`flex flex-col rows-span-3`}>
@@ -38,16 +54,16 @@ const ItemPicker = ({
         {items?.length === 0 ? (
           <div className="">
             <p className="text-gray-500 text-center ">
-              {"You don't have item in your inventory, start adding them"}
+              {"You don't have item in your inventory, start adding them "}
               <Link href="/item-list">
                 <a className="text-blue-600 italic">here</a>
               </Link>
             </p>
           </div>
         ) : (
-          <div className="h-96 overflow-y-scroll">
+          <div className="h-80 overflow-y-scroll">
             <ItemTransactionList
-              items={items}
+              items={items?.rows}
               handleAddItemToCart={handleAddItemToCart}
               cartItems={cartItems}
               handleRemoveItemFromCart={handleRemoveItemFromCart}
@@ -55,6 +71,44 @@ const ItemPicker = ({
             />
           </div>
         )}
+        <div className="flex justify-between px-4 py-2">
+          <div
+            className={`flex ${page !== 1 && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== 1) {
+                setPage((page -= 1));
+              }
+            }}
+          >
+            <ChevronLeftIcon
+              className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+            />
+            <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
+          </div>
+          <div className="">
+            Page: {page} of {maxPage}
+          </div>
+
+          <div
+            className={`flex ${page !== maxPage && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== Number(maxPage)) {
+                setPage((page += 1));
+              }
+            }}
+          >
+            <span
+              className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+            >
+              Next
+            </span>
+            <ChevronRightIcon
+              className={`w-5 ${
+                page == Number(maxPage) ? "text-gray-300" : ""
+              }`}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

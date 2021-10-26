@@ -15,6 +15,7 @@ const TransactionPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState({});
   const [error, setError] = useState();
+  const [page, setPage] = useState(1);
   const [note, setNote] = useState("");
   const router = useRouter();
   const { trxType } = router.query;
@@ -23,8 +24,8 @@ const TransactionPage = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const loading = useSelector((state) => state.app.loading);
   const { data, isLoading } = useQuery(
-    "items",
-    () => getAllItems(currentUser.warehouseId, currentUser.accessToken),
+    ["items", page],
+    () => getAllItems(currentUser.warehouseId, currentUser.accessToken, page),
     { enabled: !!currentUser.warehouseId },
   );
   const queryClient = useQueryClient();
@@ -51,8 +52,7 @@ const TransactionPage = () => {
   }, [data]);
 
   const handleAddItemToCart = (id) => {
-    const selected = items.filter((el) => el.id === id)[0];
-    console.log(selected);
+    const selected = items?.rows.filter((el) => el.id === id)[0];
     setCartItems([...cartItems, selected]);
     setQuantity({ ...quantity, [selected.id]: 1 });
   };
@@ -144,8 +144,8 @@ const TransactionPage = () => {
     router.push("/");
   }
   return (
-    <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left px-7 py-4 flex flex-col ">
-      <h1 className="text-2xl font-semibold mb-4 mt-16">Transaction / {trx}</h1>
+    <div className=" bg-white min-h-screen  mx-auto max-w-screen-xl text-left px-7 py-7 ">
+      <h1 className="text-2xl font-semibold mb-4">Transaction / {trx}</h1>
 
       {/* <ListboxTransaction
         selected={selected}
@@ -153,7 +153,7 @@ const TransactionPage = () => {
         option={option}
         handleListboxChange={handleListboxChange}
       /> */}
-      <div className="min-h-screen grid grid-cols-3">
+      <div className=" grid grid-cols-3 gap-y-10">
         <div className="row-span-2 col-span-2 pr-3 ">
           <ItemPicker
             trx={trx}
@@ -163,9 +163,11 @@ const TransactionPage = () => {
             cartItems={cartItems}
             error={error}
             loadingData={isLoading}
+            page={page}
+            setPage={setPage}
           />
         </div>
-        <div className="row-span-2  pl-3">
+        <div className="row-span-2 col-span-1 pl-3">
           <TransactionMaker
             trx={trx}
             cartItems={cartItems}
@@ -176,7 +178,7 @@ const TransactionPage = () => {
 
         <form
           onSubmit={handleTransactionSubmit}
-          className="col-span-3 flex justify-start row-start-3  items-end flex-col relative bottom-20"
+          className="col-span-3 flex justify-start row-start-3  items-end flex-col"
         >
           <textarea
             value={note}
@@ -184,7 +186,7 @@ const TransactionPage = () => {
               setNote(e.target.value);
             }}
             placeholder="Write note"
-            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none h-1/3 bg-gray-100 shadow  "
+            className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none  bg-gray-100 shadow  "
             rows="2"
           />
           <div className="flex justify-end row-start-4  mt-3">
@@ -194,7 +196,12 @@ const TransactionPage = () => {
             >
               Submit
             </button>
-            <button className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 ">
+            <button
+              className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 "
+              onClick={() => {
+                setCartItems([]);
+              }}
+            >
               Cancel
             </button>
           </div>
