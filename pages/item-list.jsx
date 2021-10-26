@@ -7,12 +7,13 @@ import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
+import {useQuery} from "react-query";
 // import { getWarehouseId } from "../services/getWarehouseId";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
-  const [searchTerm, setSearchTerm] = useState();
-  const [searchResult, setSearchResult] = useState([]);
+  // const [searchTerm, setSearchTerm] = useState();
+  // const [searchResult, setSearchResult] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -25,17 +26,36 @@ const ItemListPage = () => {
     minimumQuantity: "",
   });
   const [editField, setEditField] = useState({});
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState();
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
   // const { warehouseId } = currentUser;
   // const { currentUser } = useAuth();
 
+  //pagination item list
+  useEffect(() => {
+    setMaxPage(items?.count % 5);
+  }, [items?.count]);
+
+  useEffect(() => {
+    console.log(query.data);
+    console.log(page);
+  }, [query?.data]);
+
+  const query = useQuery([
+    items, page
+  ], ()=> {
+    getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
+   {initialData: items} 
+  })
+
   //user read his items
   useEffect(() => {
-    const getAllItems = async () => {
+    const getAllItems = async (page, size) => {
       const response = await api.get(
-        `/item/${currentUser.warehouseId}?page=1&size=10`,
+        `/item/${currentUser.warehouseId}?page=${page}&size=${size}`,
         {
           headers: {
             Authorization: "bearer " + currentUser.accessToken,
@@ -68,8 +88,6 @@ const ItemListPage = () => {
     setFields({ ...fields, [name]: value });
   };
 
-
-
   const userAddItem = async (e) => {
     e.preventDefault();
     setIsOpen(true);
@@ -85,20 +103,20 @@ const ItemListPage = () => {
   };
 
   //user search his item
-  const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm);
-    if (searchTerm !== "") {
-      const searchItemList = items.filter((items) => {
-        return Object.values(items)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      });
-      setSearchResult(searchItemList);
-    } else {
-      setSearchResult(items);
-    }
-  };
+  // const handleSearch = (searchTerm) => {
+  //   setSearchTerm(searchTerm);
+  //   if (searchTerm !== "") {
+  //     const searchItemList = items.filter((items) => {
+  //       return Object.values(items)
+  //         .join(" ")
+  //         .toLowerCase()
+  //         .includes(searchTerm.toLowerCase());
+  //     });
+  //     setSearchResult(searchItemList);
+  //   } else {
+  //     setSearchResult(items);
+  //   }
+  // };
 
   //user delete his item
 
@@ -192,8 +210,9 @@ const ItemListPage = () => {
         openModal={openModal}
         openEditModal={openEditModal}
         openDeleteModal={openDeleteModal}
-        term={searchTerm}
-        searchKeyword={handleSearch}
+        itemPage={itemPage}
+        // term={searchTerm}
+        // searchKeyword={handleSearch}
       />
     </div>
   );

@@ -1,5 +1,9 @@
 import React, { useRef } from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import {
+  SearchIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/outline";
 
 const ItemList = ({
   items,
@@ -7,6 +11,7 @@ const ItemList = ({
   openEditModal,
   handleDelete,
   openDeleteModal,
+  listPage,
   // handleSearch,
 }) => {
   const inputElement = useRef("");
@@ -93,49 +98,87 @@ const ItemList = ({
           </tr>
         </thead>
         <tbody className="overflow-y-scroll divide-y">
-          {items?.map((el) => {
-            return (
-              <tr key={el.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
-                <td>
-                  <img className="h-10 w-10 ml-5 " src={el.image} alt="" />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {el?.Categories?.map((category) => {
-                    return (
-                      <span
-                        key={category.id}
-                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+          {query?.data &&
+            query?.data?.rows.map((el) => {
+              return (
+                <tr key={el.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
+                  <td>
+                    <img className="h-10 w-10 ml-5 " src={el.image} alt="" />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {el?.Categories?.map((category) => {
+                      return (
+                        <span
+                          key={category.id}
+                          className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                        >
+                          {category.categoryName}
+                        </span>
+                      );
+                    })}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap ">
+                    <span className="ml-5">{el.stockQuantity}</span>
+                  </td>
+                  <td className="px-6 py-4 ml-20">
+                    <span className="mr-6">
+                      <button
+                        className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
+                        onClick={() => openEditModal(el)}
                       >
-                        {category.categoryName}
-                      </span>
-                    );
-                  })}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap ">
-                  <span className="ml-5">{el.stockQuantity}</span>
-                </td>
-                <td className="px-6 py-4 ml-20">
-                  <span className="mr-6">
-                    <button
-                      className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
-                      onClick={() => openEditModal(el)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
-                      onClick={() => handleDelete(el.id)}
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
+                        onClick={() => handleDelete(el.id)}
+                      >
+                        Delete
+                      </button>
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
+      <div className="flex justify-between px-4 py-2">
+        <div
+          className={`flex ${page !== 1 && "cursor-pointer"}`}
+          onClick={() => {
+            if (page !== 1) {
+              let current = page;
+              setPage((current -= 1));
+            }
+          }}
+        >
+          <ChevronLeftIcon
+            className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+          />
+          <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
+        </div>
+        <div className="">
+          Page: {page} of {maxPage}
+        </div>
+
+        <div
+          className={`flex ${page !== maxPage && "cursor-pointer"}`}
+          onClick={() => {
+            if (page !== Number(maxPage)) {
+              let current = page;
+              setPage((current += 1));
+            }
+          }}
+        >
+          <span className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}>
+            Next
+          </span>
+          <ChevronRightIcon
+            className={`w-5 ${page == Number(maxPage) ? "text-gray-300" : ""}`}
+          />
+          
+        </div>
+      </div>
     </div>
   );
 };
