@@ -10,21 +10,36 @@ import Link from "next/link";
 const ItemPicker = ({
   items,
   handleAddItemToCart,
-  cartItems,
   handleRemoveItemFromCart,
   loadingData,
   page = 1,
   setPage,
+  trx,
 }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
   const [maxPage, setMaxPage] = useState();
+  const [searchField, setSearchField] = useState("");
+  const [filteredItems, setFilteredItems] = useState();
+
   useEffect(() => {
     if (items) {
       setMaxPage(maximumPage(items.count, 5));
     }
   }, [items]);
+  const handleSearchChange = (e) => {
+    setSearchField(e.target.value);
+  };
+  const handleSearchAction = (e) => {
+    e.preventDefault();
+    const filter = allItems.data.rows.filter(
+      (el) => el.itemName === searchField,
+    );
+    setFilteredItems(filter);
+    setSearchField("");
+  };
 
   const maximumPage = (totalItem, itemPerPage) => {
     return (totalItem % itemPerPage).toString();
@@ -33,17 +48,25 @@ const ItemPicker = ({
   return (
     <div className={`flex flex-col rows-span-3`}>
       <p className="text-lg font-semibold my-2 ">Select Item(s)</p>
-      <div className="shadow flex items-start mb-4">
+      <form
+        className="shadow flex items-start mb-4"
+        onSubmit={handleSearchAction}
+      >
         <input
           className="w-full rounded p-2"
+          value={searchField}
           type="text"
           placeholder="Search..."
+          onChange={handleSearchChange}
         />
-        <button className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
+        <button
+          type="submit"
+          className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400"
+        >
           <SearchIcon className="w-6 mr-1" />
           Search
         </button>
-      </div>
+      </form>
       <div
         className={classNames(
           items?.length === 0 ? "items-center justify-center flex" : "",
@@ -63,11 +86,15 @@ const ItemPicker = ({
         ) : (
           <div className="h-80 overflow-y-scroll">
             <ItemTransactionList
-              items={items?.rows}
+              items={
+                filteredItems && filteredItems.length !== 0
+                  ? filteredItems
+                  : items?.rows
+              }
               handleAddItemToCart={handleAddItemToCart}
-              cartItems={cartItems}
               handleRemoveItemFromCart={handleRemoveItemFromCart}
               loadingData={loadingData}
+              trx={trx}
             />
           </div>
         )}

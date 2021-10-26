@@ -2,8 +2,19 @@ import { ArrowSmRightIcon } from "@heroicons/react/outline";
 import React from "react";
 import Image from "next/image";
 import imagePlaceholder from "../../../public/images/image-placeholder.svg";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  setQuantity,
+} from "../../../features/trxSlice";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { camelize } from "../../../utils";
 
-const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
+const TransactionMaker = ({ trx, cartItems }) => {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.trx);
+  const quantityByTrx = cart[camelize(trx)]?.quantity;
   return (
     <>
       <p className="text-lg font-semibold mt-2 mb-2 sticky top-0">{trx} Item</p>
@@ -58,11 +69,10 @@ const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
                         <div className="flex justify-center ">
                           <button
                             onClick={() => {
-                              if (quantity[el.id] > 1) {
-                                setQuantity({
-                                  ...quantity,
-                                  [el.id]: quantity[el.id] - 1,
-                                });
+                              if (quantityByTrx[el.id] > 1) {
+                                dispatch(
+                                  decreaseQuantity({ id: el.id, type: trx }),
+                                );
                               }
                             }}
                           >
@@ -76,26 +86,26 @@ const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
                               <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                             </svg>
                           </button>
-                          <div className="sr-only">
-                            current {el.itemName} quantity is {quantity[el.id]}
-                          </div>
+
                           <input
                             className="mx-2 border text-center w-8"
                             type="text"
-                            value={quantity[el.id]}
+                            value={quantityByTrx[el.id]}
                             onChange={(e) => {
-                              setQuantity({
-                                ...quantity,
-                                [el.id]: Number(e.target.value),
-                              });
+                              dispatch(
+                                setQuantity({
+                                  id: el.id,
+                                  type: trx,
+                                  value: Number(e.target.value),
+                                }),
+                              );
                             }}
                           />
                           <button
                             onClick={() => {
-                              setQuantity({
-                                ...quantity,
-                                [el.id]: quantity[el.id] + 1,
-                              });
+                              dispatch(
+                                increaseQuantity({ id: el.id, type: trx }),
+                              );
                             }}
                           >
                             <div className="sr-only">Add 1 to Quantity</div>
@@ -112,10 +122,10 @@ const TransactionMaker = ({ trx, cartItems, quantity, setQuantity }) => {
                           {el.stockQuantity}{" "}
                           <ArrowSmRightIcon className="w-4" />{" "}
                           {trx === "Stock In" &&
-                            el.stockQuantity + quantity[el.id]}
+                            el.stockQuantity + quantityByTrx[el.id]}
                           {trx === "Stock Out" &&
-                            el.stockQuantity - quantity[el.id]}
-                          {trx === "Audit" && quantity[el.id]}
+                            el.stockQuantity - quantityByTrx[el.id]}
+                          {trx === "Audit" && quantityByTrx[el.id]}
                         </div>
                       </div>
                     </td>
