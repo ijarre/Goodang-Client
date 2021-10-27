@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { ItemPicker, TransactionMaker } from "../../components";
+import {
+  ConfirmationDialog,
+  ItemPicker,
+  TransactionMaker,
+} from "../../components";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useQuery, useQueryClient, useMutation } from "react-query";
@@ -7,7 +11,7 @@ import { getAllItems } from "../../services/getAllItems";
 import { postTransaction } from "../../services/postTransaction";
 import { useDispatch } from "react-redux";
 import { addItem, clearItems, removeItem } from "../../features/trxSlice";
-import { camelize } from "../../utils";
+import { camelize, classNames } from "../../utils";
 
 const TransactionPage = () => {
   const [trx, setTrx] = useState("");
@@ -15,6 +19,8 @@ const TransactionPage = () => {
   const [error, setError] = useState();
   const [page, setPage] = useState(1);
   const [note, setNote] = useState("");
+  const [openSubmit, setOpenSubmit] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
   const { trxType } = router.query;
 
@@ -25,7 +31,8 @@ const TransactionPage = () => {
   const quantityByTrx = cart[camelize(trx)]?.quantity;
   const cartItemByTrx = cart[camelize(trx)]?.item;
   const dispatch = useDispatch();
-  const { data, isLoading } = useQuery(
+
+  const { data, isLoading, isRefetching } = useQuery(
     ["items", page],
     () =>
       getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
@@ -62,13 +69,15 @@ const TransactionPage = () => {
     let state = querySwitch(trxType);
     setTrx(state);
   }, [querySwitch, trxType]);
-
+  // useEffect(() => {
+  //   console.log(cartItemByTrx);
+  // }, [cartItemByTrx]);
   useEffect(() => {
     setItems(data?.data);
   }, [data]);
 
   const handleAddItemToCart = (id) => {
-    const selected = allItems?.data?.rows.filter((el) => el.id === id)[0];
+    const selected = items?.rows.filter((el) => el.id === id)[0];
     dispatch(addItem({ type: trx, item: selected }));
   };
   const handleRemoveItemFromCart = (id, name) => {
@@ -99,16 +108,20 @@ const TransactionPage = () => {
   //     setError(err);
   //   }
   // };
-  const { mutate } = useMutation(({ type, id, data, token }) => {
-    postTransaction(type, id, data, token).then(() =>
-      queryClient.invalidateQueries("items"),
-    );
-  });
+  const { mutate, isLoading: isMutateLoading } = useMutation(
+    ({ type, id, data, token }) => {
+      postTransaction(type, id, data, token).then(() => {
+        queryClient.invalidateQueries("items");
+      });
+    },
+  );
 
   const handleTransactionSubmit = (e) => {
     e.preventDefault();
     try {
+      setIsProcessing(true);
       cartItemByTrx.forEach((el) => {
+        console.log("request:", el.stockQuantity);
         const data = {
           userId: currentUser.uid,
           stockQuantityNow: el.stockQuantity,
@@ -148,6 +161,8 @@ const TransactionPage = () => {
     }
     setNote("");
     dispatch(clearItems({ type: trx }));
+    queryClient.invalidateQueries("items");
+    setIsProcessing(false);
   };
 
   if (!isAuthenticated && !loading) {
@@ -156,7 +171,6 @@ const TransactionPage = () => {
   return (
     <div className=" bg-white min-h-screen  mx-auto max-w-screen-xl text-left px-7 py-7 ">
       <h1 className="text-2xl font-semibold mb-4">Transaction / {trx}</h1>
-
       {/* <ListboxTransaction
         selected={selected}
         setSelected={setSelected}
@@ -180,9 +194,12 @@ const TransactionPage = () => {
         <div className="row-span-2 col-span-1 pl-3">
           <TransactionMaker trx={trx} cartItems={cartItemByTrx} />
         </div>
-
         <form
-          onSubmit={handleTransactionSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            setOpenSubmit(!openSubmit);
+            // handleTransactionSubmit(e);
+          }}
           className="col-span-3 flex justify-start row-start-3  items-end flex-col"
         >
           <textarea
@@ -197,11 +214,18 @@ const TransactionPage = () => {
           <div className="flex justify-end row-start-4  mt-3">
             <button
               type="submit"
-              className="bg-green-400 hover:bg-green-700 hover:text-white  py-3 px-4 rounded-md text-base w-36 mr-3"
+              className={classNames(
+                "  py-3 px-4 rounded-md text-base w-36 mr-3 ",
+                cartItemByTrx.length === 0
+                  ? "bg-gray-500 text-white"
+                  : "bg-green-400 hover:bg-green-700 hover:text-white",
+              )}
+              disabled={cartItemByTrx.length === 0}
             >
               Submit
             </button>
             <button
+              type="button"
               className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 "
               onClick={() => {
                 dispatch(clearItems({ type: trx }));
@@ -212,6 +236,13 @@ const TransactionPage = () => {
           </div>
         </form>
       </div>
+      <ConfirmationDialog
+        trx={trx}
+        cartItems={cartItemByTrx}
+        openSubmit={openSubmit}
+        setOpenSubmit={setOpenSubmit}
+        handleTransactionSubmit={handleTransactionSubmit}
+      />
     </div>
   );
 };

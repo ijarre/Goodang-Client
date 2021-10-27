@@ -10,3 +10,4 @@ export * from "./Navbar";
 export * from "./LayoutLandingPage";
 export * from "./ItemList";
 export * from "./LoadingPage";
+export * from "./ConfirmationDialog";

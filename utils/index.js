@@ -4,3 +4,7 @@ export function camelize(str) {
     return index === 0 ? match.toLowerCase() : match.toUpperCase();
   });
 }
+
+export function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
