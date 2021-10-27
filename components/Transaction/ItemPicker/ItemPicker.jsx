@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/outline";
 import { ItemTransactionList } from "../..";
 import Link from "next/link";
+import { classNames } from "../../../utils";
 
 const ItemPicker = ({
   items,
@@ -17,10 +18,6 @@ const ItemPicker = ({
   trx,
   allItems,
 }) => {
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
-
   const [maxPage, setMaxPage] = useState();
   const [searchField, setSearchField] = useState("");
   const [filteredItems, setFilteredItems] = useState();

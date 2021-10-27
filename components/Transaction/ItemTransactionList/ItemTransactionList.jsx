@@ -98,7 +98,9 @@ const ItemTransactionList = ({
                 ) : (
                   <button
                     className="rounded-full bg-yellow-300 hover:bg-yellow-500 hover:scale-105 p-1"
-                    onClick={() => handleAddItemToCart(el.id)}
+                    onClick={() => {
+                      handleAddItemToCart(el.id);
+                    }}
                   >
                     <PlusIcon className="w-5" />
                   </button>
