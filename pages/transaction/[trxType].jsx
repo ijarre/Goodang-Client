@@ -1,19 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { ItemPicker, TransactionMaker } from "../../components";
-import api from "../../services/api";
 import { useRouter } from "next/router";
-import { getWarehouseId } from "../../services/getWarehouseId";
 import { useSelector } from "react-redux";
-import { useItems } from "../../hooks/useItems";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { getAllItems } from "../../services/getAllItems";
 import { postTransaction } from "../../services/postTransaction";
+import { useDispatch } from "react-redux";
+import { addItem, clearItems, removeItem } from "../../features/trxSlice";
+import { camelize } from "../../utils";
 
 const TransactionPage = () => {
   const [trx, setTrx] = useState("");
   const [items, setItems] = useState();
-  const [cartItems, setCartItems] = useState([]);
-  const [quantity, setQuantity] = useState({});
   const [error, setError] = useState();
   const [page, setPage] = useState(1);
   const [note, setNote] = useState("");
@@ -23,10 +21,28 @@ const TransactionPage = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const loading = useSelector((state) => state.app.loading);
+  const cart = useSelector((state) => state.trx);
+  const quantityByTrx = cart[camelize(trx)]?.quantity;
+  const cartItemByTrx = cart[camelize(trx)]?.item;
+  const dispatch = useDispatch();
   const { data, isLoading } = useQuery(
     ["items", page],
-    () => getAllItems(currentUser.warehouseId, currentUser.accessToken, page),
+    () =>
+      getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
     { enabled: !!currentUser.warehouseId },
+  );
+  const { data: allItems } = useQuery(
+    "allItems",
+    () =>
+      getAllItems(
+        currentUser.warehouseId,
+        currentUser.accessToken,
+        1,
+        data?.count ? data.count : 9999,
+      ),
+    {
+      enabled: !!data,
+    },
   );
   const queryClient = useQueryClient();
   const querySwitch = useCallback((input) => {
@@ -52,17 +68,11 @@ const TransactionPage = () => {
   }, [data]);
 
   const handleAddItemToCart = (id) => {
-    const selected = items?.rows.filter((el) => el.id === id)[0];
-    setCartItems([...cartItems, selected]);
-    setQuantity({ ...quantity, [selected.id]: 1 });
+    const selected = allItems?.data?.rows.filter((el) => el.id === id)[0];
+    dispatch(addItem({ type: trx, item: selected }));
   };
   const handleRemoveItemFromCart = (id, name) => {
-    const updatedCart = cartItems.filter((el) => el.id !== id);
-    const updatedQty = quantity;
-    delete updatedQty[name];
-
-    setCartItems(updatedCart);
-    setQuantity(updatedQty);
+    dispatch(removeItem({ type: trx, id }));
   };
 
   // const transactionRequest = async (type, id, data) => {
@@ -98,17 +108,17 @@ const TransactionPage = () => {
   const handleTransactionSubmit = (e) => {
     e.preventDefault();
     try {
-      cartItems.forEach((el) => {
+      cartItemByTrx.forEach((el) => {
         const data = {
           userId: currentUser.uid,
           stockQuantityNow: el.stockQuantity,
-          transactionQuantity: quantity[el.id],
+          transactionQuantity: quantityByTrx[el.id],
           note: note,
         };
         const dataAudit = {
           userId: currentUser.uid,
           stockQuantity: el.stockQuantity,
-          actualStockQuantity: quantity[el.id],
+          actualStockQuantity: quantityByTrx[el.id],
           note: note,
         };
         if (trx === "Audit") {
@@ -137,7 +147,7 @@ const TransactionPage = () => {
       setError(err);
     }
     setNote("");
-    setCartItems([]);
+    dispatch(clearItems({ type: trx }));
   };
 
   if (!isAuthenticated && !loading) {
@@ -156,11 +166,11 @@ const TransactionPage = () => {
       <div className=" grid grid-cols-3 gap-y-10">
         <div className="row-span-2 col-span-2 pr-3 ">
           <ItemPicker
+            allItems={allItems}
             trx={trx}
             items={items}
             handleAddItemToCart={handleAddItemToCart}
             handleRemoveItemFromCart={handleRemoveItemFromCart}
-            cartItems={cartItems}
             error={error}
             loadingData={isLoading}
             page={page}
@@ -168,12 +178,7 @@ const TransactionPage = () => {
           />
         </div>
         <div className="row-span-2 col-span-1 pl-3">
-          <TransactionMaker
-            trx={trx}
-            cartItems={cartItems}
-            quantity={quantity}
-            setQuantity={setQuantity}
-          />
+          <TransactionMaker trx={trx} cartItems={cartItemByTrx} />
         </div>
 
         <form
@@ -199,10 +204,10 @@ const TransactionPage = () => {
             <button
               className="bg-red-500 hover:bg-red-800  text-white  py-3 px-4 rounded-md text-base w-20 "
               onClick={() => {
-                setCartItems([]);
+                dispatch(clearItems({ type: trx }));
               }}
             >
-              Cancel
+              Clear
             </button>
           </div>
         </form>

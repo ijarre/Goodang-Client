@@ -2,24 +2,27 @@ import React from "react";
 import { PlusIcon, MinusIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import imagePlaceholder from "../../../public/images/image-placeholder.svg";
+import { useSelector } from "react-redux";
+import { camelize } from "../../../utils";
 
 const ItemTransactionList = ({
   items,
   handleAddItemToCart,
-  cartItems,
   handleRemoveItemFromCart,
   loadingData,
+  trx,
 }) => {
   const isObjectInArray = (obj, arr) => {
     let output = false;
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i] === obj) {
+      if (arr[i].id === obj.id) {
         output = true;
         break;
       }
     }
     return output;
   };
+  const cart = useSelector((state) => state.trx);
   if (loadingData) {
     return "loading data...";
   }
@@ -85,7 +88,7 @@ const ItemTransactionList = ({
                 <span className="">{el.stockQuantity}</span>
               </td>
               <td>
-                {isObjectInArray(el, cartItems) ? (
+                {isObjectInArray(el, cart[camelize(trx)].item) ? (
                   <button
                     className="rounded-full bg-red-400 p-1 hover:bg-red-700"
                     onClick={() => handleRemoveItemFromCart(el.id, el.itemName)}
