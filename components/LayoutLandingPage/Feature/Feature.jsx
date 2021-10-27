@@ -9,7 +9,7 @@ const Feature = ({ ...otherProps }) => {
   return (
     <div className="py-10">
       <div className="lg:w-5/12 mx-auto px-2 ">
-        <h2 className="text-center text-7xl font-bold tracking-wider transform hover:scale-110">
+        <h2 className="text-center text-4xl font-bold tracking-wider transform hover:scale-110">
           FEATURE
         </h2>
       </div>
@@ -18,9 +18,7 @@ const Feature = ({ ...otherProps }) => {
         <div className="flex flex-col rounded-md shadow-md lg:mb-16 bg-white">
           <div className="pt-6 flex flex-col items-center">
             <Image
-              src={PhotoOne}
-              className="transform hover:scale-110"
-              alt=""
+              src={PhotoOne} alt=""
             />
             <div className="p-4 mb-1 flex flex-col items-center">
               <ul>
@@ -37,8 +35,8 @@ const Feature = ({ ...otherProps }) => {
                 </li>
               </ul>
               <div className="flex p-2 text-center">
-                <button className="rounded-full py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="/">Readmore</Link>
+                <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
+                  <Link href="#Intro">Readmore</Link>
                 </button>
               </div>
             </div>
@@ -48,9 +46,7 @@ const Feature = ({ ...otherProps }) => {
         <div className="flex flex-col rounded-lg shadow-md lg:mb-16 bg-white">
           <div className="pt-6 flex flex-col items-center">
             <Image
-              src={PhotoTwo}
-              className="transform hover:scale-110"
-              alt=""
+              src={PhotoTwo} alt=""
             />
             <div className="p-4 mb-2 flex flex-col items-center">
               <ul>
@@ -67,8 +63,8 @@ const Feature = ({ ...otherProps }) => {
                 </li>
               </ul>
               <div className="flex text-center p-2">
-                <button className="rounded-full py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="/">Readmore</Link>
+                <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
+                  <Link href="#Intro">Readmore</Link>
                 </button>
               </div>
             </div>
@@ -78,9 +74,7 @@ const Feature = ({ ...otherProps }) => {
         <div className="flex flex-col rounded-lg shadow-md  lg:mb-16 bg-white">
           <div className="pt-6 flex flex-col items-center">
             <Image
-              src={PhotoTree}
-              className="transform hover:scale-110"
-              alt=""
+              src={PhotoTree} alt=""
             />
             <div className="p-4 flex flex-col items-center">
               <ul>
@@ -97,8 +91,8 @@ const Feature = ({ ...otherProps }) => {
                 </li>
               </ul>
               <div className="flex p-2 text-center">
-                <button className="rounded-full py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="/">Readmore</Link>
+                <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
+                  <Link href="#Intro">Readmore</Link>
                 </button>
               </div>
             </div>
@@ -106,7 +100,7 @@ const Feature = ({ ...otherProps }) => {
         </div>
       </div>
 
-      <div className="rounded-md  shadow-md grid grid-cols-2 justify-items-stretch relative xl:mx-64 h-38 bg-white">
+      <div className="rounded-md mx-40 shadow-md grid grid-cols-2 justify-items-stretch relative xl:mx-64 h-38 bg-white">
         <div className="text-left relative my-6 mx-8 ">
           <div className="font-bold text-2xl tracking-wide">
             Start Your Free Trial
@@ -117,7 +111,7 @@ const Feature = ({ ...otherProps }) => {
         </div>
         <div className="items-center flex text-center justify-end mr-6">
           <button className="rounded-full py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto tracking-wider  transform hover:scale-110">
-            <Link href="/">Register</Link>
+            <Link href="/register">Register</Link>
           </button>
         </div>
       </div>

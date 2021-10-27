@@ -23,7 +23,7 @@ const Content = () => {
         </h1>
         <div className="flex text-center mt-4 relative">
           <button className="rounded-full py-2 px-6 bg-yellow-300  hover:bg-yellow-400 p-1 w-auto tracking-wider transform hover:scale-110">
-            <Link href="/">Register</Link>
+            <Link href="/register">Register</Link>
           </button>
         </div>
       </div>
