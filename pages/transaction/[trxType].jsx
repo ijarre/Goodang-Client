@@ -166,6 +166,7 @@ const TransactionPage = () => {
       <div className=" grid grid-cols-3 gap-y-10">
         <div className="row-span-2 col-span-2 pr-3 ">
           <ItemPicker
+            allItems={allItems}
             trx={trx}
             items={items}
             handleAddItemToCart={handleAddItemToCart}

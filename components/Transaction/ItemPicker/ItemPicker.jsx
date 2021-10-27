@@ -15,6 +15,7 @@ const ItemPicker = ({
   page = 1,
   setPage,
   trx,
+  allItems,
 }) => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -29,16 +30,55 @@ const ItemPicker = ({
       setMaxPage(maximumPage(items.count, 5));
     }
   }, [items]);
+  useEffect(() => {
+    if (searchField === "") {
+      setFilteredItems();
+    }
+  }, [searchField]);
+
+  const checkName = (name, str) => {
+    var pattern = str
+      .split("")
+      .map((x) => {
+        return `(?=.*${x})`;
+      })
+      .join("");
+    var regex = new RegExp(`${pattern}`, "g");
+    return name.match(regex);
+  };
   const handleSearchChange = (e) => {
+    // setSearchField(e.target.value);
+    // const filter = allItems.data.rows.filter(
+    //   (el) => el.itemName === e.target.value,
+    // );
+    // setFilteredItems(filter);
+    var str = e.target.value.toLowerCase().substring(0, 3);
+    var filteredArr = allItems.data.rows.filter((x) => {
+      var xSub = x.itemName.substring(0, 3).toLowerCase();
+      return checkName(xSub, str);
+    });
+    if (filteredArr.length > 0) {
+      setFilteredItems(filteredArr);
+    }
     setSearchField(e.target.value);
   };
   const handleSearchAction = (e) => {
     e.preventDefault();
-    const filter = allItems.data.rows.filter(
-      (el) => el.itemName === searchField,
-    );
-    setFilteredItems(filter);
-    setSearchField("");
+    // const filter = allItems.data.rows.filter(
+    //   (el) => el.itemName === searchField,
+    // );
+    // setFilteredItems(filter);
+    // setSearchField("");
+    if (searchField.length !== 0) {
+      var str = searchField.toLowerCase().substring(0, 3);
+      var filteredArr = allItems.data.rows.filter((x) => {
+        var xSub = x.itemName.substring(0, 3).toLowerCase();
+        return x.itemName.toLowerCase().includes(str) || checkName(xSub, str);
+      });
+      if (filteredArr.length > 0) {
+        setFilteredItems(filteredArr);
+      }
+    }
   };
 
   const maximumPage = (totalItem, itemPerPage) => {
@@ -54,7 +94,6 @@ const ItemPicker = ({
       >
         <input
           className="w-full rounded p-2"
-          value={searchField}
           type="text"
           placeholder="Search..."
           onChange={handleSearchChange}
@@ -98,44 +137,52 @@ const ItemPicker = ({
             />
           </div>
         )}
-        <div className="flex justify-between px-4 py-2">
-          <div
-            className={`flex ${page !== 1 && "cursor-pointer"}`}
-            onClick={() => {
-              if (page !== 1) {
-                setPage((page -= 1));
-              }
-            }}
-          >
-            <ChevronLeftIcon
-              className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
-            />
-            <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
-          </div>
-          <div className="">
-            Page: {page} of {maxPage}
-          </div>
-
-          <div
-            className={`flex ${page !== maxPage && "cursor-pointer"}`}
-            onClick={() => {
-              if (page !== Number(maxPage)) {
-                setPage((page += 1));
-              }
-            }}
-          >
-            <span
-              className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+        {!searchField || searchField?.length === 0 ? (
+          <div className="flex justify-between px-4 py-2">
+            <div
+              className={`flex ${page !== 1 && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== 1) {
+                  setPage((page -= 1));
+                }
+              }}
             >
-              Next
-            </span>
-            <ChevronRightIcon
-              className={`w-5 ${
-                page == Number(maxPage) ? "text-gray-300" : ""
-              }`}
-            />
+              <ChevronLeftIcon
+                className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+              />
+              <span className={`${page == 1 ? "text-gray-300" : ""}`}>
+                Prev
+              </span>
+            </div>
+            <div className="">
+              Page: {page} of {maxPage}
+            </div>
+
+            <div
+              className={`flex ${page !== maxPage && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== Number(maxPage)) {
+                  setPage((page += 1));
+                }
+              }}
+            >
+              <span
+                className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+              >
+                Next
+              </span>
+              <ChevronRightIcon
+                className={`w-5 ${
+                  page == Number(maxPage) ? "text-gray-300" : ""
+                }`}
+              />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-between px-4 py-2 italic text-sm">
+            Search Mode
+          </div>
+        )}
       </div>
     </div>
   );
