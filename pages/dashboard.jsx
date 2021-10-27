@@ -3,6 +3,7 @@ import { Dashboard } from "../components";
 import { useSelector } from "react-redux";
 import { getWarehouseId } from "../services/getWarehouseId";
 import api from "../services/api";
+import { getTrxHistory } from "../services/getTrxHistory";
 
 const DashboardPage = ({
   assetValue,
@@ -11,6 +12,7 @@ const DashboardPage = ({
   audit,
   history,
   alert,
+  trxPage,
 }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
@@ -45,6 +47,7 @@ const DashboardPage = ({
         stockOut={stockOut}
         audit={audit}
         warehouseId={warehouseId}
+        trxPage={trxPage}
       />
     </div>
   );
@@ -54,6 +57,8 @@ export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
   const warehouseId = await getWarehouseId(uid, token);
+  const trxPage = 1;
+  const size = 5;
 
   const getAssetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
     headers: {
@@ -88,14 +93,7 @@ export async function getServerSideProps({ req }) {
     },
   );
 
-  const getHistoryFromDB = await api.get(
-    `/transaction/${warehouseId}?page=1&size=5`,
-    {
-      headers: {
-        Authorization: "bearer " + token,
-      },
-    },
-  );
+  const trxHistory = await getTrxHistory(warehouseId, token, trxPage, size);
 
   const getAlertFromDB = await api.get(
     `/dashboard/alertedItems/${warehouseId}?page=1&size=5`,
@@ -111,9 +109,10 @@ export async function getServerSideProps({ req }) {
       assetValue: getAssetFromDB.data.data,
       stockIn: getStockInFromDB.data.data,
       stockOut: getStockOutFromDB.data.data,
-      audit: getAuditFromDB.data.data,
-      history: getHistoryFromDB.data.data,
+      audit: getStockOutFromDB.data.data,
+      history: trxHistory,
       alert: getAlertFromDB.data.data,
+      trxPage,
     },
   };
 }
