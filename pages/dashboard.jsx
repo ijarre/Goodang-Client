@@ -111,7 +111,7 @@ export async function getServerSideProps({ req }) {
       assetValue: getAssetFromDB.data.data,
       stockIn: getStockInFromDB.data.data,
       stockOut: getStockOutFromDB.data.data,
-      audit: getStockOutFromDB.data.data,
+      audit: getAuditFromDB.data.data,
       history: getHistoryFromDB.data.data,
       alert: getAlertFromDB.data.data,
     },

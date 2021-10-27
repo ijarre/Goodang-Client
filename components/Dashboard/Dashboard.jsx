@@ -14,7 +14,7 @@ const Dashboard = ({
   return (
     <div className="font-sans">
       <div className="min-h-screen bg-white mx-auto max-w-screen-xl md:flex ">
-        <div className="mt-20 mx-auto w-full h-full px-24 flex-col">
+        <div className="mt-20 mx-auto w-full h-full px-20 flex-col">
           <div className="flex flex-row">
             <div className="my-3 md:flex flex-col mr-8">
               <div className="font-bold text-gray-900 md:text-xl mr-6 my-1 w-max">

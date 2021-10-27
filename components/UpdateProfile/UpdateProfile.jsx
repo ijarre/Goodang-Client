@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
-import { CameraIcon } from "@heroicons/react/outline";
+import { CameraIcon, XCircleIcon } from "@heroicons/react/outline";
+import { Image } from "cloudinary-react";
 
 const UpdateProfile = ({
   profileDetail,
@@ -9,6 +10,14 @@ const UpdateProfile = ({
   updateUserToDB,
   setIsOpen,
   isOpen,
+  handleFileInputChange,
+  fileInputState,
+  previewSource,
+  profPicIsOpen,
+  setProfPicIsOpen,
+  handleSubmitFile,
+  handleDeleteFile,
+  imageId,
 }) => {
   return (
     <div className="form bg-main md:w-full md:h-screen font-sans md:flex">
@@ -22,17 +31,27 @@ const UpdateProfile = ({
           </h1>
         </div>
         <div className="md:flex">
-          <div className="md:w-20 py-5 static">
-            <img src={"images/user.png"} alt="" />
+          <div className="md:w-20 py-5 relative">
+            <img src={"images/user.png"} alt="" className="absolute" />
+            {/* {imageId && (
+              <Image
+                cloudName="apaya"
+                publicId="berapaya"
+                width="20"
+                crop="scale"
+              />
+            )} */}
           </div>
           <button
             type="button"
             className="w-6 p-1 absolute mt-20 ml-14 bg-white rounded-full shadow-md hover:bg-blue-200"
+            onClick={() => setProfPicIsOpen(true)}
           >
             <CameraIcon />
           </button>
         </div>
-        <div className="font-light text-white text-sm bg-blue-700 rounded-md px-2 py-1 mb-3 w-max">
+
+        <div className="font-light text-white text-sm bg-blue-700 rounded-md px-2 py-1 mb-3 w-max mt-20">
           <h4>Warehouse {warehouseId}</h4>
         </div>
         <div>
@@ -97,10 +116,6 @@ const UpdateProfile = ({
               <button
                 type="submit"
                 className="md:text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setIsOpen(true);
-                // }}
               >
                 Update
               </button>
@@ -144,6 +159,63 @@ const UpdateProfile = ({
               >
                 Close
               </button>
+            </div>
+          </Dialog>
+        </div>
+        <div className="flex items-center justify-center">
+          <Dialog
+            as="div"
+            className="fixed flex inset-0 items-center justify-center"
+            open={profPicIsOpen}
+            onClose={() => setProfPicIsOpen(false)}
+          >
+            <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
+
+            <div className="bg-white p-4 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
+              <div className="flex w-full justify-end">
+                <button
+                  type="button"
+                  className="w-6 bg-white rounded-full shadow-md hover:bg-red-200 z-100"
+                  onClick={() => setProfPicIsOpen(false)}
+                >
+                  <XCircleIcon />
+                </button>
+              </div>
+
+              <div className="w-full flex justify-center align-middle">
+                <div className="md:w-44 relative">
+                  <img src={"images/user.png"} alt="" className="absolute" />
+                  {previewSource && (
+                    <img
+                      src={previewSource}
+                      alt="chosen"
+                      className="w-44 h-44 absolute bg-white rounded-full"
+                    />
+                  )}
+                </div>
+              </div>
+              <form onSubmit={handleSubmitFile}>
+                <input
+                  type="file"
+                  onChange={handleFileInputChange}
+                  // value={fileInputState}
+                  className="flex justify-center py-3 mt-48"
+                />
+                <div className="flex justify-center w-full">
+                  <button
+                    className="md:text-sm bg-red-400 hover:bg-red-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 mr-1"
+                    onClick={handleDeleteFile}
+                  >
+                    Remove
+                  </button>
+                  <button
+                    className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
+                    type="submit"
+                  >
+                    Change
+                  </button>
+                </div>
+              </form>
             </div>
           </Dialog>
         </div>
