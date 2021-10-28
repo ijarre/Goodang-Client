@@ -7,6 +7,7 @@ import {
   RefreshIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ClipboardListIcon,
 } from "@heroicons/react/outline";
 import { useQuery } from "react-query";
 import { getTrxHistory } from "../../services/getTrxHistory";
@@ -38,17 +39,17 @@ const HistoryTransaction = ({ history, trxPage }) => {
   }
   return (
     <>
-      <div className="flex-col w-full h-96 bg-white rounded-xl border border-gray-300 p-4">
+      <div className="flex-col w-full h-auto bg-white rounded-xl border border-gray-300 p-3">
         <div className="flex pb-3">
           <button onClick={refreshPage}>
-            <RefreshIcon className="flex w-4 h-4 bg-blue-400 rounded" />
+            <ClipboardListIcon className="flex w-4 h-4 bg-blue-400 rounded" />
           </button>
           <div className="flex ml-2 text-sm text-gray-900 md:text-m font-bold">
             Transaction History
           </div>
         </div>
 
-        <div className="overflow-y-auto h-80">
+        <div className="overflow-y-auto h-auto">
           <table className="w-full">
             <thead className="bg-gray-100 sticky top-0">
               <tr>
@@ -172,9 +173,13 @@ const HistoryTransaction = ({ history, trxPage }) => {
             <ChevronLeftIcon
               className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
             />
-            <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
+            <span
+              className={`${page == 1 ? "text-gray-300 text-sm" : "text-sm"}`}
+            >
+              Prev
+            </span>
           </div>
-          <div className="">
+          <div className="text-sm">
             Page: {page} of {maxPage}
           </div>
 
@@ -188,13 +193,15 @@ const HistoryTransaction = ({ history, trxPage }) => {
             }}
           >
             <span
-              className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+              className={`${
+                page == Number(maxPage) ? "text-gray-300 text-sm" : "text-sm"
+              }`}
             >
               Next
             </span>
             <ChevronRightIcon
               className={`w-5 ${
-                page == Number(maxPage) ? "text-gray-300" : ""
+                page == Number(maxPage) ? "text-gray-300 text-sm" : "text-sm"
               }`}
             />
           </div>

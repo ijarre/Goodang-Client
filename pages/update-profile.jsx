@@ -90,9 +90,13 @@ const UpdateProfilePage = () => {
         formData,
       );
       console.log("SUCCESS UPLOAD TO CLOUDINARY", uploadImageToCloudinary.data);
-      setImageSelected(uploadImageToCloudinary.data);
+      setImageSelected(uploadImageToCloudinary.data.public_id);
 
-      const imageURL = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
+      const imageURL = {
+        public_id: `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${uploadImageToCloudinary.data.public_id}`,
+      };
+
+      console.log(imageURL);
 
       const uploadImageToDB = await api.post(
         `/user/upload/${currentUser.uid}`,

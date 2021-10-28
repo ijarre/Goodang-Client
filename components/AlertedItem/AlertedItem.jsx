@@ -7,7 +7,7 @@ const AlertedItem = ({ alert }) => {
   }, [alert]);
   return (
     <div>
-      <div className="flex-col w-auto h-96 bg-white rounded-xl border border-red-500 p-4">
+      <div className="flex-col w-auto h-auto bg-white rounded-xl border border-red-500 px-4 pt-4 pb-12">
         <div className="flex">
           <BellIcon className="flex w-4 h-4 bg-red-300 rounded" />
           <div className="ml-2 text-sm text-red-500 md:text-m pb-3 font-bold">
