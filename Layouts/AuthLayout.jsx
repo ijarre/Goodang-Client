@@ -14,6 +14,7 @@ import { setLoading } from "../features/appSlice";
 import { getWarehouseId } from "../services/getWarehouseId";
 import router from "next/router";
 import cookieCutter from "cookie-cutter";
+import Head from "next/head";
 
 const AuthLayout = ({ children }) => {
   const auth = getAuth(app);
@@ -69,6 +70,10 @@ const AuthLayout = ({ children }) => {
 
   return (
     <>
+      <Head>
+        <title>Goodang - Inventory Control</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="min-h-screen">
         <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
         {loading && <LoadingPage />}
