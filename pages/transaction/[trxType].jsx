@@ -216,11 +216,11 @@ const TransactionPage = () => {
               type="submit"
               className={classNames(
                 "  py-3 px-4 rounded-md text-base w-36 mr-3 ",
-                cartItemByTrx.length === 0
+                cartItemByTrx?.length === 0
                   ? "bg-gray-500 text-white"
                   : "bg-green-400 hover:bg-green-700 hover:text-white",
               )}
-              disabled={cartItemByTrx.length === 0}
+              disabled={cartItemByTrx?.length === 0}
             >
               Submit
             </button>
