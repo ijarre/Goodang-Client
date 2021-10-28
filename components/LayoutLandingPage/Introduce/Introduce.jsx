@@ -5,13 +5,13 @@ const Introduce = () => {
 
         <div id="Intro">
 
-            <div className="lg:w-5/12 mx-auto px-2 mt-32 mb-52">
+            <div className="lg:w-5/12 mx-auto px-2 mt-32 mb-14">
                 <h2 className="text-center text-4xl font-bold tracking-wider transform hover:scale-110">
                     INTODUCE
                 </h2>
             </div>
 
-            <div className="container item-center grid grid-cols-3 lg:grid-cols-3 gap-x-16 max-w-screen-lg mt-16">
+            <div className="container item-center grid grid-row-3 lg:grid-row-3 max-w-screen-lg mt-16">
                 <div className="flex flex-col rounded-md shadow-md lg:mb-16 bg-white">
                     <div className="pt-6 flex flex-col items-center">
 
