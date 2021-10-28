@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import Link from "next/link";
-import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
 
 const EditItem = () => {
   const [editField, setEditField] = useState({});
 
-  useEffect(() => {
-    const getItem = async () => {
-      const response = await api.get(`/item/${id}`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      return response.data;
-    };
-    getItem().then((res) => {
-      const { itemName, minimumQuantity, unit } = res.data;
-      setEditField({
-        ...editField,
-        itemName,
-        minimumQuantity,
-        unit,
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   const getItem = async () => {
+  //     const response = await api.get(`/item/${id}`, {
+  //       headers: {
+  //         Authorization: "bearer " + currentUser.accessToken,
+  //       },
+  //     });
+  //     return response.data;
+  //   };
+  //   getItem().then((res) => {
+  //     const { itemName, minimumQuantity, unit } = res.data;
+  //     setEditField({
+  //       ...editField,
+  //       itemName,
+  //       minimumQuantity,
+  //       unit,
+  //     });
+  //   });
+  // }, [currentUser.accessToken, editField, id]);
   const { id } = useParams();
-  const { currentUser } = useAuth();
+  const currentUser = useSelector((state) => state.user.currentUser);
   const history = useHistory();
 
   const handleSubmit = async (e) => {

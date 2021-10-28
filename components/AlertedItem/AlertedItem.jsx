@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { BellIcon } from "@heroicons/react/outline";
 
 const AlertedItem = ({ alert }) => {
   useEffect(() => {
@@ -7,8 +8,11 @@ const AlertedItem = ({ alert }) => {
   return (
     <div>
       <div className="flex-col w-auto h-96 bg-white rounded-xl border border-red-500 p-4">
-        <div className="text-sm text-red-500 md:text-m pb-3 font-bold pl-2">
-          Alerted Item
+        <div className="flex">
+          <BellIcon className="flex w-4 h-4 bg-red-300 rounded" />
+          <div className="ml-2 text-sm text-red-500 md:text-m pb-3 font-bold">
+            Alerted Item
+          </div>
         </div>
         <div className="overflow-y-auto h-80">
           <table className="flex-col w-full">
@@ -63,9 +67,16 @@ const AlertedItem = ({ alert }) => {
                         )}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap text-center text-sm">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          {el.Categories[0].categoryName}
-                        </span>
+                        {el.Categories?.map((category) => {
+                          return (
+                            <span
+                              className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                              key={category.id}
+                            >
+                              {category.categoryName}
+                            </span>
+                          );
+                        })}
                       </td>
                       <td className="px-6 py-3 whitespace-nowrap text-center text-sm">
                         {el.itemName}

@@ -4,20 +4,82 @@ import Image from "next/image";
 
 const FreeTrialLayout = () => {
   return (
+<<<<<<< HEAD
 
     <div className="mx-10 mt-40 mb-28">
+=======
+    <div className="mx-10">
+      <div className="text-center transform hover:scale-110">
+        <span className="text-7xl font-semibold tracking-widest">BENEFIT</span>
+      </div>
+>>>>>>> f3631a2023094b47a3e8e1386e83c5aa3db83cc8
 
       <div className="relative grid grid-cols-2 gap-2 place-items-start mx-12 my-10">
         <div className="h-40 space-y-4 absolute ml-9 mt-20 ">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
         </div>
         <div className="relative text-left text-2xl tracking-wider leading-relaxed ml-24 md:mt-0 md:ml-16 pt-20">
-          <span className=""> simple and user friendly</span><br />
-          <span className="">alert system and dashboard</span><br />
-          <span className="">tidying up your database</span><br />
+          <span className=""> simple and user friendly</span>
+          <br />
+          <span className="">alert system and dashboard</span>
+          <br />
+          <span className="">tidying up your database</span>
+          <br />
           <span className="">add up to 900 items and categories</span>
         </div>
         <div className="max-w-prose  md:w-full">

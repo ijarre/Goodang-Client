@@ -5,18 +5,25 @@ import { useHistory } from "react-router-dom";
 import Link from "next/link";
 import Image from "next/image";
 import LogoHorizontal from "../../public/images/logo-horizontal-white.svg";
+import { useRouter } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar({ isAuthenticated, handleLogout }) {
-  const history = useHistory();
+  const router = useRouter();
   const [current, setCurrent] = useState();
 
   useEffect(() => {
-    setCurrent(window.location.pathname);
-  }, [window.location.pathname]);
+    if (router.pathname === "/transaction/[trxType]") {
+      const { trxType } = router.query;
+      setCurrent("/transaction/" + trxType);
+    } else {
+      setCurrent(router.pathname);
+    }
+  }, [router.pathname, router.query]);
+
   const publicNav = [
     {
       name: "Register",
@@ -57,9 +64,10 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
             <Image
               src={LogoHorizontal}
               onClick={() => {
-                history.push("/");
+                router.push("/");
               }}
               width="128"
+              height="90"
               className=" absolute cursor-pointer"
               alt=""
             />

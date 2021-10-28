@@ -1,14 +1,22 @@
 import "tailwindcss/tailwind.css";
-import { AuthProvider } from "../context/AuthContext";
-import Layout from "../Layouts/Layout";
+import store from "../app/store";
+import { Provider } from "react-redux";
+import AuthLayout from "../Layouts/AuthLayout";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function MyApp({ Component, pageProps }) {
+  const queryClient = new QueryClient();
+
   return (
-    <AuthProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <AuthLayout>
+          <Component {...pageProps} />
+        </AuthLayout>
+      </Provider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
