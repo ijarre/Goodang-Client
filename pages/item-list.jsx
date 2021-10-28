@@ -7,7 +7,7 @@ import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
-import {useQuery} from "react-query";
+import { useQuery } from "react-query";
 // import { getWarehouseId } from "../services/getWarehouseId";
 
 const ItemListPage = () => {
@@ -26,8 +26,9 @@ const ItemListPage = () => {
     minimumQuantity: "",
   });
   const [editField, setEditField] = useState({});
-  const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState();
+  const [searchField, setSearchField] = useState("");
+  const [filteredItems, setFilteredItems] = useState();
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
@@ -36,20 +37,46 @@ const ItemListPage = () => {
 
   //pagination item list
   useEffect(() => {
-    setMaxPage(items?.count % 5);
-  }, [items?.count]);
+    if (items) {
+      setMaxPage(maximumPage(items.count, 5));
+    }
+  }, [items]);
+
+  const maximumPage = (totalItem, itemPerPage) => {
+    return (totalItem % itemPerPage).toString();
+  };
 
   useEffect(() => {
-    console.log(query.data);
-    console.log(page);
-  }, [query?.data]);
+    if (searchField === "") {
+      setFilteredItems();
+    }
+  }, [searchField]);
 
-  const query = useQuery([
-    items, page
-  ], ()=> {
-    getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
-   {initialData: items} 
-  })
+  const handleSearchChange = (e) => {
+    var str = e.target.value.toLowerCase().substring(0, 3);
+    var filteredArr = allItems.data.rows.filter((x) => {
+      var xSub = x.itemName.substring(0, 3).toLowerCase();
+      return checkName(xSub, str);
+    });
+    if (filteredArr.length > 0) {
+      setFilteredItems(filteredArr);
+    }
+    setSearchField(e.target.value);
+  };
+
+  const handleSearchAction = (e) => {
+    e.preventDefault();
+    if (searchField.length !== 0) {
+      var str = searchField.toLowerCase().substring(0, 3);
+      var filteredArr = allItems.data.rows.filter((x) => {
+        var xSub = x.itemName.substring(0, 3).toLowerCase();
+        return x.itemName.toLowerCase().includes(str) || checkName(xSub, str);
+      });
+      if (filteredArr.length > 0) {
+        setFilteredItems(filteredArr);
+      }
+    }
+  };
 
   //user read his items
   useEffect(() => {
