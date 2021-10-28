@@ -12,7 +12,6 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ isAuthenticated, handleLogout }) {
-  const history = useHistory();
   const router = useRouter();
   const [current, setCurrent] = useState();
 
@@ -65,9 +64,10 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
             <Image
               src={LogoHorizontal}
               onClick={() => {
-                history.push("/");
+                router.push("/");
               }}
               width="128"
+              height="90"
               className=" absolute cursor-pointer"
               alt=""
             />

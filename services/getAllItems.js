@@ -1,11 +1,14 @@
 import api from "./api";
 
-const getAllItems = async (warehouseId, token) => {
-  const response = await api.get(`/item/${warehouseId}?page=1&size=10`, {
-    headers: {
-      Authorization: "Bearer " + token,
+const getAllItems = async (warehouseId, token, page, size) => {
+  const response = await api.get(
+    `/item/${warehouseId}?page=${page}&size=${size}`,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     },
-  });
+  );
   return response.data;
 };
 
