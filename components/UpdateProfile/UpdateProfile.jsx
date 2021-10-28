@@ -10,14 +10,12 @@ const UpdateProfile = ({
   updateUserToDB,
   setIsOpen,
   isOpen,
-  handleFileInputChange,
-  fileInputState,
-  previewSource,
-  profPicIsOpen,
   setProfPicIsOpen,
+  profPicIsOpen,
+  uploadImage,
+  handleFileInputChange,
+  previewSource,
   handleSubmitFile,
-  handleDeleteFile,
-  imageId,
 }) => {
   return (
     <div className="form bg-main md:w-full md:h-screen font-sans md:flex">
@@ -126,11 +124,11 @@ const UpdateProfile = ({
           <i
             style={{
               border: "solid black",
-              "border-width": " 0 1px 1px 0",
+              borderWidth: " 0 1px 1px 0",
               display: "inline-block",
               padding: "3px",
               transform: "rotate(135deg)",
-              "-webkit-transform": "rotate(135deg)",
+              WebkitTransform: "rotate(135deg)",
             }}
           ></i>
           <a className="text-sm text-gray-900 hover:text-gray-500">
@@ -194,28 +192,23 @@ const UpdateProfile = ({
                   )}
                 </div>
               </div>
-              <form onSubmit={handleSubmitFile}>
-                <input
-                  type="file"
-                  onChange={handleFileInputChange}
-                  // value={fileInputState}
-                  className="flex justify-center py-3 mt-48"
-                />
-                <div className="flex justify-center w-full">
-                  <button
-                    className="md:text-sm bg-red-400 hover:bg-red-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 mr-1"
-                    onClick={handleDeleteFile}
-                  >
-                    Remove
-                  </button>
-                  <button
-                    className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
-                    type="submit"
-                  >
-                    Change
-                  </button>
-                </div>
-              </form>
+
+              <input
+                type="file"
+                onChange={handleFileInputChange}
+                className="flex justify-center py-3 mt-48"
+              />
+              <div className="flex justify-center w-full">
+                <button className="md:text-sm bg-red-400 hover:bg-red-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 mr-1">
+                  Remove
+                </button>
+                <button
+                  className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
+                  onClick={handleSubmitFile}
+                >
+                  Change
+                </button>
+              </div>
             </div>
           </Dialog>
         </div>

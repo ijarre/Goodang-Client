@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { UpdateProfile } from "../components";
 import api from "../services/api";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { Image } from "cloudinary-react";
 
 const UpdateProfilePage = () => {
   useEffect(() => {
@@ -14,7 +16,6 @@ const UpdateProfilePage = () => {
           email: user.data.email,
         });
       });
-      loadImage();
     } else {
       setProfileDetail({});
     }
@@ -53,13 +54,13 @@ const UpdateProfilePage = () => {
     } catch (err) {}
   };
 
-  const [fileInputState, setFileInputState] = useState("");
-  const [previewSource, setPreviewSource] = useState("");
-  const [selectedFile, setSelectedFile] = useState();
   const [profPicIsOpen, setProfPicIsOpen] = useState(false);
+  const [imageSelected, setImageSelected] = useState();
+  const [previewSource, setPreviewSource] = useState("");
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    setImageSelected(file);
     previewFile(file);
   };
 
@@ -75,53 +76,35 @@ const UpdateProfilePage = () => {
     console.log("submitting");
     e.preventDefault();
     if (!previewSource) return;
-    uploadImage(previewSource);
-    setProfPicIsOpen(false);
+    uploadImage();
   };
 
-  const uploadImage = async (base64EncodedImage) => {
-    console.log(base64EncodedImage);
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "userImage");
+
     try {
-      await api.post(`/user/upload/${currentUser.uid}`, {
-        body: JSON.stringify({ data: base64EncodedImage }),
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
+      const uploadImageToCloudinary = await axios.post(
+        "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
+        formData,
+      );
+      console.log("SUCCESS UPLOAD TO CLOUDINARY", uploadImageToCloudinary.data);
+      setImageSelected(uploadImageToCloudinary.data);
+
+      const imageURL = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
+
+      const uploadImageToDB = await api.post(
+        `/user/upload/${currentUser.uid}`,
+        imageURL,
+        {
+          headers: {
+            Authorization: "bearer " + currentUser.accessToken,
+          },
         },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const uploadImage = async (image) => {
-  //   try {
-  //     await api.post(`/user/upload/${currentUser.uid}`, {
-  //       body: { data: image },
-  //       headers: {
-  //         Authorization: "bearer " + currentUser.accessToken,
-  //         ContentType: "multipart/form-data"
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleDeleteFile
-
-  const [imageId, setImageId] = useState();
-
-  const loadImage = async () => {
-    try {
-      const res = await api.get(`/user/${currentUser.uid}`, {
-        headers: {
-          Authorization: "bearer " + currentUser.accessToken,
-        },
-      });
-      const data = await res.json();
-      console.log(data);
-      setImageId(data);
-      return;
+      );
+      console.log("SUCCESS UPLOAD TO DB", uploadImageToDB.data);
+      setProfPicIsOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -136,14 +119,13 @@ const UpdateProfilePage = () => {
         updateUserToDB={updateUserToDB}
         setIsOpen={setIsOpen}
         isOpen={isOpen}
-        handleFileInputChange={handleFileInputChange}
-        fileInputState={fileInputState}
-        previewSource={previewSource}
-        profPicIsOpen={profPicIsOpen}
         setProfPicIsOpen={setProfPicIsOpen}
+        profPicIsOpen={profPicIsOpen}
+        setImageSelected={setImageSelected}
+        uploadImage={uploadImage}
+        handleFileInputChange={handleFileInputChange}
+        previewSource={previewSource}
         handleSubmitFile={handleSubmitFile}
-        // handleDeleteFile={handleDeleteFile}
-        imageId={imageId}
       />
     </div>
   );

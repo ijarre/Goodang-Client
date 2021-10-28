@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Image } from "cloudinary-react";
+import { apiResolver } from "next/dist/server/api-utils";
+import { current } from "immer";
 
 const image = () => {
   const [imageSelected, setImageSelected] = useState();
@@ -8,14 +10,28 @@ const image = () => {
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("file", imageSelected);
-    formData.append("upload_preset", "userProfile");
+    formData.append("upload_preset", "userImage");
 
     try {
-      const upload = await axios.post(
+      const uploadImageToCloudinary = await axios.post(
         "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
         formData,
       );
-      console.log("SUCCESS", upload.data);
+      console.log("SUCCESS", uploadImageToCloudinary.data);
+      setImageSelected(uploadImageToCloudinary.data);
+
+      const imageURL = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
+
+      const uploadImageToDB = await api.post(
+        `/user/upload/${currentUser.uid}`,
+        imageURL,
+        {
+          headers: {
+            Authorization: "bearer " + currentUser.accessToken,
+          },
+        },
+      );
+      console.log("SUCCESS UPLOAD", uploadImageToDB.data);
     } catch (error) {
       console.log(error);
     }
