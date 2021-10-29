@@ -30,9 +30,7 @@ const AuthLayout = ({ children }) => {
       dispatch(setLoading({ loading: true }));
     });
     router.events.on("routeChangeComplete", () => {
-      if (isAuthenticated) {
-        dispatch(setLoading({ loading: false }));
-      }
+      dispatch(setLoading({ loading: false }));
     });
   }, [dispatch, isAuthenticated]);
   useEffect(() => {
