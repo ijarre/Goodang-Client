@@ -7,13 +7,13 @@ import { Modal } from "../components";
 import { EditItemModal } from "../components";
 import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
-import { useQuery } from "react-query";
+import { getAllItems } from "../services/getAllItems";
+import { useQuery, useQueryClient } from "react-query";
+import { current } from "immer";
 // import { getWarehouseId } from "../services/getWarehouseId";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
-  // const [searchTerm, setSearchTerm] = useState();
-  // const [searchResult, setSearchResult] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,75 +26,38 @@ const ItemListPage = () => {
     minimumQuantity: "",
   });
   const [editField, setEditField] = useState({});
-  const [maxPage, setMaxPage] = useState();
-  const [searchField, setSearchField] = useState("");
-  const [filteredItems, setFilteredItems] = useState();
+  const [page, setPage] = useState(1);
+  
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
   // const { warehouseId } = currentUser;
   // const { currentUser } = useAuth();
 
-  //pagination item list
-  useEffect(() => {
-    if (items) {
-      setMaxPage(maximumPage(items.count, 5));
-    }
-  }, [items]);
-
-  const maximumPage = (totalItem, itemPerPage) => {
-    return (totalItem % itemPerPage).toString();
-  };
-
-  useEffect(() => {
-    if (searchField === "") {
-      setFilteredItems();
-    }
-  }, [searchField]);
-
-  const handleSearchChange = (e) => {
-    var str = e.target.value.toLowerCase().substring(0, 3);
-    var filteredArr = allItems.data.rows.filter((x) => {
-      var xSub = x.itemName.substring(0, 3).toLowerCase();
-      return checkName(xSub, str);
-    });
-    if (filteredArr.length > 0) {
-      setFilteredItems(filteredArr);
-    }
-    setSearchField(e.target.value);
-  };
-
-  const handleSearchAction = (e) => {
-    e.preventDefault();
-    if (searchField.length !== 0) {
-      var str = searchField.toLowerCase().substring(0, 3);
-      var filteredArr = allItems.data.rows.filter((x) => {
-        var xSub = x.itemName.substring(0, 3).toLowerCase();
-        return x.itemName.toLowerCase().includes(str) || checkName(xSub, str);
-      });
-      if (filteredArr.length > 0) {
-        setFilteredItems(filteredArr);
-      }
-    }
-  };
-
   //user read his items
+  const {data} = useQuery(
+    ["items", page],
+    () => 
+    getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
+    {enabled: !!currentUser.warehouseId},
+  );
+  const {data: allItems} = useQuery(
+    "allItems",
+    () => 
+    getAllItems(
+      currentUser.warehouseId,
+      currentUser.accessToken,
+      1,
+      data?.count ? data.count : 9999,
+
+    ), {enabled: !!data}
+  )
+  const queryClient = useQueryClient();
+
   useEffect(() => {
-    const getAllItems = async (page, size) => {
-      const response = await api.get(
-        `/item/${currentUser.warehouseId}?page=${page}&size=${size}`,
-        {
-          headers: {
-            Authorization: "bearer " + currentUser.accessToken,
-          },
-        },
-      );
-      return response.data;
-    };
-    getAllItems().then((data) => {
-      setItems(data.data);
-    });
-  }, [currentUser?.accessToken, currentUser?.warehouseId]);
+    setItems(data?.data);
+  }, [data]);
+
 
   //user add item
   const openModal = () => {
@@ -128,22 +91,6 @@ const ItemListPage = () => {
       },
     );
   };
-
-  //user search his item
-  // const handleSearch = (searchTerm) => {
-  //   setSearchTerm(searchTerm);
-  //   if (searchTerm !== "") {
-  //     const searchItemList = items.filter((items) => {
-  //       return Object.values(items)
-  //         .join(" ")
-  //         .toLowerCase()
-  //         .includes(searchTerm.toLowerCase());
-  //     });
-  //     setSearchResult(searchItemList);
-  //   } else {
-  //     setSearchResult(items);
-  //   }
-  // };
 
   //user delete his item
 
@@ -233,13 +180,13 @@ const ItemListPage = () => {
       />
       <ItemList
         items={items}
+        allItems={allItems}
         handleDelete={handleDelete}
         openModal={openModal}
         openEditModal={openEditModal}
         openDeleteModal={openDeleteModal}
-        itemPage={itemPage}
-        // term={searchTerm}
-        // searchKeyword={handleSearch}
+        page={page}
+        setPage={setPage}
       />
     </div>
   );

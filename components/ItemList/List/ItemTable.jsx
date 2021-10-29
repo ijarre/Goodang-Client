@@ -1,8 +1,9 @@
 import React from "react";
 
 const ItemTable = ({
+    items,
     openEditModal,
-    handleDelete
+    handleDelete,
 }) => {
 return(
 <table className="w-full">

@@ -1,31 +1,87 @@
-import React from "react";
-import {ItemTable} from "./ItemTable";
+import React, { useState, useEffect } from "react";
+import ItemTable from "./ItemTable";
 import {
   SearchIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/outline";
+import { classNames } from "../../../utils";
 
 const ItemList = ({
   items,
+  allItems,
   openModal,
   openEditModal,
   handleDelete,
   openDeleteModal,
   page = 1,
   setPage,
-  maxPage,
-  searchField,
-  handleSearchChange,
-  handleSearchAction,
 }) => {
+  const [maxPage, setMaxPage] = useState();
+  const [searchField, setSearchField] = useState("");
+  const [filteredItems, setFilteredItems] = useState();
 
+  useEffect(() => {
+    if (items) {
+      setMaxPage(maximumPage(items.count, 5));
+    }
+  }, [items]);
+
+  const maximumPage = (totalItem, itemPerPage) => {
+    return (totalItem % itemPerPage).toString();
+  };
+
+  useEffect(() => {
+    if (searchField === "") {
+      setFilteredItems();
+    }
+  }, [searchField]);
+
+  const checkName = (name, str) => {
+    var pattern = str
+      .split("")
+      .map((x) => {
+        return `(?=.*${x})`;
+      })
+      .join("");
+    var regex = new RegExp(`${pattern}`, "g");
+    return name.match(regex);
+  };
+
+  const handleSearchChange = (e) => {
+    var str = e.target.value.toLowerCase().substring(0, 3);
+    var filteredArr = allItems.data.rows.filter((x) => {
+      var xSub = x.itemName.substring(0, 3).toLowerCase();
+      return checkName(xSub, str);
+    });
+    if (filteredArr.length > 0) {
+      setFilteredItems(filteredArr);
+    }
+    setSearchField(e.target.value);
+  };
+
+  const handleSearchAction = (e) => {
+    e.preventDefault();
+    if (searchField.length !== 0) {
+      var str = searchField.toLowerCase().substring(0, 3);
+      var filteredArr = allItems.data.rows.filter((x) => {
+        var xSub = x.itemName.substring(0, 3).toLowerCase();
+        return x.itemName.toLowerCase().includes(str) || checkName(xSub, str);
+      });
+      if (filteredArr.length > 0) {
+        setFilteredItems(filteredArr);
+      }
+    }
+  };
   return (
     <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
       <h1 className="ml-4 font-bold text-2xl">Item List</h1>
       <div className="mt-5">
         <div action="" className="text-left my-2 flex">
-          <form className="shadow flex items-start mb-4" onSubmit={handleSearchAction}>
+          <form
+            className="shadow flex items-start mb-4"
+            onSubmit={handleSearchAction}
+          >
             <input
               className="w-full rounded p-2"
               type="text"
@@ -61,54 +117,80 @@ const ItemList = ({
           </div>
         </div>
       </div>
-      {items?.length === 0 (
-        <div className="h-80 overflow-auto">
-          <ItemTable
-          items={
-            filteredItems && filteredItems.length !== 0 ? filteredItems : items?.rows
-          }
-          openEditModal={openEditModal}
-          handleDelete={handleDelete}/>
-        </div>
-      )}
-      {!searchField || searchField?.length === 0 (
-        <div className="flex justify-between px-4 py-2">
-        <div
-          className={`flex ${page !== 1 && "cursor-pointer"}`}
-          onClick={() => {
-            if (page !== 1) {
-              let current = page;
-              setPage((current -= 1));
-            }
-          }}
-        >
-          <ChevronLeftIcon
-            className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
-          />
-          <span className={`${page == 1 ? "text-gray-300" : ""}`}>Prev</span>
-        </div>
-        <div className="">
-          Page: {page} of {maxPage}
-        </div>
+      <div
+        className={classNames(
+          items?.length === 0 ? "items-center justify-center flex" : "",
+          "w-full ",
+        )}
+      >
+        {items?.length === 0 ? (
+          <div className="">
+            <p className="text-gray-500 text-center ">
+              {"You don't have item in your inventory, start adding them "}
+            </p>
+          </div>
+        ) : (
+          <div className="h-80 overflow-auto">
+            <ItemTable
+              items={
+                filteredItems && filteredItems.length !== 0
+                  ? filteredItems
+                  : items?.rows
+              }
+              openEditModal={openEditModal}
+              handleDelete={handleDelete}
+            />
+          </div>
+        )}
+        {!searchField || searchField?.length === 0 ? (
+          <div className="flex justify-between px-4 py-2">
+            <div
+              className={`flex ${page !== 1 && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== 1) {
+                  let current = page;
+                  setPage((current -= 1));
+                }
+              }}
+            >
+              <ChevronLeftIcon
+                className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+              />
+              <span className={`${page == 1 ? "text-gray-300" : ""}`}>
+                Prev
+              </span>
+            </div>
+            <div className="">
+              Page: {page} of {maxPage}
+            </div>
 
-        <div
-          className={`flex ${page !== maxPage && "cursor-pointer"}`}
-          onClick={() => {
-            if (page !== Number(maxPage)) {
-              let current = page;
-              setPage((current += 1));
-            }
-          }}
-        >
-          <span className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}>
-            Next
-          </span>
-          <ChevronRightIcon
-            className={`w-5 ${page == Number(maxPage) ? "text-gray-300" : ""}`}
-          />
-        </div>
+            <div
+              className={`flex ${page !== maxPage && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== Number(maxPage)) {
+                  let current = page;
+                  setPage((current += 1));
+                }
+              }}
+            >
+              <span
+                className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+              >
+                Next
+              </span>
+              <ChevronRightIcon
+                className={`w-5 ${
+                  page == Number(maxPage) ? "text-gray-300" : ""
+                }`}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex justify-between px-4 py-2 italic text-sm">
+            Item not found
+          </div>
+        )}
       </div>
-      )}
     </div>
   );
 };
