@@ -4,15 +4,7 @@ import Image from "next/image";
 
 const FreeTrialLayout = () => {
   return (
-<<<<<<< HEAD
-
     <div className="mx-10 mt-40 mb-28">
-=======
-    <div className="mx-10">
-      <div className="text-center transform hover:scale-110">
-        <span className="text-7xl font-semibold tracking-widest">BENEFIT</span>
-      </div>
->>>>>>> f3631a2023094b47a3e8e1386e83c5aa3db83cc8
 
       <div className="relative grid grid-cols-2 gap-2 place-items-start mx-12 my-10">
         <div className="h-40 space-y-4 absolute ml-9 mt-20 ">

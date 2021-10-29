@@ -18,12 +18,12 @@ const Introduce = () => {
                         <div className="p-2 mb-1 flex flex-col items-center">
                             <ul>
                                 <li className="list-none">
-                                    <div className="font-bold text-lg tracking-wide text-center">
+                                    <div className="font-bold text-xl tracking-wide text-center">
                                         Asset Registration
                                     </div>
                                 </li>
                                 <li className="list-none">
-                                    <div className="m-2 text-lg flex text-center">
+                                    <div className="m-2 text-lg font-medium flex text-center">
                                         The list of fixed assets is nothing more than the list of fixed assets belonging to the entity.<br />
                                         Traditionally, fixed asset registers are maintained in written form by bookkeepers using books set aside specifically for that purpose.<br />
                                     </div>
@@ -40,13 +40,13 @@ const Introduce = () => {
                         <div className="p-4 mb-2 flex flex-col items-center">
                             <ul>
                                 <li className="list-none">
-                                    <div className="font-bold text-lg tracking-wide text-center mt-3">
+                                    <div className="font-bold text-xl tracking-wide text-center ">
                                         Quantity Check
                                     </div>
                                 </li>
 
                                 <li className="list-none">
-                                    <div className="m-2 text-lg flex text-center">
+                                    <div className="m-2 text-lg font-medium flex text-center">
                                         Procurement is any activity that aims to provide office equipment needs to support the implementation of office work. Procurement is carried out in various ways in accordance with company policies and the needs of each company.
                                     </div>
                                 </li>
@@ -62,12 +62,12 @@ const Introduce = () => {
                         <div className="p-4 flex flex-col items-center">
                             <ul>
                                 <li className="list-none">
-                                    <div className="font-bold text-lg tracking-wide text-center">
+                                    <div className="font-bold text-xl tracking-wide text-center">
                                         Insightful Dashboard
                                     </div>
                                 </li>
                                 <li className="list-none">
-                                    <div className="m-2 text-lg flex text-center">
+                                    <div className="m-2 text-lg font-medium flex text-center">
                                         The Transaction History page allows you to view information about incoming stock, outgoing stock, as well as edit ongoing transactions internally for your account or for the clients or sub accounts you manage.
                                     </div>
                                 </li>

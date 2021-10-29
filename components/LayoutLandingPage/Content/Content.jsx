@@ -10,13 +10,13 @@ const Content = () => {
         <Image src={ImageOne} alt="" className="" />
       </div>
       <div className="mt-16 ml-20  text-left gap-y-2">
-        <div className="text-2xl mb-2 tracking-wide">
+        <div className="text-2xl mb-2 tracking-widest">
           Multi Purpose Inventory
         </div>
         <h1 className="mb-2 text-7xl tracking-wide font-bold">
           SIMPLIFY <br /> ORGANIZING
         </h1>
-        <h1 className="relative text-lg tracking-wide">
+        <h1 className="relative text-xl tracking-widest font-medium">
           we care a lot about your inventory <br />
           we know it take too much time to handle <br />
           goodang will overcome those all! <br />
