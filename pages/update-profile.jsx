@@ -14,6 +14,7 @@ const UpdateProfilePage = () => {
           firstName: user.data.firstName,
           lastName: user.data.lastName,
           email: user.data.email,
+          image: user.data.profileImage,
         });
       });
     } else {

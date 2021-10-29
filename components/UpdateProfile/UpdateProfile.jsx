@@ -30,15 +30,18 @@ const UpdateProfile = ({
         </div>
         <div className="md:flex">
           <div className="md:w-20 py-5 relative">
-            <img src={"images/user.png"} alt="" className="absolute" />
-            {/* {imageId && (
-              <Image
-                cloudName="apaya"
-                publicId="berapaya"
-                width="20"
-                crop="scale"
+            {previewSource ? (
+              <img
+                src={previewSource}
+                alt="chosen"
+                className="w-50 absolute bg-white rounded-full object-contain"
               />
-            )} */}
+            ) : (
+              <img
+                src={profileDetail.image}
+                className="w-50 absolute bg-white rounded-full object-contain"
+              />
+            )}
           </div>
           <button
             type="button"
@@ -183,11 +186,16 @@ const UpdateProfile = ({
               <div className="w-full flex justify-center align-middle">
                 <div className="md:w-44 relative">
                   <img src={"images/user.png"} alt="" className="absolute" />
-                  {previewSource && (
+                  {previewSource ? (
                     <img
                       src={previewSource}
                       alt="chosen"
-                      className="w-44 h-44 absolute bg-white rounded-full"
+                      className="w-50 absolute bg-white rounded-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={profileDetail.image}
+                      className="w-50 absolute bg-white rounded-full object-contain"
                     />
                   )}
                 </div>
