@@ -76,10 +76,10 @@ const ItemList = ({
   return (
     <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
       <h1 className="ml-4 font-bold text-2xl">Item List</h1>
-      <div className="mt-5">
-        <div action="" className="text-left my-2 flex">
+      <div className="mt-3 flex justify-end">
+        <div action="" className="text-left my-2">
           <form
-            className="shadow flex items-start mb-4"
+            className="shadow flex items-end mb-4"
             onSubmit={handleSearchAction}
           >
             <input
@@ -94,8 +94,8 @@ const ItemList = ({
             </button>
           </form>
         </div>
-        <div className="md:col-span-5 text-right">
-          <div className="inline-flex items-end mr-5 mb-1">
+        <div className="text-left my-2">
+          <div className="items-end pl-2 mb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full cursor-pointer"
               onClick={openModal}
@@ -108,7 +108,7 @@ const ItemList = ({
       <div
         className={classNames(
           items?.length === 0 ? "items-center justify-center flex" : "",
-          "w-10/12 items-center justify-items-center",
+          "w-full items-center justify-items-center",
         )}
       >
         {items?.length === 0 ? (

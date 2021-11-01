@@ -62,7 +62,7 @@ return(
           <td className="px-6 py-4 whitespace-nowrap ">
             <span className="ml-5">{el.stockQuantity}</span>
           </td>
-          <td className="px-6 py-4 ml-20">
+          <td className="px-9 py-4 ml-20">
             <span className="mr-6">
               <button
                 className="bg-gray-400 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"

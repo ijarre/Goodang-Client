@@ -9,8 +9,7 @@ import { DeleteModal } from "../components";
 import { useRouter } from "next/router";
 import { getAllItems } from "../services/getAllItems";
 import { useQuery, useQueryClient } from "react-query";
-import { current } from "immer";
-// import { getWarehouseId } from "../services/getWarehouseId";
+
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
@@ -27,12 +26,15 @@ const ItemListPage = () => {
   });
   const [editField, setEditField] = useState({});
   const [page, setPage] = useState(1);
+  const [itemImageIsOpen, setItemImageIsOpen] = useState(false);
+  const [imageSelected, setImageSelected] = useState();
+  const [previewImage, setPreviewImage]= useState("");
+
   
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
-  // const { warehouseId } = currentUser;
-  // const { currentUser } = useAuth();
+
 
   //user read his items
   const {data} = useQuery(
@@ -128,25 +130,57 @@ const ItemListPage = () => {
     setEditField({ ...editField, [name]: value });
   };
 
-  // useEffect(() => {
-  //   // const getItem = async () => {
-  //   //   const response = await api.get(`/item/${id}`, {
-  //   //     headers: {
-  //   //       Authorization: "bearer " + currentUser.accessToken,
-  //   //     },
-  //   //   });
-  //   //   return response.data;
-  //   // };
-  //   // getItem().then((res) => {
-  //   //   const { itemName, minimumQuantity, unit } = res.data;
-  //   //   setEditField({
-  //   //     ...editField,
-  //   //     itemName,
-  //   //     minimumQuantity,
-  //   //     unit,
-  //   //   });
-  //   // })s;
-  // }, []);
+  //user upload item image
+  const handleInputItemImage = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setImageSelected(file);
+    previewImage(file);
+  };
+
+  const handleSubmitItemImage = (e) => {
+    e.preventDefault();
+    if(!previewImage) return;
+    uploadImage();
+  };
+
+  const previewImage = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+    };
+  };
+
+  const uploadImage = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "itemImage");
+
+    try {
+      const uploadImageToCloudinary = await axios.post(
+        "https://api.cloudinary.com/v1-1/dvsjfqm9e/image/upload", formData
+      );
+       const itemImage = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
+
+       const uploadImageToServer = await api.post(
+         `/item`,
+         itemImage,
+         {
+           headers: {
+             Authorization: "bearer" + currentUser.accesToken,
+           },
+         },
+       );
+       
+       setItemImageIsOpen(false);
+
+    } catch (error) {
+      console.log(error);
+    };
+  };
+
 
   const { id } = router.query;
 
@@ -161,6 +195,13 @@ const ItemListPage = () => {
         handleInputChange={handleInputChange}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        itemImageIsOpen={itemImageIsOpen}
+        setItemImageIsOpen={setItemImageIsOpen}
+        setImageSelected={setImageSelected}
+        uploadImage={uploadImage}
+        handleInputItemImage={handleInputItemImage}
+        handleSubmitItemImage={handleSubmitItemImage}
+        previewImage={previewImage}
       />
       <EditItemModal
         showEditModal={showEditModal}
@@ -170,6 +211,12 @@ const ItemListPage = () => {
         setIsOpen={setIsOpen}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        itemImageIsOpen={itemImageIsOpen}
+        setItemImageIsOpen={setItemImageIsOpen}
+        uploadImage={uploadImage}
+        handleInputItemImage={handleInputItemImage}
+        handleSubmitItemImage={handleSubmitItemImage}
+        previewImage={previewImage}
       />
       <DeleteModal
         showDeleteModal={showDeleteModal}
