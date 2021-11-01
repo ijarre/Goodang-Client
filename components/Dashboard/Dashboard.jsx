@@ -1,4 +1,5 @@
 import React from "react";
+import { DownloadIcon } from "@heroicons/react/outline";
 import { AlertedItem, HistoryTransaction, Card } from "..";
 
 const Dashboard = ({
@@ -15,12 +16,18 @@ const Dashboard = ({
   return (
     <div className="font-sans">
       <div className="min-h-screen bg-white mx-auto max-w-screen-xl md:flex ">
-        <div className=" mt-20 mx-auto w-full h-full px-24 flex-col">
+        <div className=" mt-16 pt-2 mx-auto w-full h-full px-24 flex-col">
           <div className="flex flex-row">
             <div className="my-3 md:flex flex-col mr-8">
-              <div className="font-bold text-gray-900 md:text-xl mr-6 my-1 w-max">
-                Daily Report
+              <div className="flex flex-row items-center">
+                <div className="flex font-bold text-gray-900 md:text-xl mr-4 my-1 w-max">
+                  Daily Report
+                </div>
+                <button>
+                  <DownloadIcon className="flex w-5 h-5 bg-green-300 rounded" />
+                </button>
               </div>
+
               <div className="font-light text-gray-900 text-sm bg-gray-200 rounded-md px-2 py-1 my-1 w-max">
                 <h4>{infoDate.currentDate.slice(0, 25)}</h4>
               </div>

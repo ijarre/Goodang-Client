@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { CameraIcon, XCircleIcon } from "@heroicons/react/outline";
-import { Image } from "cloudinary-react";
+import { useDispatch } from "react-redux";
+import uploading from "../../public/gif/uploading.gif";
+import Image from "next/image";
 
 const UpdateProfile = ({
   profileDetail,
@@ -16,7 +18,10 @@ const UpdateProfile = ({
   handleFileInputChange,
   previewSource,
   handleSubmitFile,
+  uploadingImage,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="form bg-main md:w-full md:h-screen font-sans md:flex">
       <div className="w-5/7 pl-24 pr-16 pt-10 md:flex items-center">
@@ -24,35 +29,42 @@ const UpdateProfile = ({
       </div>
       <div className="pl-20 pr-24 h-screen w-4/5 bg-white">
         <div className="mt-20 mx-auto">
-          <h1 className="font-bold text-gray-900 md:text-2xl pt-10">
+          <h1 className="font-bold text-gray-900 md:text-2xl pt-10 pb-3">
             Hi, {profileDetail.lastName}!
           </h1>
         </div>
         <div className="md:flex">
-          <div className="md:w-20 py-5 relative">
+          <div className="md:w-24 h-24 relative">
             {previewSource ? (
               <img
                 src={previewSource}
                 alt="chosen"
-                className="w-50 absolute bg-white rounded-full object-contain"
+                className="w-full h-full absolute bg-white rounded-full object-cover"
+              />
+            ) : profileDetail.image ? (
+              <img
+                src={profileDetail.image}
+                className="w-full h-full absolute bg-white rounded-full object-cover"
               />
             ) : (
               <img
-                src={profileDetail.image}
-                className="w-50 absolute bg-white rounded-full object-contain"
+                src={
+                  "https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
+                }
+                className="w-50 h-50 absolute bg-white rounded-full object-cover"
               />
             )}
           </div>
           <button
             type="button"
-            className="w-6 p-1 absolute mt-20 ml-14 bg-white rounded-full shadow-md hover:bg-blue-200"
+            className="w-6 p-1 absolute mt-20 ml-16 bg-white rounded-full shadow-md hover:bg-blue-200"
             onClick={() => setProfPicIsOpen(true)}
           >
             <CameraIcon />
           </button>
         </div>
 
-        <div className="font-light text-white text-sm bg-blue-700 rounded-md px-2 py-1 mb-3 w-max mt-20">
+        <div className="font-light text-white text-sm bg-blue-700 rounded-md px-2 py-1 mb-3 w-max mt-6">
           <h4>Warehouse {warehouseId}</h4>
         </div>
         <div>
@@ -182,40 +194,58 @@ const UpdateProfile = ({
                   <XCircleIcon />
                 </button>
               </div>
-
-              <div className="w-full flex justify-center align-middle">
-                <div className="md:w-44 relative">
-                  <img src={"images/user.png"} alt="" className="absolute" />
-                  {previewSource ? (
-                    <img
-                      src={previewSource}
-                      alt="chosen"
-                      className="w-50 absolute bg-white rounded-full object-contain"
-                    />
+              <div className="flex flex-col">
+                <div className="flex justify-center align-middle">
+                  <div className="md:w-36 md:h-40 py-2">
+                    {previewSource ? (
+                      <img
+                        src={previewSource}
+                        alt="chosen"
+                        className="bg-white rounded-full object-cover h-full w-full"
+                      />
+                    ) : (
+                      <img
+                        src={profileDetail.image}
+                        className=" bg-white rounded-full object-cover h-full w-full"
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="w-80 h-12">
+                  {uploadingImage ? (
+                    <div className="flex justify-center items-center bg-white">
+                      <Image src={uploading} alt="" width="44" height="44" />
+                      <div className="text-md">Uploading Image</div>
+                    </div>
                   ) : (
-                    <img
-                      src={profileDetail.image}
-                      className="w-50 absolute bg-white rounded-full object-contain"
+                    <input
+                      type="file"
+                      onChange={handleFileInputChange}
+                      className="flex justify-center py-3"
                     />
                   )}
                 </div>
-              </div>
-
-              <input
-                type="file"
-                onChange={handleFileInputChange}
-                className="flex justify-center py-3 mt-48"
-              />
-              <div className="flex justify-center w-full">
-                <button className="md:text-sm bg-red-400 hover:bg-red-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 mr-1">
-                  Remove
-                </button>
-                <button
-                  className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
-                  onClick={handleSubmitFile}
-                >
-                  Change
-                </button>
+                <div className="flex justify-center w-full pb-2">
+                  <button
+                    className={`md:text-sm text-black font-bold py-2 px-2 mt-2 rounded-md text-sm w-1/2 mr-1 ${
+                      uploadingImage
+                        ? "bg-gray-400"
+                        : "bg-red-400 hover:bg-red-700"
+                    }`}
+                  >
+                    Remove
+                  </button>
+                  <button
+                    className={`md:text-sm  text-black font-bold py-2 px-2 mt-2 rounded-md text-sm w-1/2 ${
+                      uploadingImage
+                        ? "bg-gray-400"
+                        : "bg-blue-400 hover:bg-blue-700"
+                    }`}
+                    onClick={handleSubmitFile}
+                  >
+                    Change
+                  </button>
+                </div>
               </div>
             </div>
           </Dialog>

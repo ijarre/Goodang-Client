@@ -4,6 +4,8 @@ import api from "../services/api";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Image } from "cloudinary-react";
+import { changeProfilePicture } from "../features/userSlice";
+import { useDispatch } from "react-redux";
 
 const UpdateProfilePage = () => {
   useEffect(() => {
@@ -21,6 +23,8 @@ const UpdateProfilePage = () => {
       setProfileDetail({});
     }
   }, [currentUser, getUserFromDB]);
+
+  const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -58,6 +62,7 @@ const UpdateProfilePage = () => {
   const [profPicIsOpen, setProfPicIsOpen] = useState(false);
   const [imageSelected, setImageSelected] = useState();
   const [previewSource, setPreviewSource] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -77,10 +82,14 @@ const UpdateProfilePage = () => {
     console.log("submitting");
     e.preventDefault();
     if (!previewSource) return;
-    uploadImage();
+    uploadImage().then((imageURL) => {
+      dispatch(changeProfilePicture(imageURL.public_id));
+    });
   };
 
   const uploadImage = async () => {
+    setUploadingImage(true);
+    console.log("mulai upload");
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "userImage");
@@ -109,8 +118,13 @@ const UpdateProfilePage = () => {
         },
       );
       console.log("SUCCESS UPLOAD TO DB", uploadImageToDB.data);
+
       setProfPicIsOpen(false);
+      setUploadingImage(false);
+      console.log("selesai upload");
+      return imageURL;
     } catch (error) {
+      setUploadingImage(false);
       console.log(error);
     }
   };
@@ -131,6 +145,7 @@ const UpdateProfilePage = () => {
         handleFileInputChange={handleFileInputChange}
         previewSource={previewSource}
         handleSubmitFile={handleSubmitFile}
+        uploadingImage={uploadingImage}
       />
     </div>
   );

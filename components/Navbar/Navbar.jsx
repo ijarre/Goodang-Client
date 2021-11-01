@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import LogoHorizontal from "../../public/images/logo-horizontal-white.svg";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,6 +15,8 @@ function classNames(...classes) {
 export default function Navbar({ isAuthenticated, handleLogout }) {
   const router = useRouter();
   const [current, setCurrent] = useState();
+
+  const { profilePicture } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     if (router.pathname === "/transaction/[trxType]") {
@@ -116,11 +119,19 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 mr-2 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                      {profilePicture ? (
+                        <img
+                          className="h-8 w-8 mr-2 rounded-full bg-white"
+                          src={profilePicture}
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          className="h-8 w-8 mr-2 rounded-full"
+                          src="https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
+                          alt=""
+                        />
+                      )}
                     </Menu.Button>
                   </div>
                   <Transition
