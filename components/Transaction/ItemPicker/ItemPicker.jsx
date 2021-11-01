@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/outline";
 import { ItemTransactionList } from "../..";
 import Link from "next/link";
-import { classNames } from "../../../utils";
+import { classNames, maximumPage } from "../../../utils";
 
 const ItemPicker = ({
   items,
@@ -76,10 +76,6 @@ const ItemPicker = ({
         setFilteredItems(filteredArr);
       }
     }
-  };
-
-  const maximumPage = (totalItem, itemPerPage) => {
-    return (totalItem % itemPerPage).toString();
   };
 
   return (
