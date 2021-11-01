@@ -16,11 +16,11 @@ const Feature = ({ ...otherProps }) => {
 
       <div className="container item-center grid grid-cols-3 lg:grid-cols-3 gap-x-16 max-w-screen-lg mt-16">
         <div className="flex flex-col rounded-md shadow-md lg:mb-16 bg-white">
-          <div className="pt-6 flex flex-col items-center">
+          <div className="py-6 flex flex-col items-center">
             <Image
               src={PhotoOne} alt=""
             />
-            <div className="p-4 mb-1 flex flex-col items-center">
+            <div className="pt-10 mb-1 flex flex-col items-center">
               <ul>
                 <li className="list-none">
                   <div className="font-bold text-lg tracking-wide text-center">
@@ -36,7 +36,7 @@ const Feature = ({ ...otherProps }) => {
               </ul>
               <div className="flex p-2 text-center">
                 <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="#Intro">Readmore</Link>
+                  <Link href="#Asset">Readmore</Link>
                 </button>
               </div>
             </div>
@@ -64,7 +64,7 @@ const Feature = ({ ...otherProps }) => {
               </ul>
               <div className="flex text-center p-2">
                 <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="#Intro">Readmore</Link>
+                  <Link href="#Quantity">Readmore</Link>
                 </button>
               </div>
             </div>
@@ -92,7 +92,7 @@ const Feature = ({ ...otherProps }) => {
               </ul>
               <div className="flex p-2 text-center">
                 <button className="rounded-full tracking-widest py-2 px-6 bg-yellow-300  hover:bg-yellow-400 w-auto transform hover:scale-110 md:text-sm">
-                  <Link href="#Intro">Readmore</Link>
+                  <Link href="#Insightful">Readmore</Link>
                 </button>
               </div>
             </div>
