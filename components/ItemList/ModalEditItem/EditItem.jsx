@@ -13,6 +13,9 @@ const EditItemModal = ({
   editField,
   itemImageIsOpen,
   setItemImageIsOpen,
+  previewImage,
+  handleInputItemImage,
+  handleSubmitItemImage
 }) => {
   const modalRef = useRef();
 
@@ -199,25 +202,25 @@ const EditItemModal = ({
                           alt=""
                           className="absolute"
                         />
-                        {/* {previewSource && (
+                        {previewImage && (
                           <img
-                            src={previewSource}
+                            src={previewImage}
                             alt="chosen"
                             className="w-44 h-44 absolute bg-white rounded-full"
                           />
-                        )} */}
+                        )}
                       </div>
                     </div>
 
                     <input
                       type="file"
-                      // onChange={handleFileInputChange}
+                      onChange={handleInputItemImage}
                       className="flex justify-center py-3 mt-48"
                     />
                     <div className="flex justify-center w-full">
                       <button
                         className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
-                        // onClick={handleSubmitFile}
+                        onClick={handleSubmitItemImage}
                       >
                         Upload
                       </button>
