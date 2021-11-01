@@ -65,13 +65,13 @@ return(
           <td className="px-6 py-4 ml-20">
             <span className="mr-6">
               <button
-                className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
+                className="bg-gray-400 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
                 onClick={() => openEditModal(el)}
               >
                 Edit
               </button>
               <button
-                className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
+                className="bg-gray-400 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
                 onClick={() => handleDelete(el.id)}
               >
                 Delete

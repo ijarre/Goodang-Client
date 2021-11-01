@@ -93,18 +93,6 @@ const ItemList = ({
               Search
             </button>
           </form>
-          {/* <div className="bg-grey-200 rounded-md ml-4">
-            <label className=" text-gray-500 ml-1" htmlFor="filterByCategory">
-              Filter
-            </label>
-            <input
-              className="text-sm bg-white block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-              type="text"
-              id=""
-              placeholder="Filter Category"
-            />
-            <i className="filter"></i>
-          </div> */}
         </div>
         <div className="md:col-span-5 text-right">
           <div className="inline-flex items-end mr-5 mb-1">
@@ -120,7 +108,7 @@ const ItemList = ({
       <div
         className={classNames(
           items?.length === 0 ? "items-center justify-center flex" : "",
-          "w-full ",
+          "w-10/12 items-center justify-items-center",
         )}
       >
         {items?.length === 0 ? (
@@ -130,7 +118,7 @@ const ItemList = ({
             </p>
           </div>
         ) : (
-          <div className="h-80 overflow-auto">
+          <div className="w-full h-full overflow-y-scroll">
             <ItemTable
               items={
                 filteredItems && filteredItems.length !== 0

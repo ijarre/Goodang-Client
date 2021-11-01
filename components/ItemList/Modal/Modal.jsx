@@ -34,7 +34,7 @@ const Modal = ({
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
-  const { itemName, Unit, stockQuantity, minimumQuantity } = fields;
+  const { itemName, unit, stockQuantity, minimumQuantity } = fields;
 
   return (
     <>
@@ -76,7 +76,7 @@ const Modal = ({
                       </div>
                     </div>
                     <div className="md:w-1/2 space-y-1 md:text-sm">
-                      <label htmlFor="image">Insert Image</label>
+                      <label htmlFor="">Insert Image</label>
                       <div>
                         <button
                           type=""
@@ -95,8 +95,8 @@ const Modal = ({
                           className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
                           type="text"
                           placeholder="unit"
-                          name="Unit"
-                          value={Unit}
+                          name="unit"
+                          value={unit}
                           onChange={handleInputChange}
                         >
                           <option className="text-grey-700">Select</option>

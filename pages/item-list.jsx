@@ -21,7 +21,7 @@ const ItemListPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState({
     itemName: "",
-    Unit: "",
+    unit: "",
     stockQuantity: "",
     minimumQuantity: "",
   });
@@ -81,12 +81,12 @@ const ItemListPage = () => {
   const userAddItem = async (e) => {
     e.preventDefault();
     setIsOpen(true);
-    await axios.post(
-      `https://nameless-sands-57704.herokuapp.com/v1/item`,
+    await api.post(
+      `/item`,
       { ...fields, warehouseId: currentUser.warehouseId },
       {
         headers: {
-          Authorization: "Bearer " + currentUser.accessToken,
+          Authorization: "bearer " + currentUser.accessToken,
         },
       },
     );
