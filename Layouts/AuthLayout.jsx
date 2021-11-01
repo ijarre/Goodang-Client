@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LoadingPage } from "../components";
 import { setLoading } from "../features/appSlice";
-import { getUserInfo, getWarehouseId } from "../services/getUserInfo";
+import { getUserInfo } from "../services/getUserInfo";
 import router from "next/router";
 import cookieCutter from "cookie-cutter";
 import Head from "next/head";
