@@ -105,7 +105,7 @@ const UpdateProfilePage = () => {
 
     // formData.append("timestamp", `${timestamp}`);
 
-    // const public_id = profileDetail.image.slice(9, 29);
+    // const public_id = profileDetail?.image?.slice(71, 90);
     // const signature = `public_id=${public_id}&timestamp=${timestamp}gGB3p9OF1yT9Wsu60eBboYElfHk`;
     // const sha1_hex = sha1Hex(signature);
     // console.log(signature);
