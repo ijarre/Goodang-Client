@@ -25,7 +25,7 @@ const Quantity = () => {
                 </div>
 
                 <div className="relative text-left text-2xl tracking-widest leading-loose md:mt-0 md:ml-16 pt-20">
-                    <span className=""> Notification</span>
+                    <span className="">Alert Available</span>
                     <br />
                     <span className="">Stock Items Check</span>
                     <br />
