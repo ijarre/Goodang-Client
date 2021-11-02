@@ -15,7 +15,7 @@ const Modal = ({
   setItemImageIsOpen,
   previewImage,
   handleInputItemImage,
-  handleSubmitItemImage
+  handleSubmitItemImage,
 }) => {
   const modalRef = useRef();
 
@@ -61,10 +61,10 @@ const Modal = ({
                 onClick={() => setShowModal((prev) => !prev)}
               />
               <div className="">
-                <div className="mt-10 mx-auto">
+                <div className="mt-1 mx-auto">
                   <p className="font-light text-grey-900 pt-5">New Item</p>
                 </div>
-                <div className="pt-10">
+                <div className="pt-5">
                   <form
                     onSubmit={userAddItem}
                     className="mb-10 mx-auto space-y-3"
@@ -88,7 +88,7 @@ const Modal = ({
                       <div>
                         <button
                           type="button"
-                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200"
+                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200 text-sm w-1/2"
                           onClick={() => setItemImageIsOpen(true)}
                         >
                           Add Image
@@ -219,7 +219,7 @@ const Modal = ({
                           <img
                             src={previewImage}
                             alt="chosen"
-                            className="w-44 h-44 absolute bg-white rounded-full"
+                            className="w-44 h-44 absolute bg-white rounded-md"
                           />
                         )}
                       </div>
@@ -232,6 +232,7 @@ const Modal = ({
                     />
                     <div className="flex justify-center w-full">
                       <button
+                        type="submit"
                         className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
                         onClick={handleSubmitItemImage}
                       >

@@ -132,10 +132,9 @@ const ItemListPage = () => {
 
   //user upload item image
   const handleInputItemImage = (e) => {
-    e.preventDefault();
     const file = e.target.files[0];
     setImageSelected(file);
-    previewImage(file);
+    previewFile(file);
   };
 
   const handleSubmitItemImage = (e) => {
@@ -144,7 +143,7 @@ const ItemListPage = () => {
     uploadImage();
   };
 
-  const previewImage = (file) => {
+  const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -152,28 +151,30 @@ const ItemListPage = () => {
     };
   };
 
-  const uploadImage = async (e) => {
-    e.preventDefault();
+  const uploadImage = async () => {
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "itemImage");
 
     try {
       const uploadImageToCloudinary = await axios.post(
-        "https://api.cloudinary.com/v1-1/dvsjfqm9e/image/upload", formData
+        "https://api.cloudinary.com/v1-1/dvsjfqm9e/image/upload", formData,
       );
+        console.log("success cloudinary", uploadImageToCloudinary.data);
+        setImageSelected(uploadImageToCloudinary.data);
+
        const itemImage = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
 
        const uploadImageToServer = await api.post(
          `/item`,
-         itemImage,
+         { ...itemImage, warehouseId: currentUser.warehouseId },
          {
            headers: {
              Authorization: "bearer" + currentUser.accesToken,
            },
          },
        );
-       
+       console.log("succes db",uploadImageToServer.data);
        setItemImageIsOpen(false);
 
     } catch (error) {

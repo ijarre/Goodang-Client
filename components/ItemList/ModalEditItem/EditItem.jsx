@@ -60,11 +60,11 @@ const EditItemModal = ({
               />
 
               <div className="">
-                <div className="mt-10 mx-auto">
+                <div className="mt-1 mx-auto">
                   <p className="font-light text-grey-900 pt-10">Edit Item</p>
                 </div>
 
-                <div className="pt-10">
+                <div className="pt-5">
                   <form
                     onSubmit={handleSubmit}
                     className="mb-10 mx-auto space-y-3"
