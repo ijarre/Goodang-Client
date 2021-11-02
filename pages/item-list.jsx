@@ -93,6 +93,7 @@ const ItemListPage = () => {
   //user delete his item
 
   const handleDelete = async (id) => {
+    setShowDeleteModal((prev) => !prev);
     await api.get(`/item/delete/${id}`, {
       headers: {
         Authorization: "bearer " + currentUser.accessToken,
@@ -100,9 +101,9 @@ const ItemListPage = () => {
     });
   };
 
-  const openDeleteModal = () => {
-    setShowDeleteModal((prev) => !prev);
-  };
+  // const openDeleteModal = () => {
+  //   setShowDeleteModal((prev) => !prev);
+  // };
 
   //user edit his item
 
@@ -157,7 +158,7 @@ const ItemListPage = () => {
   };
 
   const uploadImage = async (e) => {
-    console.log("success cloudinary", uploadImage.data);
+    console.log("success cloudinary", uploadImage);
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "itemImage");
