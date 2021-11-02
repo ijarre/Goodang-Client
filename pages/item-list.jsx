@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { getAllItems } from "../services/getAllItems";
 import { useQuery, useQueryClient } from "react-query";
 
-
 const ItemListPage = () => {
   const [items, setItems] = useState();
   const [showModal, setShowModal] = useState(false);
@@ -29,38 +28,34 @@ const ItemListPage = () => {
   const [page, setPage] = useState(1);
   const [itemImageIsOpen, setItemImageIsOpen] = useState(false);
   const [imageSelected, setImageSelected] = useState();
-  const [previewImage, setPreviewImage]= useState("");
-
-  
+  const [previewImage, setPreviewImage] = useState("");
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
 
-
   //user read his items
-  const {data} = useQuery(
+  const { data } = useQuery(
     ["items", page],
-    () => 
-    getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
-    {enabled: !!currentUser.warehouseId},
+    () =>
+      getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
+    { enabled: !!currentUser.warehouseId },
   );
-  const {data: allItems} = useQuery(
+  const { data: allItems } = useQuery(
     "allItems",
-    () => 
-    getAllItems(
-      currentUser.warehouseId,
-      currentUser.accessToken,
-      1,
-      data?.count ? data.count : 9999,
-
-    ), {enabled: !!data}
-  )
+    () =>
+      getAllItems(
+        currentUser.warehouseId,
+        currentUser.accessToken,
+        1,
+        data?.count ? data.count : 9999,
+      ),
+    { enabled: !!data },
+  );
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setItems(data?.data);
   }, [data]);
-
 
   //user add item
   const openModal = () => {
@@ -86,7 +81,7 @@ const ItemListPage = () => {
     setIsOpen(true);
     await api.post(
       `/item`,
-      { ...fields, warehouseId: currentUser.warehouseId },
+      { ...fields, warehouseId: currentUser.warehouseId, itemImage },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
@@ -119,11 +114,15 @@ const ItemListPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post(`/item/update/${editField.id}`, editField, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
+    await api.post(
+      `/item/update/${editField.id}`,
+      { ...editField, itemImage },
+      {
+        headers: {
+          Authorization: "bearer " + currentUser.accessToken,
+        },
       },
-    });
+    );
     router.push("/item-list");
   };
   const handleChange = (e) => {
@@ -131,7 +130,12 @@ const ItemListPage = () => {
     setEditField({ ...editField, [name]: value });
   };
 
+  // const itemImage = {public_id: uploadImage.data.secure_url};
+
   //user upload item image
+  // const uploadImageToCloudinary = await axios.post(
+  //   "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload", formData,)
+
   const handleInputItemImage = (e) => {
     const file = e.target.files[0];
     setImageSelected(file);
@@ -140,7 +144,7 @@ const ItemListPage = () => {
 
   const handleSubmitItemImage = (e) => {
     e.preventDefault();
-    if(!previewImage) return;
+    if (!previewImage) return;
     uploadImage();
   };
 
@@ -152,37 +156,22 @@ const ItemListPage = () => {
     };
   };
 
-  const uploadImage = async () => {
+  const uploadImage = async (e) => {
+    console.log("success cloudinary", uploadImage.data);
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "itemImage");
 
-    try {
-      const uploadImageToCloudinary = await axios.post(
-        "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload", formData,
-      );
-        console.log("success cloudinary", uploadImageToCloudinary.data);
-        setImageSelected(uploadImageToCloudinary.data);
+    await axios.post(
+      "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
+      formData,
+    );
 
-       const itemImage = `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${imageSelected}`;
+    setImageSelected(uploadImage.data);
 
-       const uploadImageToServer = await api.post(
-         `/item`,
-         itemImage,
-         {
-           headers: {
-             Authorization: "bearer" + currentUser.accesToken,
-           },
-         },
-       );
-       console.log("succes db",uploadImageToServer.data);
-       setItemImageIsOpen(false);
+    setItemImageIsOpen(false);
 
-    } catch (error) {
-      console.log(error);
-    };
   };
-
 
   const { id } = router.query;
 
