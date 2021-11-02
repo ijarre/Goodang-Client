@@ -23,6 +23,7 @@ const ItemListPage = () => {
     unit: "",
     stockQuantity: "",
     minimumQuantity: "",
+    categoryName: "",
   });
   const [editField, setEditField] = useState({});
   const [page, setPage] = useState(1);
@@ -158,7 +159,7 @@ const ItemListPage = () => {
 
     try {
       const uploadImageToCloudinary = await axios.post(
-        "https://api.cloudinary.com/v1-1/dvsjfqm9e/image/upload", formData,
+        "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload", formData,
       );
         console.log("success cloudinary", uploadImageToCloudinary.data);
         setImageSelected(uploadImageToCloudinary.data);
@@ -167,7 +168,7 @@ const ItemListPage = () => {
 
        const uploadImageToServer = await api.post(
          `/item`,
-         { ...itemImage, warehouseId: currentUser.warehouseId },
+         itemImage,
          {
            headers: {
              Authorization: "bearer" + currentUser.accesToken,

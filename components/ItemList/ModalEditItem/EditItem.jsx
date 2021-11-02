@@ -48,10 +48,10 @@ const EditItemModal = ({
           ref={modalRef}
         >
           <div
-            className="w-10/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
+            className="w-5/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
             showEditModal={showEditModal}
           >
-            <div className="flex-col mt-9 ml-80 justify-center items-center bg-gray-50">
+            <div className="flex-col mt-9 ml-40 justify-center items-center bg-gray-50">
               <HiOutlineX
                 as="div"
                 aria-label="Close modal"

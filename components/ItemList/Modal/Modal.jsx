@@ -39,7 +39,7 @@ const Modal = ({
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
-  const { itemName, unit, stockQuantity, minimumQuantity } = fields;
+  const { itemName, unit, stockQuantity, minimumQuantity, categoryName } = fields;
 
   return (
     <>
@@ -50,10 +50,10 @@ const Modal = ({
           ref={modalRef}
         >
           <div
-            className="w-10/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
+            className="w-5/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
             showModal={showModal}
           >
-            <div className="flex-col mt-9 ml-80 justify-center items-center bg-gray-50">
+            <div className="flex-col mt-9 ml-40 justify-center items-center bg-gray-50">
               <HiOutlineX
                 as="div"
                 aria-label="Close modal"
@@ -113,6 +113,30 @@ const Modal = ({
                           <option>ea</option>
                           <option>Kg</option>
                           <option>tonne</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="md:w-1/2 space-y-1 md:text-sm">
+                        <label htmlFor="category">Category</label>
+                        <span className="text-grey-700"></span>
+                        <select
+                          id="category"
+                          className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
+                          type="text"
+                          placeholder="category"
+                          name="categoryName"
+                          value={categoryName}
+                          onChange={handleInputChange}
+                        >
+                          <option className="text-grey-700">Select</option>
+                          <option>Furniture</option>
+                          <option>Food and Beverages </option>
+                          <option>Electronic</option>
+                          <option>Fashion</option>
+                          <option>Tools</option>
+                          <option>Stationary</option>
+                          
                         </select>
                       </div>
                     </div>

@@ -171,7 +171,7 @@ const ItemList = ({
           </div>
         ) : (
           <div className="flex justify-between px-4 py-2 italic text-sm">
-            Item not found
+            Search result
           </div>
         )}
       </div>
