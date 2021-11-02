@@ -5,7 +5,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/outline";
-import { classNames } from "../../../utils";
+import { classNames, maximumPage } from "../../../utils";
 
 const ItemList = ({
   items,
@@ -26,10 +26,6 @@ const ItemList = ({
       setMaxPage(maximumPage(items.count, 5));
     }
   }, [items]);
-
-  const maximumPage = (totalItem, itemPerPage) => {
-    return (totalItem % itemPerPage).toString();
-  };
 
   useEffect(() => {
     if (searchField === "") {
