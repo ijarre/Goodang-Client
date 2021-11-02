@@ -122,7 +122,7 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                       {profilePicture ? (
                         <img
                           className="h-8 w-8 mr-2 rounded-full bg-white"
-                          src={profilePicture}
+                          src={`https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${profilePicture}`}
                           alt=""
                         />
                       ) : (

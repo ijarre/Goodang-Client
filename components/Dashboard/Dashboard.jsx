@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
+import ReactToPrint from "react-to-print";
 import { DownloadIcon } from "@heroicons/react/outline";
 import { AlertedItem, HistoryTransaction, Card } from "..";
+import { Report } from "./Report";
 
 const Dashboard = ({
   assetValue,
@@ -13,6 +15,7 @@ const Dashboard = ({
   warehouseId,
   trxPage,
 }) => {
+  const componentRef = useRef();
   return (
     <div className="font-sans">
       <div className="min-h-screen bg-white mx-auto max-w-screen-xl md:flex ">
@@ -23,11 +26,18 @@ const Dashboard = ({
                 <div className="flex font-bold text-gray-900 md:text-xl mr-4 my-1 w-max">
                   Daily Report
                 </div>
-                <button>
-                  <DownloadIcon className="flex w-5 h-5 bg-green-300 rounded" />
-                </button>
+                <div className="flex">
+                  <ReactToPrint
+                    trigger={() => (
+                      <button>
+                        <DownloadIcon className="flex w-5 h-5 bg-blue-300 rounded" />
+                      </button>
+                    )}
+                    content={() => componentRef.current}
+                  />
+                  <Report ref={componentRef} className="hidden" />
+                </div>
               </div>
-
               <div className="font-light text-gray-900 text-sm bg-gray-200 rounded-md px-2 py-1 my-1 w-max">
                 <h4>{infoDate.currentDate.slice(0, 25)}</h4>
               </div>

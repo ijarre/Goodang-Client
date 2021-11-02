@@ -1,2 +1,3 @@
 import Dashboard from "./Dashboard";
-export { Dashboard };
+import Report from "./Dashboard";
+export { Dashboard, Report };

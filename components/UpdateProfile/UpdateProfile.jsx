@@ -44,6 +44,7 @@ const UpdateProfile = ({
             ) : profileDetail.image ? (
               <img
                 src={profileDetail.image}
+                bav
                 className="w-full h-full absolute bg-white rounded-full object-cover"
               />
             ) : (
@@ -51,7 +52,7 @@ const UpdateProfile = ({
                 src={
                   "https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
                 }
-                className="w-50 h-50 absolute bg-white rounded-full object-cover"
+                className="w-full h-full absolute bg-white rounded-full object-cover"
               />
             )}
           </div>
@@ -203,9 +204,16 @@ const UpdateProfile = ({
                         alt="chosen"
                         className="bg-white rounded-full object-cover h-full w-full"
                       />
-                    ) : (
+                    ) : profileDetail.image ? (
                       <img
                         src={profileDetail.image}
+                        className=" bg-white rounded-full object-cover h-full w-full"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          "https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
+                        }
                         className=" bg-white rounded-full object-cover h-full w-full"
                       />
                     )}
@@ -226,7 +234,7 @@ const UpdateProfile = ({
                   )}
                 </div>
                 <div className="flex justify-center w-full pb-2">
-                  <button
+                  {/* <button
                     className={`md:text-sm text-black font-bold py-2 px-2 mt-2 rounded-md text-sm w-1/2 mr-1 ${
                       uploadingImage
                         ? "bg-gray-400"
@@ -234,9 +242,9 @@ const UpdateProfile = ({
                     }`}
                   >
                     Remove
-                  </button>
+                  </button> */}
                   <button
-                    className={`md:text-sm  text-black font-bold py-2 px-2 mt-2 rounded-md text-sm w-1/2 ${
+                    className={`md:text-sm  text-black font-bold py-2 px-2 mt-2 rounded-md text-sm w-full ${
                       uploadingImage
                         ? "bg-gray-400"
                         : "bg-blue-400 hover:bg-blue-700"

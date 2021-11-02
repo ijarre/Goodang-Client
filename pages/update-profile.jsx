@@ -6,6 +6,7 @@ import axios from "axios";
 import { Image } from "cloudinary-react";
 import { changeProfilePicture } from "../features/userSlice";
 import { useDispatch } from "react-redux";
+import sha1Hex from "sha1-hex";
 
 const UpdateProfilePage = () => {
   useEffect(() => {
@@ -81,18 +82,44 @@ const UpdateProfilePage = () => {
   const handleSubmitFile = (e) => {
     console.log("submitting");
     e.preventDefault();
-    if (!previewSource) return;
-    uploadImage().then((imageURL) => {
-      dispatch(changeProfilePicture(imageURL.public_id));
-    });
+    uploadImage();
+    // if (!previewSource) return;
+    // uploadImage().then((imageURL) => {
+    //   dispatch(changeProfilePicture(imageURL.public_id));
+    // });
   };
 
   const uploadImage = async () => {
     setUploadingImage(true);
     console.log("mulai upload");
+    console.log(profileDetail.image);
+
+    const dateTime = Date.now();
+    const timestamp = Math.floor(dateTime / 1000);
+    console.log(timestamp);
+
     const formData = new FormData();
     formData.append("file", imageSelected);
-    formData.append("upload_preset", "userImage");
+    formData.append("upload_preset", "userTest");
+    // formData.append("api_key", "859443939916899");
+
+    // formData.append("timestamp", `${timestamp}`);
+
+    // const public_id = profileDetail.image.slice(9, 29);
+    // const signature = `public_id=${public_id}&timestamp=${timestamp}gGB3p9OF1yT9Wsu60eBboYElfHk`;
+    // const sha1_hex = sha1Hex(signature);
+    // console.log(signature);
+    // console.log(sha1_hex);
+
+    // {
+    //   public_id ? formData.append("public_id", `${public_id}`) : formData;
+    // }
+
+    // {
+    //   profileDetail.image
+    //     ? formData.append("signature", `${sha1_hex}`)
+    //     : formData;
+    // }
 
     try {
       const uploadImageToCloudinary = await axios.post(
@@ -100,10 +127,10 @@ const UpdateProfilePage = () => {
         formData,
       );
       console.log("SUCCESS UPLOAD TO CLOUDINARY", uploadImageToCloudinary.data);
-      setImageSelected(uploadImageToCloudinary.data.public_id);
+      setImageSelected(uploadImageToCloudinary.data.secure_url);
 
       const imageURL = {
-        public_id: `https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${uploadImageToCloudinary.data.public_id}`,
+        public_id: uploadImageToCloudinary.data.secure_url,
       };
 
       console.log(imageURL);
