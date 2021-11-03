@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Dashboard } from "../components";
 import { useSelector } from "react-redux";
-import { getWarehouseId } from "../services/getWarehouseId";
+import { getUserInfo } from "../services/getUserInfo";
 import api from "../services/api";
+import { getTrxHistory } from "../services/getTrxHistory";
 
 const DashboardPage = ({
   assetValue,
@@ -11,16 +12,17 @@ const DashboardPage = ({
   audit,
   history,
   alert,
+  trxPage,
 }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
 
-  console.log("asset", assetValue);
-  console.log("stockIn", stockIn);
-  console.log("stockOut", stockOut);
-  console.log("audit", audit);
-  console.log("history", history);
-  console.log("alert", alert);
+  // console.log("asset", assetValue);
+  // console.log("stockIn", stockIn);
+  // console.log("stockOut", stockOut);
+  // console.log("audit", audit);
+  // console.log("history", history);
+  // console.log("alert", alert);
 
   var today = new Date(),
     date =
@@ -45,6 +47,7 @@ const DashboardPage = ({
         stockOut={stockOut}
         audit={audit}
         warehouseId={warehouseId}
+        trxPage={trxPage}
       />
     </div>
   );
@@ -53,16 +56,22 @@ const DashboardPage = ({
 export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
-  const warehouseId = await getWarehouseId(uid, token);
+  // const warehouseId = await getWarehouseId(uid, token);
+  const trxPage = 1;
+  const size = 5;
+  const response = await getUserInfo(uid, token);
 
-  const getAssetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
-    headers: {
-      Authorization: "bearer " + token,
+  const getAssetFromDB = await api.get(
+    `/dashboard/totalAsset/${response?.warehouseId}`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
     },
-  });
+  );
 
   const getStockInFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock In`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Stock In`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -71,7 +80,7 @@ export async function getServerSideProps({ req }) {
   );
 
   const getStockOutFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock Out`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Stock Out`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -80,7 +89,7 @@ export async function getServerSideProps({ req }) {
   );
 
   const getAuditFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Audit`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Audit`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -88,17 +97,15 @@ export async function getServerSideProps({ req }) {
     },
   );
 
-  const getHistoryFromDB = await api.get(
-    `/transaction/${warehouseId}?page=1&size=5`,
-    {
-      headers: {
-        Authorization: "bearer " + token,
-      },
-    },
+  const trxHistory = await getTrxHistory(
+    response.warehouseId,
+    token,
+    trxPage,
+    size,
   );
 
   const getAlertFromDB = await api.get(
-    `/dashboard/alertedItems/${warehouseId}?page=1&size=5`,
+    `/dashboard/alertedItems/${response?.warehouseId}?page=1&size=5`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -112,8 +119,9 @@ export async function getServerSideProps({ req }) {
       stockIn: getStockInFromDB.data.data,
       stockOut: getStockOutFromDB.data.data,
       audit: getStockOutFromDB.data.data,
-      history: getHistoryFromDB.data.data,
+      history: trxHistory,
       alert: getAlertFromDB.data.data,
+      trxPage,
     },
   };
 }
