@@ -75,7 +75,7 @@ const ItemTransactionList = ({
                     src={
                       el.itemImage
                         ? el.itemImage
-                        : "../../../public/images/image-placeholder.svg"
+                        : "https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
                     }
                     className="w-10"
                     alt=""

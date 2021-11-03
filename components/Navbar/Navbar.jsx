@@ -122,7 +122,11 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 mr-2 rounded-full"
-                        src={profilePicture ? profilePicture : userPlaceholder}
+                        src={
+                          profilePicture
+                            ? profilePicture
+                            : "https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
+                        }
                         alt=""
                       />
                     </Menu.Button>
