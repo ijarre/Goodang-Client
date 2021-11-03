@@ -13,7 +13,7 @@ const ItemList = ({
   allItems,
   openModal,
   openEditModal,
-  openDeleteModal,
+  // openDeleteModal,
   page = 1,
   setPage,
 }) => {
@@ -70,20 +70,20 @@ const ItemList = ({
     }
   };
 
-  const [popUp, setPopUp] = useState({
+  const [popup, setPopup] = useState({
     show: false,
     id: null,
   });
 
   const handleDelete = (id) => {
-    setPopUp({
+    setPopup({
       show: true,
       id,
     });
   };
 
   const handleDeleteTrue = () => {
-    if (popUp.show && popUp.id) {
+    if (popup.show && popup.id) {
       async (id) => {
         await api.get(`/item/delete/${id}`, {
           headers: {
@@ -91,7 +91,7 @@ const ItemList = ({
           },
         });
       };
-      setPopUp({
+      setPopup({
         show: false,
       });
     }
@@ -161,7 +161,7 @@ const ItemList = ({
             />
           </div>
         )}
-        {popUp && (
+        {popup && (
           <Popup
             handleDeleteTrue={handleDeleteTrue}
             handleDeleteFalse={handleDeleteFalse}
