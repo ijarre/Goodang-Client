@@ -69,7 +69,12 @@ const ItemTransactionList = ({
               </td>
               <td className=" pt-3 flex items-center justify-center">
                 <div className="w-10 ">
-                  <Image src={el.image ? el.image : imagePlaceholder} alt="" />
+                  <Image
+                    src={el.image ? el.image : imagePlaceholder}
+                    width="40"
+                    height="40"
+                    alt=""
+                  />
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
