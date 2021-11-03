@@ -11,7 +11,7 @@ const ReportPage = () => {
     <div>
       <ReactToPrint
         trigger={() => (
-          <button className="mt-3 ml-10">
+          <button className="mt-20 ml-10">
             <DownloadIcon className="flex w-5 h-5 bg-blue-300 rounded" />
           </button>
         )}

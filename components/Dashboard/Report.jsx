@@ -41,7 +41,7 @@ const Report = React.forwardRef((props, ref) => {
   } = router.query;
 
   return (
-    <div className="mx-10 mb-10 mt-3" ref={ref}>
+    <div className="mx-10 mb-10" ref={ref}>
       <div className="font-sans">
         <div className="flex text-xl justify-center font-bold">
           Daily Inventory Report

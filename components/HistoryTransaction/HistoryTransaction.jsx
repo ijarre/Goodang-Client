@@ -23,8 +23,8 @@ const HistoryTransaction = ({ history, trxPage }) => {
     setMaxPage(history?.count % 5);
   }, [history?.count]);
   useEffect(() => {
-    console.log(query.data);
-    console.log(page);
+    // console.log(query.data);
+    // console.log(page);
   }, [query?.data]);
   const currentUser = useSelector((state) => state.user.currentUser);
   const query = useQuery(
