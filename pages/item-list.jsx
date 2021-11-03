@@ -94,6 +94,7 @@ const ItemListPage = () => {
       },
     );
     queryClient.invalidateQueries("items");
+    setShowModal(false);
   };
 
   //user edit his item
