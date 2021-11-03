@@ -94,7 +94,7 @@ const ItemList = ({
     if (popup.show && popup.id) {
         await api.get(`/item/delete/${popup.id}`, {
           headers: {
-            Authorization: "bearer " + currentUser.accessToken,
+            Authorization: "bearer" + currentUser.accessToken,
           },
         });
         setPopup({
