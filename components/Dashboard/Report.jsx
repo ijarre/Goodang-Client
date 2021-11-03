@@ -11,7 +11,7 @@ import {
 
 import { useRouter } from "next/router";
 
-export const Report = React.forwardRef((props, ref) => {
+const Report = React.forwardRef((props, ref) => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const query = useQuery("HistoryToPrint", () =>
@@ -211,3 +211,5 @@ export const Report = React.forwardRef((props, ref) => {
     </div>
   );
 });
+
+export { Report };
