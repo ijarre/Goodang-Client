@@ -5,7 +5,8 @@ import api from "../services/api";
 import { useSelector } from "react-redux";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
-import { DeleteModal } from "../components";
+// import { DeleteModal } from "../components";
+import { popUp } from "../components";
 import { useRouter } from "next/router";
 import { getAllItems } from "../services/getAllItems";
 import { useQuery, useQueryClient } from "react-query";
@@ -14,7 +15,11 @@ const ItemListPage = () => {
   const [items, setItems] = useState();
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [popUp, setPopUp] = useState({
+  //   show: false,
+  //   id: null,
+  // })
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState({
@@ -94,6 +99,28 @@ const ItemListPage = () => {
   //user delete his item
 
   // const handleDelete = (id) => {
+  //   setPopUp({
+  //     show: true,
+  //     id,
+  //   });
+  // };
+
+  // const handleDeleteTrue = () => {
+  //   if (popUp.show && popUp.id){
+  //     async(id) => {
+  //       await api.get(`/item/delete/${id}`, {
+  //         headers: {
+  //           Authorization: "bearer" + currentUser.accessToken,
+  //         },
+  //       })
+  //     };
+  //     setPopUp({
+  //       show: false,
+  //     })
+  //   }
+  // }
+
+  // const handleDelete = (id) => {
   //   console.log(id);
   //   setShowDeleteModal({
   //     show: true,
@@ -114,18 +141,18 @@ const ItemListPage = () => {
     
   //   }
 
-  const handleDelete = async (id) => {
-    await api.get(`/item/delete/${id}`, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
-      },
-    });
-  };
+  // const handleDelete = async (id) => {
+  //   await api.get(`/item/delete/${id}`, {
+  //     headers: {
+  //       Authorization: "bearer " + currentUser.accessToken,
+  //     },
+  //   });
+  // };
 
-  const openDeleteModal = (id) => {
-    setShowDeleteModal((prev) => !prev);
-    console.log(setShowDeleteModal?.id);
-  };
+  // const openDeleteModal = (id) => {
+  //   setShowDeleteModal((prev) => !prev);
+  //   console.log(setShowDeleteModal?.id);
+  // };
 
   //user edit his item
 
@@ -234,23 +261,27 @@ const ItemListPage = () => {
         handleSubmitItemImage={handleSubmitItemImage}
         previewImage={previewImage}
       />
-      <DeleteModal
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+      {/* <popUp
+        // showDeleteModal={showDeleteModal}
+        // setShowDeleteModal={setShowDeleteModal}
+        // isOpen={isOpen}
+        // setIsOpen={setIsOpen}
+        // handleDelete={handleDelete}
+        // // handleDeleteTrue={handleDeleteTrue}
         handleDelete={handleDelete}
-        // handleDeleteTrue={handleDeleteTrue}
-      />
+        handleDelete={handleDeleteTrue}
+      /> */}
       <ItemList
         items={items}
         allItems={allItems}
-        handleDelete={handleDelete}
+        // handleDelete={handleDelete}
         openModal={openModal}
         openEditModal={openEditModal}
-        openDeleteModal={openDeleteModal}
+        // openDeleteModal={openDeleteModal}
         page={page}
         setPage={setPage}
+        // handleDeleteTrue={handleDeleteTrue}
+        // handleDeleteFalse={handleDeleteFalse}
       />
     </div>
   );

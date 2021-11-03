@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ItemTable from "./ItemTable";
+import Popup from "../ModalDeleteItem";
 import {
   SearchIcon,
   ChevronLeftIcon,
@@ -12,7 +13,6 @@ const ItemList = ({
   allItems,
   openModal,
   openEditModal,
-  handleDelete,
   openDeleteModal,
   page = 1,
   setPage,
@@ -69,6 +69,41 @@ const ItemList = ({
       }
     }
   };
+
+  const [popUp, setPopUp] = useState({
+    show: false,
+    id: null,
+  });
+
+  const handleDelete = (id) => {
+    setPopUp({
+      show: true,
+      id,
+    });
+  };
+
+  const handleDeleteTrue = () => {
+    if (popUp.show && popUp.id) {
+      async (id) => {
+        await api.get(`/item/delete/${id}`, {
+          headers: {
+            Authorization: "bearer" + currentUser.accessToken,
+          },
+        });
+      };
+      setPopUp({
+        show: false,
+      });
+    }
+  };
+
+  const handleDeleteFalse = () => {
+    setPopup({
+      show: false,
+      id: null,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
       <h1 className="ml-4 font-bold text-2xl">Item List</h1>
@@ -122,10 +157,17 @@ const ItemList = ({
                   : items?.rows
               }
               openEditModal={openEditModal}
-              openDeleteModal={openDeleteModal}
+              handleDelete={handleDelete}
             />
           </div>
         )}
+        {popUp && (
+          <Popup
+            handleDeleteTrue={handleDeleteTrue}
+            handleDeleteFalse={handleDeleteFalse}
+          />
+        )}
+
         {!searchField || searchField?.length === 0 ? (
           <div className="flex justify-between px-4 py-2">
             <div

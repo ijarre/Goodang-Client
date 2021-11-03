@@ -1,6 +1,6 @@
 import React from "react";
 
-const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete }) => {
+const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete, id }) => {
   return (
     <table className="w-full">
       <thead className="bg-gray-100">
@@ -69,7 +69,7 @@ const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete }) => {
                   <button
                     className="bg-gray-400 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
                     onClick={() =>
-                      openDeleteModal()
+                      handleDelete(id)
                     }
                   >
                     Delete
