@@ -212,4 +212,4 @@ const Report = React.forwardRef((props, ref) => {
   );
 });
 
-export { Report };
+export default Report;
