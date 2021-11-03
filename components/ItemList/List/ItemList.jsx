@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useQueryClient} from "react-query";
 import ItemTable from "./ItemTable";
 import Popup from "../ModalDeleteItem/Popup";
 import {
@@ -72,6 +73,9 @@ const ItemList = ({
   };
 
   // dimulai dari line ini sampai dengan line 108 untuk handle delete, kemudian liat line 166 sampai 171 itu untuk modal
+  const {currentUser}=useSelector((state) =>state.user);
+  const queryClient = useQueryClient();
+
   const [popup, setPopup] = useState({
     show: false,
     id: null,
@@ -84,19 +88,18 @@ const ItemList = ({
     });
   };
 
-  const handleDeleteTrue = () => {
+  const handleDeleteTrue = async () => {
     if (popup.show && popup.id) {
-      async (id) => {
-        await api.get(`/item/delete/${id}`, {
+        await api.get(`/item/delete/${popup.id}`, {
           headers: {
-            Authorization: "bearer" + currentUser.accessToken,
+            Authorization: "bearer"  + currentUser.accessToken,
           },
         });
+        setPopup({
+          show: false,
+        });
+        queryClient.invalidateQueries("items");
       };
-      setPopup({
-        show: false,
-      });
-    }
   };
 
   const handleDeleteFalse = () => {
@@ -163,12 +166,12 @@ const ItemList = ({
             />
           </div>
         )}
-        {/* {popup && (
+        {popup && (
           <Popup
             handleDeleteTrue={handleDeleteTrue}
             handleDeleteFalse={handleDeleteFalse}
           />
-        )} */}
+        )}
 
         {!searchField || searchField?.length === 0 ? (
           <div className="flex justify-between px-4 py-2">
