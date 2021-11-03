@@ -14,6 +14,7 @@ const ItemList = ({
   openModal,
   openEditModal,
   // openDeleteModal,
+  //handleDelete,
   page = 1,
   setPage,
 }) => {
@@ -161,12 +162,12 @@ const ItemList = ({
             />
           </div>
         )}
-        {popup && (
+        {/* {popup && (
           <Popup
             handleDeleteTrue={handleDeleteTrue}
             handleDeleteFalse={handleDeleteFalse}
           />
-        )}
+        )} */}
 
         {!searchField || searchField?.length === 0 ? (
           <div className="flex justify-between px-4 py-2">
