@@ -86,7 +86,7 @@ const ItemListPage = () => {
     setIsOpen(true);
     await api.post(
       `/item`,
-      { ...fields, warehouseId: currentUser.warehouseId, itemImage:imageSelected.secure_url },
+      { ...fields, warehouseId: currentUser.warehouseId, itemImage:imageSelected?imageSelected.secure_url:null, },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
@@ -107,7 +107,7 @@ const ItemListPage = () => {
     e.preventDefault();
     await api.post(
       `/item/update/${editField.id}`,
-      { ...editField, itemImage: imageSelected.secure_url, },
+      { ...editField, itemImage: imageSelected?imageSelected.secure_url:null, },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
