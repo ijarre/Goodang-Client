@@ -71,6 +71,7 @@ const ItemList = ({
     }
   };
 
+  // dimulai dari line ini sampai dengan line 108 untuk handle delete, kemudian liat line 166 sampai 171 itu untuk modal
   const [popup, setPopup] = useState({
     show: false,
     id: null,
