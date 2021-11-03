@@ -41,7 +41,7 @@ const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete, id }) 
             <tr key={el.id}>
               <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
               <td>
-                <img className="h-10 w-10 ml-5 " src={el.image} alt="" />
+                <img className="h-10 w-10 ml-5 " src={el.itemImage} alt="" />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {el?.Categories?.map((category) => {
@@ -61,13 +61,13 @@ const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete, id }) 
               <td className="px-9 py-4 ml-20">
                 <span className="mr-6">
                   <button
-                    className="bg-gray-400 hover:bg-green-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
+                    className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
                     onClick={() => openEditModal(el)}
                   >
                     Edit
                   </button>
                   <button
-                    className="bg-gray-400 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
+                    className="bg-red-400 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
                     onClick={() =>
                       handleDelete(el.id)
                     }
