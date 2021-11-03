@@ -86,7 +86,11 @@ const ItemListPage = () => {
     setIsOpen(true);
     await api.post(
       `/item`,
-      { ...fields, warehouseId: currentUser.warehouseId, itemImage:imageSelected?imageSelected.secure_url:null, },
+      {
+        ...fields,
+        warehouseId: currentUser.warehouseId,
+        itemImage: imageSelected ? imageSelected.secure_url : null,
+      },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
@@ -95,6 +99,13 @@ const ItemListPage = () => {
     );
     queryClient.invalidateQueries("items");
     setShowModal(false);
+    setFields({
+      itemName: "",
+      unit: "",
+      stockQuantity: "",
+      minimumQuantity: "",
+      categoryName: "",
+    });
   };
 
   //user edit his item
@@ -108,7 +119,10 @@ const ItemListPage = () => {
     e.preventDefault();
     await api.post(
       `/item/update/${editField.id}`,
-      { ...editField, itemImage: imageSelected?imageSelected.secure_url:null, },
+      {
+        ...editField,
+        itemImage: imageSelected ? imageSelected.secure_url : null,
+      },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
@@ -150,7 +164,6 @@ const ItemListPage = () => {
   };
 
   const uploadImage = async (e) => {
-    
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "itemImage");
@@ -160,11 +173,9 @@ const ItemListPage = () => {
       formData,
     );
 
-
     setImageSelected(response?.data);
 
     setItemImageIsOpen(false);
-
   };
 
   const { id } = router.query;
