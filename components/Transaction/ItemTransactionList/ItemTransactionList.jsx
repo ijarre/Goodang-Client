@@ -22,6 +22,7 @@ const ItemTransactionList = ({
     }
     return output;
   };
+
   const cart = useSelector((state) => state.trx);
   if (loadingData) {
     return "loading data...";
@@ -62,6 +63,7 @@ const ItemTransactionList = ({
       </thead>
       <tbody className=" divide-y ">
         {items?.map((el) => {
+          console.log(el.itemImage);
           return (
             <tr key={el.id}>
               <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -69,7 +71,15 @@ const ItemTransactionList = ({
               </td>
               <td className=" pt-3 flex items-center justify-center">
                 <div className="w-10 ">
-                  <Image src={el.image ? el.image : imagePlaceholder} alt="" />
+                  <img
+                    src={
+                      el.itemImage
+                        ? el.itemImage
+                        : "../../../public/images/image-placeholder.svg"
+                    }
+                    className="w-10"
+                    alt=""
+                  />
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
