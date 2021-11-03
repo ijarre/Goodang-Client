@@ -69,7 +69,7 @@ const ItemTable = ({ items, openEditModal, openDeleteModal, handleDelete, id }) 
                   <button
                     className="bg-gray-400 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
                     onClick={() =>
-                      handleDelete(id)
+                      handleDelete(el.id)
                     }
                   >
                     Delete

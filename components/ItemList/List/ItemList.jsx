@@ -3,6 +3,7 @@ import {useQueryClient} from "react-query";
 import { useSelector } from "react-redux";
 import ItemTable from "./ItemTable";
 import Popup from "../ModalDeleteItem/Popup";
+import api from "../../../services/api";
 import {
   SearchIcon,
   ChevronLeftIcon,
@@ -93,7 +94,7 @@ const ItemList = ({
     if (popup.show && popup.id) {
         await api.get(`/item/delete/${popup.id}`, {
           headers: {
-            Authorization: "bearer"  + currentUser.accessToken,
+            Authorization: "bearer " + currentUser.accessToken,
           },
         });
         setPopup({
@@ -167,7 +168,7 @@ const ItemList = ({
             />
           </div>
         )}
-        {popup && (
+        {popup.show && (
           <Popup
             handleDeleteTrue={handleDeleteTrue}
             handleDeleteFalse={handleDeleteFalse}
