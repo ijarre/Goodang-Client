@@ -1,32 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowUpIcon,
   ArrowDownIcon,
   SwitchHorizontalIcon,
   ArrowSmRightIcon,
   RefreshIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ClipboardListIcon,
 } from "@heroicons/react/outline";
+import { useQuery } from "react-query";
+import { getTrxHistory } from "../../services/getTrxHistory";
+import { useSelector } from "react-redux";
 
-const HistoryTransaction = ({ history }) => {
+const HistoryTransaction = ({ history, trxPage }) => {
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState();
   const getDate = (date) => {
     return new Date(date);
   };
+  useEffect(() => {
+    setMaxPage(history?.count % 5);
+  }, [history?.count]);
+  useEffect(() => {
+    console.log(query.data);
+    console.log(page);
+  }, [query?.data]);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const query = useQuery(
+    ["trxHistory", page],
+    () =>
+      getTrxHistory(currentUser.warehouseId, currentUser.accessToken, page, 5),
+    { initialData: history },
+  );
+
   function refreshPage() {
     window.location.reload(false);
   }
   return (
     <>
-      <div className="flex-col w-full h-96 bg-white rounded-xl border border-gray-300 p-4">
+      <div className="flex-col w-full h-auto bg-white rounded-xl border border-gray-300 p-3">
         <div className="flex pb-3">
           <button onClick={refreshPage}>
-            <RefreshIcon className="flex w-4 h-4 bg-blue-400 rounded" />
+            <ClipboardListIcon className="flex w-4 h-4 bg-blue-400 rounded" />
           </button>
           <div className="flex ml-2 text-sm text-gray-900 md:text-m font-bold">
             Transaction History
           </div>
         </div>
 
-        <div className="overflow-y-auto h-80">
+        <div className="overflow-y-auto h-auto">
           <table className="w-full">
             <thead className="bg-gray-100 sticky top-0">
               <tr>
@@ -76,8 +99,8 @@ const HistoryTransaction = ({ history }) => {
               </tr>
             </thead>
             <tbody className="divide-y">
-              {history &&
-                history?.map((el, i) => {
+              {query?.data &&
+                query?.data?.rows.map((el, i) => {
                   return (
                     // <div className="bg-red">
                     //   <pre>{JSON.stringify(el, null, 2)}</pre>
@@ -103,7 +126,7 @@ const HistoryTransaction = ({ history }) => {
                       <td>
                         <img
                           className="h-10 w-10 ml-4 my-2"
-                          src={el.image}
+                          src={el.Item.itemImage}
                           alt=""
                         />
                       </td>
@@ -136,6 +159,52 @@ const HistoryTransaction = ({ history }) => {
                 })}
             </tbody>
           </table>
+        </div>
+        <div className="flex justify-between px-4 py-2">
+          <div
+            className={`flex ${page !== 1 && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== 1) {
+                let current = page;
+                setPage((current -= 1));
+              }
+            }}
+          >
+            <ChevronLeftIcon
+              className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+            />
+            <span
+              className={`${page == 1 ? "text-gray-300 text-sm" : "text-sm"}`}
+            >
+              Prev
+            </span>
+          </div>
+          <div className="text-sm">
+            Page: {page} of {maxPage}
+          </div>
+
+          <div
+            className={`flex ${page !== maxPage && "cursor-pointer"}`}
+            onClick={() => {
+              if (page !== Number(maxPage)) {
+                let current = page;
+                setPage((current += 1));
+              }
+            }}
+          >
+            <span
+              className={`${
+                page == Number(maxPage) ? "text-gray-300 text-sm" : "text-sm"
+              }`}
+            >
+              Next
+            </span>
+            <ChevronRightIcon
+              className={`w-5 ${
+                page == Number(maxPage) ? "text-gray-300 text-sm" : "text-sm"
+              }`}
+            />
+          </div>
         </div>
       </div>
     </>

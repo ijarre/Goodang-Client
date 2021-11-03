@@ -16,6 +16,7 @@ function classNames(...classes) {
 export default function Navbar({ isAuthenticated, handleLogout }) {
   const router = useRouter();
   const [current, setCurrent] = useState();
+
   const { profilePicture } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {

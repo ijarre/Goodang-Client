@@ -34,6 +34,9 @@ const userSlice = createSlice({
     setWarehouseId: (state, { payload }) => {
       state.currentUser.warehouseId = payload.warehouseId;
     },
+    changeProfilePicture: (state, { payload }) => {
+      state.currentUser.profilePicture = payload;
+    },
   },
 });
 
@@ -41,6 +44,7 @@ export const {
   setCurrentUser,
   removeCurrentUser,
   setWarehouseId,
+  changeProfilePicture,
   setProfilePicture,
 } = userSlice.actions;
 export default userSlice.reducer;
