@@ -41,24 +41,80 @@ export const Report = React.forwardRef((props, ref) => {
   } = router.query;
 
   return (
-    <div className="m-10" ref={ref}>
+    <div className="mx-10 mb-10 mt-3" ref={ref}>
       <div className="font-sans">
         <div className="flex text-xl justify-center font-bold">
           Daily Inventory Report
         </div>
-        <div className="flex text-md justify-center font-bold">{date}</div>
-        <div className="flex text-md justify-center font-bold">
+        <div className="flex text-lg justify-center font-bold">
           Warehouse {warehouseId}
         </div>
-        <div>Total Asset Item Today = {assetItems}</div>
-        <div>Total Asset Quantity Today={assetQuantity}</div>
-        <div>Stock In Item Today={stockInItems}</div>
-        <div>Stock In Quantity Today={stockInQuantity}</div>
-        <div>Stock Out Item Today={stockOutItems}</div>
-        <div>Stock Out Quantity Today={stockOutQuantity}</div>
-        <div>Audit Item Today={auditItems}</div>
-        <div>Audit Quantity Today={auditQuantity}</div>
-        <table className="w-full">
+        <div className="flex text-md justify-center font">{date}</div>
+
+        <div className="flex flex-1 space-x-4 w-auto mt-3">
+          <div
+            className={`flex-1 bg-yellow-300 text-gray-700 rounded-lg py-3 px-5 shadow-md w-48 h-28`}
+          >
+            <span className="text-sm font-bold py-2">Total Asset</span>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-black">{assetItems}</span>
+              <span className="px-2">items </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-extrabold">
+                {assetQuantity}
+              </span>
+              <span className="px-2">quantities</span>
+            </div>
+          </div>
+          <div
+            className={`flex-1 bg-blue-200 text-gray-700 rounded-lg py-3 px-5 shadow-md w-48 h-28`}
+          >
+            <span className="text-sm font-bold py-2">Stock In Today</span>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-black">{stockInItems}</span>
+              <span className="px-2">items </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-extrabold">
+                {stockInQuantity}
+              </span>
+              <span className="px-2">quantities</span>
+            </div>
+          </div>
+          <div
+            className={`flex-1 bg-violet-300 text-gray-700 rounded-lg py-3 px-5 shadow-md w-48 h-28`}
+          >
+            <span className="text-sm font-bold py-2">Stock Out Today</span>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-black">{stockOutItems}</span>
+              <span className="px-2">items </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-extrabold">
+                {stockOutQuantity}
+              </span>
+              <span className="px-2">quantities</span>
+            </div>
+          </div>
+          <div
+            className={`flex-1 bg-lime-300 text-gray-700 rounded-lg py-3 px-5 shadow-md w-48 h-28`}
+          >
+            <span className="text-sm font-bold py-2">Audit Today</span>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-black">{auditItems}</span>
+              <span className="px-2">items </span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl flex font-extrabold">
+                {auditQuantity}
+              </span>
+              <span className="px-2">quantities</span>
+            </div>
+          </div>
+        </div>
+
+        <table className="w-full my-3">
           <thead className="bg-gray-100 sticky top-0">
             <tr>
               <th
@@ -88,7 +144,7 @@ export const Report = React.forwardRef((props, ref) => {
               </th>
               <th
                 scope="col"
-                className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="pl-32 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Balance
               </th>
