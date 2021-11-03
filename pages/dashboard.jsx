@@ -56,7 +56,7 @@ const DashboardPage = ({
 export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
-  const warehouseId = await getWarehouseId(uid, token);
+  // const warehouseId = await getWarehouseId(uid, token);
   const trxPage = 1;
   const size = 5;
   const response = await getUserInfo(uid, token);
@@ -80,7 +80,7 @@ export async function getServerSideProps({ req }) {
   );
 
   const getStockOutFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock Out`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Stock Out`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -89,7 +89,7 @@ export async function getServerSideProps({ req }) {
   );
 
   const getAuditFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Audit`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Audit`,
     {
       headers: {
         Authorization: "bearer " + token,
@@ -97,10 +97,15 @@ export async function getServerSideProps({ req }) {
     },
   );
 
-  const trxHistory = await getTrxHistory(warehouseId, token, trxPage, size);
+  const trxHistory = await getTrxHistory(
+    response.warehouseId,
+    token,
+    trxPage,
+    size,
+  );
 
   const getAlertFromDB = await api.get(
-    `/dashboard/alertedItems/${warehouseId}?page=1&size=5`,
+    `/dashboard/alertedItems/${response?.warehouseId}?page=1&size=5`,
     {
       headers: {
         Authorization: "bearer " + token,
