@@ -1,12 +1,12 @@
 import api from "./api";
 
-const getWarehouseId = async (uid, token) => {
+const getUserInfo = async (uid, token) => {
   const response = await api.get(`/user/${uid}`, {
     headers: {
       Authorization: "Bearer " + token,
     },
   });
-  return response?.data?.data?.warehouseId;
+  return response?.data?.data;
 };
 
-export { getWarehouseId };
+export { getUserInfo };

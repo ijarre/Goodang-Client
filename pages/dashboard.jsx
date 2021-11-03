@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dashboard } from "../components";
 import { useSelector } from "react-redux";
-import { getWarehouseId } from "../services/getWarehouseId";
+import { getUserInfo } from "../services/getUserInfo";
 import api from "../services/api";
 
 const DashboardPage = ({
@@ -53,16 +53,19 @@ const DashboardPage = ({
 export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
-  const warehouseId = await getWarehouseId(uid, token);
+  const response = await getUserInfo(uid, token);
 
-  const getAssetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
-    headers: {
-      Authorization: "bearer " + token,
+  const getAssetFromDB = await api.get(
+    `/dashboard/totalAsset/${response?.warehouseId}`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
     },
-  });
+  );
 
   const getStockInFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock In`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Stock In`,
     {
       headers: {
         Authorization: "bearer " + token,

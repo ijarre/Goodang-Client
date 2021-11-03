@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import cookieCutter from "cookie-cutter";
 import api from "../services/api";
-import { getWarehouseId } from "../services/getWarehouseId";
+import { getUserInfo } from "../services/getUserInfo";
 
 const ssr = ({ value }) => {
   return (
@@ -19,13 +19,16 @@ const ssr = ({ value }) => {
 export async function getServerSideProps({ req }) {
   const token = req.cookies.token;
   const uid = req.cookies.uid;
-  const warehouseId = await getWarehouseId(uid, token);
+  const response = await getUserInfo(uid, token);
 
-  const assetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
-    headers: {
-      Authorization: "bearer " + token,
+  const assetFromDB = await api.get(
+    `/dashboard/totalAsset/${response?.warehouseId}`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
     },
-  });
+  );
 
   return {
     props: {
