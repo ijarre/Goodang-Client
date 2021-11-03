@@ -4,7 +4,7 @@ import { DownloadIcon } from "@heroicons/react/outline";
 
 import { Report } from "../components";
 
-const Report = () => {
+const ReportPage = () => {
   const componentRef = useRef();
 
   return (
@@ -22,4 +22,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default ReportPage;
