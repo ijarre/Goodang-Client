@@ -39,7 +39,8 @@ const Modal = ({
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
-  const { itemName, unit, stockQuantity, minimumQuantity, categoryName } = fields;
+  const { itemName, unit, stockQuantity, minimumQuantity, categoryName } =
+    fields;
 
   return (
     <>
@@ -53,7 +54,7 @@ const Modal = ({
             className="w-5/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
             showModal={showModal}
           >
-            <div className="flex-col mt-9 ml-40 justify-center items-center bg-gray-50">
+            <div className="ml-36 justify-center items-center bg-gray-50">
               <HiOutlineX
                 as="div"
                 aria-label="Close modal"
@@ -85,14 +86,30 @@ const Modal = ({
                     </div>
                     <div className="md:w-1/2 space-y-1 md:text-sm">
                       <label htmlFor="">Insert Image</label>
-                      <div>
+                      <div className="flex">
+                        <div className="pr-3">
+                          <img
+                            src={"images/box-added.png"}
+                            alt=""
+                            className="w-6 h-6 absolute rounded-md"
+                          />
+                          {previewImage && (
+                            <img
+                              src={previewImage}
+                              alt="chosen"
+                              className="w-6 h-6 absolute bg-white rounded-md"
+                            />
+                          )}
+                        </div>
+                        <div className="pl-3">
                         <button
                           type="button"
-                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200 text-sm w-1/2"
+                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200 text-sm"
                           onClick={() => setItemImageIsOpen(true)}
                         >
                           Add Image
                         </button>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -136,7 +153,6 @@ const Modal = ({
                           <option>Fashion</option>
                           <option>Tools</option>
                           <option>Stationary</option>
-                          
                         </select>
                       </div>
                     </div>
@@ -235,7 +251,7 @@ const Modal = ({
                     <div className="w-full flex justify-center align-middle">
                       <div className="md:w-44 relative">
                         <img
-                          src={"images/user.png"}
+                          src={"images/box-added.png"}
                           alt=""
                           className="absolute"
                         />
