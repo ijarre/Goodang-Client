@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import ReactToPrint from "react-to-print";
 import { DownloadIcon } from "@heroicons/react/outline";
 import { AlertedItem, HistoryTransaction, Card } from "..";
-import { Report } from "./Report";
+import router from "next/router";
 
 const Dashboard = ({
   assetValue,
@@ -15,7 +15,6 @@ const Dashboard = ({
   warehouseId,
   trxPage,
 }) => {
-  const componentRef = useRef();
   return (
     <div className="font-sans">
       <div className="min-h-screen bg-white mx-auto max-w-screen-xl md:flex ">
@@ -26,17 +25,28 @@ const Dashboard = ({
                 <div className="flex font-bold text-gray-900 md:text-xl mr-4 my-1 w-max">
                   Daily Report
                 </div>
-                <div className="flex">
-                  <ReactToPrint
-                    trigger={() => (
-                      <button>
-                        <DownloadIcon className="flex w-5 h-5 bg-blue-300 rounded" />
-                      </button>
-                    )}
-                    content={() => componentRef.current}
-                  />
-                  <Report ref={componentRef} className="hidden" />
-                </div>
+                <button
+                  onClick={() => {
+                    router.push({
+                      pathname: "/report",
+
+                      query: {
+                        warehouseId: warehouseId,
+                        date: infoDate.currentDate.slice(0, 25),
+                        assetItems: assetValue[0].countItem,
+                        assetQuantity: assetValue[0].totalQuantity,
+                        stockInItems: stockIn[0].countItems,
+                        stockInQuantity: stockIn[0].totalQuantity,
+                        stockOutItems: stockOut[0].countItems,
+                        stockOutQuantity: stockOut[0].totalQuantity,
+                        auditItems: audit[0].countItems,
+                        auditQuantity: audit[0].totalQuantity,
+                      },
+                    });
+                  }}
+                >
+                  <DownloadIcon className="flex w-5 h-5 bg-blue-300 rounded" />
+                </button>
               </div>
               <div className="font-light text-gray-900 text-sm bg-gray-200 rounded-md px-2 py-1 my-1 w-max">
                 <h4>{infoDate.currentDate.slice(0, 25)}</h4>
