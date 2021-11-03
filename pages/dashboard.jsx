@@ -17,12 +17,12 @@ const DashboardPage = ({
   const currentUser = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
 
-  console.log("asset", assetValue);
-  console.log("stockIn", stockIn);
-  console.log("stockOut", stockOut);
-  console.log("audit", audit);
-  console.log("history", history);
-  console.log("alert", alert);
+  // console.log("asset", assetValue);
+  // console.log("stockIn", stockIn);
+  // console.log("stockOut", stockOut);
+  // console.log("audit", audit);
+  // console.log("history", history);
+  // console.log("alert", alert);
 
   var today = new Date(),
     date =

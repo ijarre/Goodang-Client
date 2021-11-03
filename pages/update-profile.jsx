@@ -12,7 +12,7 @@ const UpdateProfilePage = () => {
   useEffect(() => {
     if (currentUser) {
       getUserFromDB().then((user) => {
-        console.log(user);
+        // console.log(user);
         setProfileDetail({
           firstName: user.data.firstName,
           lastName: user.data.lastName,
@@ -56,7 +56,7 @@ const UpdateProfilePage = () => {
         },
       });
       setIsOpen(true);
-      console.log(profileDetail);
+      // console.log(profileDetail);
     } catch (err) {}
   };
 
@@ -80,7 +80,7 @@ const UpdateProfilePage = () => {
   };
 
   const handleSubmitFile = (e) => {
-    console.log("submitting");
+    // console.log("submitting");
     e.preventDefault();
     uploadImage();
     // if (!previewSource) return;
@@ -91,12 +91,12 @@ const UpdateProfilePage = () => {
 
   const uploadImage = async () => {
     setUploadingImage(true);
-    console.log("mulai upload");
-    console.log(profileDetail.image);
+    // console.log("mulai upload");
+    // console.log(profileDetail.image);
 
     const dateTime = Date.now();
     const timestamp = Math.floor(dateTime / 1000);
-    console.log(timestamp);
+    // console.log(timestamp);
 
     const formData = new FormData();
     formData.append("file", imageSelected);
@@ -126,14 +126,14 @@ const UpdateProfilePage = () => {
         "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
         formData,
       );
-      console.log("SUCCESS UPLOAD TO CLOUDINARY", uploadImageToCloudinary.data);
+      // console.log("SUCCESS UPLOAD TO CLOUDINARY", uploadImageToCloudinary.data);
       setImageSelected(uploadImageToCloudinary.data.secure_url);
 
       const imageURL = {
         public_id: uploadImageToCloudinary.data.secure_url,
       };
 
-      console.log(imageURL);
+      // console.log(imageURL);
 
       const uploadImageToDB = await api.post(
         `/user/upload/${currentUser.uid}`,
@@ -144,15 +144,15 @@ const UpdateProfilePage = () => {
           },
         },
       );
-      console.log("SUCCESS UPLOAD TO DB", uploadImageToDB.data);
+      // console.log("SUCCESS UPLOAD TO DB", uploadImageToDB.data);
 
       setProfPicIsOpen(false);
       setUploadingImage(false);
-      console.log("selesai upload");
+      // console.log("selesai upload");
       return imageURL;
     } catch (error) {
       setUploadingImage(false);
-      console.log(error);
+      // console.log(error);
     }
   };
 
