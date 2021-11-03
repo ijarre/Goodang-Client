@@ -126,7 +126,7 @@ const HistoryTransaction = ({ history, trxPage }) => {
                       <td>
                         <img
                           className="h-10 w-10 ml-4 my-2"
-                          src={el.image}
+                          src={el.Item.itemImage}
                           alt=""
                         />
                       </td>

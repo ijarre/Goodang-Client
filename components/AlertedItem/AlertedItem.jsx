@@ -56,10 +56,10 @@ const AlertedItem = ({ alert }) => {
                   return (
                     <tr key={el.id}>
                       <td>
-                        {el.image ? (
+                        {el.itemImage ? (
                           <img
                             className="h-10 w-10 ml-5"
-                            src={el.image}
+                            src={el.itemImage}
                             alt=""
                           />
                         ) : (

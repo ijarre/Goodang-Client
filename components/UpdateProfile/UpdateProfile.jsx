@@ -44,7 +44,6 @@ const UpdateProfile = ({
             ) : profileDetail.image ? (
               <img
                 src={profileDetail.image}
-                bav
                 className="w-full h-full absolute bg-white rounded-full object-cover"
               />
             ) : (
