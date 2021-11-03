@@ -92,74 +92,14 @@ const ItemListPage = () => {
           Authorization: "bearer " + currentUser.accessToken,
         },
       },
-      console.log(api?.data)
     );
   };
-
-  //user delete his item
-
-  // const handleDelete = (id) => {
-  //   setPopUp({
-  //     show: true,
-  //     id,
-  //   });
-  // };
-
-  // const handleDeleteTrue = () => {
-  //   if (popUp.show && popUp.id){
-  //     async(id) => {
-  //       await api.get(`/item/delete/${id}`, {
-  //         headers: {
-  //           Authorization: "bearer" + currentUser.accessToken,
-  //         },
-  //       })
-  //     };
-  //     setPopUp({
-  //       show: false,
-  //     })
-  //   }
-  // }
-
-  // const handleDelete = (id) => {
-  //   console.log(id);
-  //   setShowDeleteModal({
-  //     show: true,
-  //     id,
-  //   });
-  // };
-
-  // const handleDeleteTrue = () => {
-  //   if (showDeleteModal.show && showDeleteModal.id) {
-  //     const deleteItem = async (id) => {
-  //       await api.get(`/item/delete/${id}`, {
-  //         headers: {
-  //           Authorization: "bearer" + currentUser.accessToken,
-  //         },
-  //       });
-  //     };
-  //   }   
-    
-  //   }
-
-  // const handleDelete = async (id) => {
-  //   await api.get(`/item/delete/${id}`, {
-  //     headers: {
-  //       Authorization: "bearer " + currentUser.accessToken,
-  //     },
-  //   });
-  // };
-
-  // const openDeleteModal = (id) => {
-  //   setShowDeleteModal((prev) => !prev);
-  //   console.log(setShowDeleteModal?.id);
-  // };
 
   //user edit his item
 
   const openEditModal = (el) => {
     setEditField(el);
     setShowEditModal((prev) => !prev);
-    console.log(el);
   };
 
   const handleSubmit = async (e) => {
@@ -217,7 +157,6 @@ const ItemListPage = () => {
       formData,
     );
 
-    console.log("success cloudinary", response?.data);
 
     setImageSelected(response?.data);
 
