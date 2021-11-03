@@ -9,7 +9,7 @@ const Footer = () => {
         <Image src={PhotoFive} className="" alt="" />
       </div>
 
-      <div className="text-white text-xs racking-widest relative mt-12 ml-80 pl-10">
+      <div className="text-white text-xs racking-widest relative mt-8 ml-80 pl-10">
         <span>Copyright © 2021 Goodang Inc Developer. All Rights Reserved</span>
       </div>
 

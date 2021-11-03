@@ -8,3 +8,7 @@ export function camelize(str) {
 export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
+export function maximumPage(totalItem, itemPerPage) {
+  return Math.ceil(totalItem / itemPerPage).toString();
+}
