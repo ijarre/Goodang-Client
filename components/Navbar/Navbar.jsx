@@ -2,11 +2,12 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import LogoHorizontal from "../../public/images/logo-horizontal-white.svg";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import userPlaceholder from "../../public/images/user.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -119,19 +120,11 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                       <span className="sr-only">Open user menu</span>
-                      {profilePicture ? (
-                        <img
-                          className="h-8 w-8 mr-2 rounded-full bg-white"
-                          src={`https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635330384/${profilePicture}`}
-                          alt=""
-                        />
-                      ) : (
-                        <img
-                          className="h-8 w-8 mr-2 rounded-full"
-                          src="https://res.cloudinary.com/dvsjfqm9e/image/upload/v1635518508/userImage/user_jpbyjy.png"
-                          alt=""
-                        />
-                      )}
+                      <img
+                        className="h-8 w-8 mr-2 rounded-full"
+                        src={profilePicture ? profilePicture : userPlaceholder}
+                        alt=""
+                      />
                     </Menu.Button>
                   </div>
                   <Transition

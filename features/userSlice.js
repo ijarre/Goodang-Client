@@ -6,6 +6,7 @@ const initialState = {
     accessToken: null,
     uid: null,
     warehouseId: null,
+    profilePicture: null,
   },
 };
 
@@ -19,6 +20,9 @@ const userSlice = createSlice({
         accessToken: payload.accessToken,
         uid: payload.uid,
       };
+    },
+    setProfilePicture: (state, { payload }) => {
+      state.currentUser = { ...state.currentUser, profilePicture: payload };
     },
     removeCurrentUser: (state) => {
       (state.isAuthenticated = false),
@@ -41,5 +45,6 @@ export const {
   removeCurrentUser,
   setWarehouseId,
   changeProfilePicture,
+  setProfilePicture,
 } = userSlice.actions;
 export default userSlice.reducer;

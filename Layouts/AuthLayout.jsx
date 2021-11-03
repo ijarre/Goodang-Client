@@ -5,13 +5,14 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import {
   removeCurrentUser,
   setCurrentUser,
+  setProfilePicture,
   setWarehouseId,
 } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LoadingPage } from "../components";
 import { setLoading } from "../features/appSlice";
-import { getWarehouseId } from "../services/getWarehouseId";
+import { getUserInfo } from "../services/getUserInfo";
 import router from "next/router";
 import cookieCutter from "cookie-cutter";
 import Head from "next/head";
@@ -51,9 +52,12 @@ const AuthLayout = ({ children }) => {
 
   useEffect(() => {
     if (!warehouseId && uid) {
-      getWarehouseId(uid, accessToken).then((id) => {
-        if (!!id) {
-          dispatch(setWarehouseId({ warehouseId: id }));
+      getUserInfo(uid, accessToken).then((data) => {
+        if (data.profileImage) {
+          dispatch(setProfilePicture(data.profileImage));
+        }
+        if (!!data.warehouseId) {
+          dispatch(setWarehouseId({ warehouseId: data.warehouseId }));
           dispatch(setLoading({ loading: false }));
         } else {
           router.push("/register-warehouse");

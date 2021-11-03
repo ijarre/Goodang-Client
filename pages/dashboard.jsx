@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dashboard } from "../components";
 import { useSelector } from "react-redux";
-import { getWarehouseId } from "../services/getWarehouseId";
+import { getUserInfo } from "../services/getUserInfo";
 import api from "../services/api";
 import { getTrxHistory } from "../services/getTrxHistory";
 
@@ -59,15 +59,19 @@ export async function getServerSideProps({ req }) {
   const warehouseId = await getWarehouseId(uid, token);
   const trxPage = 1;
   const size = 5;
+  const response = await getUserInfo(uid, token);
 
-  const getAssetFromDB = await api.get(`/dashboard/totalAsset/${warehouseId}`, {
-    headers: {
-      Authorization: "bearer " + token,
+  const getAssetFromDB = await api.get(
+    `/dashboard/totalAsset/${response?.warehouseId}`,
+    {
+      headers: {
+        Authorization: "bearer " + token,
+      },
     },
-  });
+  );
 
   const getStockInFromDB = await api.get(
-    `/dashboard/totalTransaction/${warehouseId}?transactionType=Stock In`,
+    `/dashboard/totalTransaction/${response?.warehouseId}?transactionType=Stock In`,
     {
       headers: {
         Authorization: "bearer " + token,
