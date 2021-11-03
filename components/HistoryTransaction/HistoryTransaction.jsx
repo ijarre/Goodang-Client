@@ -20,7 +20,7 @@ const HistoryTransaction = ({ history, trxPage }) => {
     return new Date(date);
   };
   useEffect(() => {
-    setMaxPage(history?.count % 5);
+    setMaxPage(Math.ceil(history?.count / 5));
   }, [history?.count]);
   useEffect(() => {
     // console.log(query.data);
