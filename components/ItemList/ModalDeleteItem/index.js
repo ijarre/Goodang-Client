@@ -1,3 +1,4 @@
-import DeleteModal from "./DeleteItem";
+// import DeleteModal from "./DeleteItem";
+import Popup from "./Popup";
 
-export {DeleteModal}
+export {Popup}

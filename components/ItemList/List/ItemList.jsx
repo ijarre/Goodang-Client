@@ -1,54 +1,139 @@
-import React, { useRef } from "react";
-import { SearchIcon } from "@heroicons/react/outline";
+import React, { useState, useEffect } from "react";
+import {useQueryClient} from "react-query";
+import { useSelector } from "react-redux";
+import ItemTable from "./ItemTable";
+import Popup from "../ModalDeleteItem/Popup";
+import api from "../../../services/api";
+import {
+  SearchIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/outline";
+import { classNames, maximumPage } from "../../../utils";
 
 const ItemList = ({
   items,
+  allItems,
   openModal,
   openEditModal,
-  handleDelete,
-  openDeleteModal,
-  // handleSearch,
+  // openDeleteModal,
+  //handleDelete,
+  page = 1,
+  setPage,
 }) => {
-  const inputElement = useRef("");
+  const [maxPage, setMaxPage] = useState();
+  const [searchField, setSearchField] = useState("");
+  const [filteredItems, setFilteredItems] = useState();
 
-  const getSearchTerm = () => {
-    items.searchKeyword(inputElement.current.value);
+  useEffect(() => {
+    if (items) {
+      setMaxPage(maximumPage(items.count, 5));
+    }
+  }, [items]);
+
+  useEffect(() => {
+    if (searchField === "") {
+      setFilteredItems();
+    }
+  }, [searchField]);
+
+  const checkName = (name, str) => {
+    var pattern = str
+      .split("")
+      .map((x) => {
+        return `(?=.*${x})`;
+      })
+      .join("");
+    var regex = new RegExp(`${pattern}`, "g");
+    return name.match(regex);
   };
+
+  const handleSearchChange = (e) => {
+    var str = e.target.value.toLowerCase().substring(0, 3);
+    var filteredArr = allItems.data.rows.filter((x) => {
+      var xSub = x.itemName.substring(0, 3).toLowerCase();
+      return checkName(xSub, str);
+    });
+    if (filteredArr.length > 0) {
+      setFilteredItems(filteredArr);
+    }
+    setSearchField(e.target.value);
+  };
+
+  const handleSearchAction = (e) => {
+    e.preventDefault();
+    if (searchField.length !== 0) {
+      var str = searchField.toLowerCase().substring(0, 3);
+      var filteredArr = allItems.data.rows.filter((x) => {
+        var xSub = x.itemName.substring(0, 3).toLowerCase();
+        return x.itemName.toLowerCase().includes(str) || checkName(xSub, str);
+      });
+      if (filteredArr.length > 0) {
+        setFilteredItems(filteredArr);
+      }
+    }
+  };
+
+  // dimulai dari line ini sampai dengan line 108 untuk handle delete, kemudian liat line 166 sampai 171 itu untuk modal
+  const {currentUser}=useSelector((state) =>state.user);
+  const queryClient = useQueryClient();
+
+  const [popup, setPopup] = useState({
+    show: false,
+    id: null,
+  });
+
+  const handleDelete = (id) => {
+    setPopup({
+      show: true,
+      id,
+    });
+  };
+
+  const handleDeleteTrue = async () => {
+    if (popup.show && popup.id) {
+        await api.get(`/item/delete/${popup.id}`, {
+          headers: {
+            Authorization: "bearer" + currentUser.accessToken,
+          },
+        });
+        setPopup({
+          show: false,
+        });
+        queryClient.invalidateQueries("items");
+      };
+  };
+
+  const handleDeleteFalse = () => {
+    setPopup({
+      show: false,
+      id: null,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white mx-auto max-w-screen-xl text-left p-3 flex flex-col">
       <h1 className="ml-4 font-bold text-2xl">Item List</h1>
-      <div className="mt-5">
-        <div action="" className="text-left my-2 flex">
-          <div className="shadow flex items-start mb-4">
+      <div className="mt-3 flex justify-end">
+        <div action="" className="text-left my-2">
+          <form
+            className="shadow flex items-end mb-4"
+            onSubmit={handleSearchAction}
+          >
             <input
               className="w-full rounded p-2"
               type="text"
               placeholder="Search..."
-              ref={inputElement}
-              // value={items.term}
-              id=""
-              onChange={getSearchTerm}
+              onChange={handleSearchChange}
             />
             <button className="bg-white w-auto flex justify-end items-center text-blue-500 p-2 hover:text-blue-400">
               <SearchIcon className="w-6 mr-1" />
               Search
             </button>
-          </div>
-          {/* <div className="bg-grey-200 rounded-md ml-4">
-            <label className=" text-gray-500 ml-1" htmlFor="filterByCategory">
-              Filter
-            </label>
-            <input
-              className="text-sm bg-white block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
-              type="text"
-              id=""
-              placeholder="Filter Category"
-            />
-            <i className="filter"></i>
-          </div> */}
+          </form>
         </div>
-        <div className="md:col-span-5 text-right">
-          <div className="inline-flex items-end mr-5 mb-1">
+        <div className="text-left my-2">
+          <div className="items-end pl-2 mb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full cursor-pointer"
               onClick={openModal}
@@ -58,84 +143,87 @@ const ItemList = ({
           </div>
         </div>
       </div>
+      <div
+        className={classNames(
+          items?.length === 0 ? "items-center justify-center flex" : "",
+          "w-full items-center justify-items-center",
+        )}
+      >
+        {items?.length === 0 ? (
+          <div className="">
+            <p className="text-gray-500 text-center ">
+              {"You don't have item in your inventory, start adding them "}
+            </p>
+          </div>
+        ) : (
+          <div className="w-full h-full overflow-y-scroll">
+            <ItemTable
+              items={
+                filteredItems && filteredItems.length !== 0
+                  ? filteredItems
+                  : items?.rows
+              }
+              openEditModal={openEditModal}
+              handleDelete={handleDelete}
+            />
+          </div>
+        )}
+        {popup.show && (
+          <Popup
+            handleDeleteTrue={handleDeleteTrue}
+            handleDeleteFalse={handleDeleteFalse}
+          />
+        )}
 
-      <table className="w-full">
-        <thead className="bg-gray-100">
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        {!searchField || searchField?.length === 0 ? (
+          <div className="flex justify-between px-4 py-2">
+            <div
+              className={`flex ${page !== 1 && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== 1) {
+                  let current = page;
+                  setPage((current -= 1));
+                }
+              }}
             >
-              Item Name
-            </th>
+              <ChevronLeftIcon
+                className={`w-5 ${page == 1 ? "text-gray-300" : ""}`}
+              />
+              <span className={`${page == 1 ? "text-gray-300" : ""}`}>
+                Prev
+              </span>
+            </div>
+            <div className="">
+              Page: {page} of {maxPage}
+            </div>
 
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            <div
+              className={`flex ${page !== maxPage && "cursor-pointer"}`}
+              onClick={() => {
+                if (page !== Number(maxPage)) {
+                  let current = page;
+                  setPage((current += 1));
+                }
+              }}
             >
-              Image
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Category
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Quantity
-            </th>
-            <th>
-              <span className="sr-only">Action</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="overflow-y-scroll divide-y">
-          {items?.map((el) => {
-            return (
-              <tr key={el.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{el.itemName}</td>
-                <td>
-                  <img className="h-10 w-10 ml-5 " src={el.image} alt="" />
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {el?.Categories?.map((category) => {
-                    return (
-                      <span
-                        key={category.id}
-                        className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                      >
-                        {category.categoryName}
-                      </span>
-                    );
-                  })}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap ">
-                  <span className="ml-5">{el.stockQuantity}</span>
-                </td>
-                <td className="px-6 py-4 ml-20">
-                  <span className="mr-6">
-                    <button
-                      className="bg-yellow-400 hover:bg-yellow-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-5"
-                      onClick={() => openEditModal(el)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full text-sm w-20 ml-3"
-                      onClick={() => handleDelete(el.id)}
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              <span
+                className={`${page == Number(maxPage) ? "text-gray-300" : ""}`}
+              >
+                Next
+              </span>
+              <ChevronRightIcon
+                className={`w-5 ${
+                  page == Number(maxPage) ? "text-gray-300" : ""
+                }`}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex justify-between px-4 py-2 italic text-sm">
+            Search result
+          </div>
+        )}
+      </div>
     </div>
   );
 };

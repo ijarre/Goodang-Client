@@ -11,6 +11,11 @@ const Modal = ({
   userAddItem,
   isOpen,
   setIsOpen,
+  itemImageIsOpen,
+  setItemImageIsOpen,
+  previewImage,
+  handleInputItemImage,
+  handleSubmitItemImage,
 }) => {
   const modalRef = useRef();
 
@@ -34,29 +39,33 @@ const Modal = ({
     return () => document.removeEventListener("keydown", keyPress);
   }, [keyPress]);
 
-  const { itemName, Unit, stockQuantity, minimumQuantity } = fields;
+  const { itemName, unit, stockQuantity, minimumQuantity, categoryName } =
+    fields;
 
   return (
     <>
       {showModal ? (
         <div
-          className="min-h-screen w-10/12 h-3/4 bg-transparent fixed flex justify-center items-center"
+          className="md:min-h-full w-full h-full bg-auto bg-black bg-opacity-30 inset-0 fixed flex items-center justify-center"
           onClick={closeModal}
           ref={modalRef}
         >
           <div
-            className="w-10/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
+            className="w-5/12 h-3/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md"
             showModal={showModal}
           >
-            <div className="flex-col mt-9 ml-80 justify-center items-center bg-gray-50">
+            <div className="ml-36 justify-center items-center">
               <HiOutlineX
                 as="div"
                 aria-label="Close modal"
                 className="cursor-pointer absolute top-4 right-4 p-0 z-10 "
                 onClick={() => setShowModal((prev) => !prev)}
               />
-                <div className="pt-10">
+              <div className="">
+                <div className="mt-1 mx-auto">
                   <p className="font-light text-grey-900 pt-5">New Item</p>
+                </div>
+                <div className="pt-5">
                   <form
                     onSubmit={userAddItem}
                     className="mb-10 mx-auto space-y-3"
@@ -76,14 +85,31 @@ const Modal = ({
                       </div>
                     </div>
                     <div className="md:w-1/2 space-y-1 md:text-sm">
-                      <label htmlFor="image">Insert Image</label>
-                      <div>
+                      <label htmlFor="">Insert Image</label>
+                      <div className="flex">
+                        <div className="pr-3">
+                          <img
+                            src={"images/box-added.png"}
+                            alt=""
+                            className="w-6 h-6 absolute rounded-md"
+                          />
+                          {previewImage && (
+                            <img
+                              src={previewImage}
+                              alt="chosen"
+                              className="w-6 h-6 absolute bg-white rounded-md"
+                            />
+                          )}
+                        </div>
+                        <div className="pl-3">
                         <button
-                          type=""
-                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200"
+                          type="button"
+                          className="md:text-sm bg-gray-100 px-1 py-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-200 active:bg-gray-200 text-sm"
+                          onClick={() => setItemImageIsOpen(true)}
                         >
                           Add Image
                         </button>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -95,8 +121,8 @@ const Modal = ({
                           className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
                           type="text"
                           placeholder="unit"
-                          name="Unit"
-                          value={Unit}
+                          name="unit"
+                          value={unit}
                           onChange={handleInputChange}
                         >
                           <option className="text-grey-700">Select</option>
@@ -104,6 +130,29 @@ const Modal = ({
                           <option>ea</option>
                           <option>Kg</option>
                           <option>tonne</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="md:w-1/2 space-y-1 md:text-sm">
+                        <label htmlFor="category">Category</label>
+                        <span className="text-grey-700"></span>
+                        <select
+                          id="category"
+                          className="text-sm bg-gray-200 block py-2 px-2 w-full rounded-sm focus:outline-none focus:ring-1 focus:border-blue-300"
+                          type="text"
+                          placeholder="category"
+                          name="categoryName"
+                          value={categoryName}
+                          onChange={handleInputChange}
+                        >
+                          <option className="text-grey-700">Select</option>
+                          <option>Furniture</option>
+                          <option>Food and Beverages </option>
+                          <option>Electronic</option>
+                          <option>Fashion</option>
+                          <option>Tools</option>
+                          <option>Stationary</option>
                         </select>
                       </div>
                     </div>
@@ -153,6 +202,7 @@ const Modal = ({
                     </div>
                   </form>
                 </div>
+              </div>
               <div className="flex items-center justify-center">
                 <Dialog
                   as="div"
@@ -175,6 +225,60 @@ const Modal = ({
                     >
                       Close
                     </button>
+                  </div>
+                </Dialog>
+              </div>
+              <div className="flex items-center justify-center">
+                <Dialog
+                  as="div"
+                  className="fixed flex inset-0 items-center justify-center"
+                  open={itemImageIsOpen}
+                  onClose={() => setItemImageIsOpen(false)}
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
+
+                  <div className="bg-white p-4 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
+                    <div className="flex w-full justify-end">
+                      <button
+                        type="button"
+                        className="w-6 bg-white rounded-full z-100"
+                        onClick={() => setItemImageIsOpen(false)}
+                      >
+                        <HiOutlineX />
+                      </button>
+                    </div>
+
+                    <div className="w-full flex justify-center align-middle">
+                      <div className="md:w-44 relative">
+                        <img
+                          src={"images/box-added.png"}
+                          alt=""
+                          className="absolute"
+                        />
+                        {previewImage && (
+                          <img
+                            src={previewImage}
+                            alt="chosen"
+                            className="w-44 h-44 absolute bg-white rounded-md"
+                          />
+                        )}
+                      </div>
+                    </div>
+
+                    <input
+                      type="file"
+                      onChange={handleInputItemImage}
+                      className="flex justify-center py-3 mt-48"
+                    />
+                    <div className="flex justify-center w-full">
+                      <button
+                        type="submit"
+                        className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
+                        onClick={handleSubmitItemImage}
+                      >
+                        Upload
+                      </button>
+                    </div>
                   </div>
                 </Dialog>
               </div>

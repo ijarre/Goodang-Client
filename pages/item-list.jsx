@@ -5,44 +5,62 @@ import api from "../services/api";
 import { useSelector } from "react-redux";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
-import { DeleteModal } from "../components";
+// import { DeleteModal } from "../components";
+// import { popUp } from "../components";
 import { useRouter } from "next/router";
+import { getAllItems } from "../services/getAllItems";
+import { useQuery, useQueryClient } from "react-query";
 
 const ItemListPage = () => {
   const [items, setItems] = useState();
-  const [searchTerm, setSearchTerm] = useState();
-  const [searchResult, setSearchResult] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // const [popUp, setPopUp] = useState({
+  //   show: false,
+  //   id: null,
+  // })
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [fields, setFields] = useState({
     itemName: "",
-    Unit: "",
+    unit: "",
     stockQuantity: "",
     minimumQuantity: "",
+    categoryName: "",
   });
   const [editField, setEditField] = useState({});
+  const [page, setPage] = useState(1);
+  const [itemImageIsOpen, setItemImageIsOpen] = useState(false);
+  const [imageSelected, setImageSelected] = useState();
+  const [previewImage, setPreviewImage] = useState("");
 
   const router = useRouter();
+  const { currentUser } = useSelector((state) => state.user);
+
   //user read his items
+  const { data } = useQuery(
+    ["items", page],
+    () =>
+      getAllItems(currentUser.warehouseId, currentUser.accessToken, page, 5),
+    { enabled: !!currentUser.warehouseId },
+  );
+  const { data: allItems } = useQuery(
+    "allItems",
+    () =>
+      getAllItems(
+        currentUser.warehouseId,
+        currentUser.accessToken,
+        1,
+        data?.count ? data.count : 9999,
+      ),
+    { enabled: !!data },
+  );
+  const queryClient = useQueryClient();
+
   useEffect(() => {
-    const getAllItems = async () => {
-      const response = await api.get(
-        `/item/${currentUser.warehouseId}?page=1&size=10`,
-        {
-          headers: {
-            Authorization: "bearer " + currentUser.accessToken,
-          },
-        },
-      );
-      return response.data;
-    };
-    getAllItems().then((data) => {
-      setItems(data.data);
-    });
-  }, [currentUser?.accessToken, currentUser?.warehouseId]);
+    setItems(data?.data);
+  }, [data]);
 
   //user add item
   const openModal = () => {
@@ -63,52 +81,31 @@ const ItemListPage = () => {
     setFields({ ...fields, [name]: value });
   };
 
-  const { currentUser } = useSelector((state) => state.user);
-
   const userAddItem = async (e) => {
     e.preventDefault();
     setIsOpen(true);
-    await axios.post(
-      `https://nameless-sands-57704.herokuapp.com/v1/item`,
-      { ...fields, warehouseId: currentUser.warehouseId },
+    await api.post(
+      `/item`,
+      {
+        ...fields,
+        warehouseId: currentUser.warehouseId,
+        itemImage: imageSelected ? imageSelected.secure_url : null,
+      },
       {
         headers: {
-          Authorization: "Bearer " + currentUser.accessToken,
+          Authorization: "bearer " + currentUser.accessToken,
         },
       },
     );
-  };
-
-  // const history = useHistory();
-
-  //user search his item
-  const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm);
-    if (searchTerm !== "") {
-      const searchItemList = items.filter((items) => {
-        return Object.values(items)
-          .join(" ")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase());
-      });
-      setSearchResult(searchItemList);
-    } else {
-      setSearchResult(items);
-    }
-  };
-
-  //user delete his item
-
-  const handleDelete = async (id) => {
-    await api.get(`/item/delete/${id}`, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
-      },
+    queryClient.invalidateQueries("items");
+    setShowModal(false);
+    setFields({
+      itemName: "",
+      unit: "",
+      stockQuantity: "",
+      minimumQuantity: "",
+      categoryName: "",
     });
-  };
-
-  const openDeleteModal = () => {
-    setShowDeleteModal((prev) => !prev);
   };
 
   //user edit his item
@@ -116,42 +113,70 @@ const ItemListPage = () => {
   const openEditModal = (el) => {
     setEditField(el);
     setShowEditModal((prev) => !prev);
-    console.log(el);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post(`/item/update/${editField.id}`, editField, {
-      headers: {
-        Authorization: "bearer " + currentUser.accessToken,
+    await api.post(
+      `/item/update/${editField.id}`,
+      {
+        ...editField,
+        itemImage: imageSelected ? imageSelected.secure_url : null,
       },
-    });
+      {
+        headers: {
+          Authorization: "bearer " + currentUser.accessToken,
+        },
+      },
+    );
     router.push("/item-list");
+    queryClient.invalidateQueries("items");
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditField({ ...editField, [name]: value });
   };
 
-  useEffect(() => {
-    // const getItem = async () => {
-    //   const response = await api.get(`/item/${id}`, {
-    //     headers: {
-    //       Authorization: "bearer " + currentUser.accessToken,
-    //     },
-    //   });
-    //   return response.data;
-    // };
-    // getItem().then((res) => {
-    //   const { itemName, minimumQuantity, unit } = res.data;
-    //   setEditField({
-    //     ...editField,
-    //     itemName,
-    //     minimumQuantity,
-    //     unit,
-    //   });
-    // });
-  }, []);
+  // const itemImage = {public_id: response?.data.secure_url};
+
+  //user upload item image
+  // const uploadImageToCloudinary = await axios.post(
+  //   "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload", formData,)
+
+  const handleInputItemImage = (e) => {
+    const file = e.target.files[0];
+    setImageSelected(file);
+    previewFile(file);
+  };
+
+  const handleSubmitItemImage = (e) => {
+    e.preventDefault();
+    if (!previewImage) return;
+    uploadImage();
+  };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result);
+    };
+  };
+
+  const uploadImage = async (e) => {
+    const formData = new FormData();
+    formData.append("file", imageSelected);
+    formData.append("upload_preset", "itemImage");
+
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
+      formData,
+    );
+
+    setImageSelected(response?.data);
+
+    setItemImageIsOpen(false);
+  };
 
   const { id } = router.query;
 
@@ -166,6 +191,13 @@ const ItemListPage = () => {
         handleInputChange={handleInputChange}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        itemImageIsOpen={itemImageIsOpen}
+        setItemImageIsOpen={setItemImageIsOpen}
+        setImageSelected={setImageSelected}
+        uploadImage={uploadImage}
+        handleInputItemImage={handleInputItemImage}
+        handleSubmitItemImage={handleSubmitItemImage}
+        previewImage={previewImage}
       />
       <EditItemModal
         showEditModal={showEditModal}
@@ -175,22 +207,34 @@ const ItemListPage = () => {
         setIsOpen={setIsOpen}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        itemImageIsOpen={itemImageIsOpen}
+        setItemImageIsOpen={setItemImageIsOpen}
+        uploadImage={uploadImage}
+        handleInputItemImage={handleInputItemImage}
+        handleSubmitItemImage={handleSubmitItemImage}
+        previewImage={previewImage}
       />
-      <DeleteModal
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+      {/* <popUp
+        // showDeleteModal={showDeleteModal}
+        // setShowDeleteModal={setShowDeleteModal}
+        // isOpen={isOpen}
+        // setIsOpen={setIsOpen}
+        // handleDelete={handleDelete}
+        // // handleDeleteTrue={handleDeleteTrue}
         handleDelete={handleDelete}
-      />
+        handleDelete={handleDeleteTrue}
+      /> */}
       <ItemList
         items={items}
-        handleDelete={handleDelete}
+        allItems={allItems}
+        // handleDelete={handleDelete}
         openModal={openModal}
         openEditModal={openEditModal}
-        openDeleteModal={openDeleteModal}
-        term={searchTerm}
-        searchKeyword={handleSearch}
+        // openDeleteModal={openDeleteModal}
+        page={page}
+        setPage={setPage}
+        // handleDeleteTrue={handleDeleteTrue}
+        // handleDeleteFalse={handleDeleteFalse}
       />
     </div>
   );
