@@ -93,6 +93,7 @@ const ItemListPage = () => {
         },
       },
     );
+    queryClient.invalidateQueries("items");
   };
 
   //user edit his item
@@ -114,6 +115,7 @@ const ItemListPage = () => {
       },
     );
     router.push("/item-list");
+    queryClient.invalidateQueries("items");
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
