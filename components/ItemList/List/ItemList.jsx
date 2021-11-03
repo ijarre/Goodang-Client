@@ -122,7 +122,7 @@ const ItemList = ({
                   : items?.rows
               }
               openEditModal={openEditModal}
-              handleDelete={handleDelete}
+              openDeleteModal={openDeleteModal}
             />
           </div>
         )}

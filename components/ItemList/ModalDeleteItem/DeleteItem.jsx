@@ -2,7 +2,7 @@ import React from "react";
 import { HiOutlineX } from "react-icons/hi";
 import { Dialog } from "@headlessui/react";
 
-const DeleteModal = ({ showDeleteModal, setShowDeleteModal }) => {
+const DeleteModal = ({ showDeleteModal, setShowDeleteModal, handleDeleteTrue }) => {
   return (
     <div className="flex items-center justify-center">
       <Dialog
@@ -17,7 +17,7 @@ const DeleteModal = ({ showDeleteModal, setShowDeleteModal }) => {
             <button
               type="button"
               className="w-6 bg-white rounded-full z-100"
-              onClick={() => setShowwDeleteModal(false)}
+              onClick={() => setShowDeleteModal(false)}
             >
               <HiOutlineX />
             </button>
@@ -31,15 +31,17 @@ const DeleteModal = ({ showDeleteModal, setShowDeleteModal }) => {
           <div className="flex justify-center w-full">
             <button
               type="submit"
-              className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
-              // onClick={handleSubmitItemImage}
+              className="md:text-sm bg-red-400 hover:bg-red-700 text-black py-1 px-2 mt-2 rounded-md text-sm w-1/3 mr-2"
+              onClick={() => setShowDeleteModal(false)}
             >
               No
             </button>
             <button
               type="submit"
-              className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black font-bold py-1 px-2 mt-2 rounded-md text-sm w-1/2 "
-              // onClick={handleSubmitItemImage}
+              className="md:text-sm bg-blue-400 hover:bg-blue-700 text-black py-1 px-2 mt-2 rounded-md text-sm w-1/3 ml-2"
+              onClick={() => {
+                handleDeleteTrue;
+              }}
             >
               Yes
             </button>

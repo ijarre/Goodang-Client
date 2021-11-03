@@ -81,19 +81,40 @@ const ItemListPage = () => {
     setIsOpen(true);
     await api.post(
       `/item`,
-      { ...fields, warehouseId: currentUser.warehouseId, itemImage },
+      { ...fields, warehouseId: currentUser.warehouseId, itemImage:imageSelected.secure_url },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
         },
       },
+      console.log(api?.data)
     );
   };
 
   //user delete his item
 
+  // const handleDelete = (id) => {
+  //   console.log(id);
+  //   setShowDeleteModal({
+  //     show: true,
+  //     id,
+  //   });
+  // };
+
+  // const handleDeleteTrue = () => {
+  //   if (showDeleteModal.show && showDeleteModal.id) {
+  //     const deleteItem = async (id) => {
+  //       await api.get(`/item/delete/${id}`, {
+  //         headers: {
+  //           Authorization: "bearer" + currentUser.accessToken,
+  //         },
+  //       });
+  //     };
+  //   }   
+    
+  //   }
+
   const handleDelete = async (id) => {
-    setShowDeleteModal((prev) => !prev);
     await api.get(`/item/delete/${id}`, {
       headers: {
         Authorization: "bearer " + currentUser.accessToken,
@@ -101,9 +122,10 @@ const ItemListPage = () => {
     });
   };
 
-  // const openDeleteModal = () => {
-  //   setShowDeleteModal((prev) => !prev);
-  // };
+  const openDeleteModal = (id) => {
+    setShowDeleteModal((prev) => !prev);
+    console.log(setShowDeleteModal?.id);
+  };
 
   //user edit his item
 
@@ -117,7 +139,7 @@ const ItemListPage = () => {
     e.preventDefault();
     await api.post(
       `/item/update/${editField.id}`,
-      { ...editField, itemImage },
+      { ...editField, itemImage: imageSelected.secure_url, },
       {
         headers: {
           Authorization: "bearer " + currentUser.accessToken,
@@ -131,7 +153,7 @@ const ItemListPage = () => {
     setEditField({ ...editField, [name]: value });
   };
 
-  // const itemImage = {public_id: uploadImage.data.secure_url};
+  // const itemImage = {public_id: response?.data.secure_url};
 
   //user upload item image
   // const uploadImageToCloudinary = await axios.post(
@@ -158,17 +180,19 @@ const ItemListPage = () => {
   };
 
   const uploadImage = async (e) => {
-    console.log("success cloudinary", uploadImage);
+    
     const formData = new FormData();
     formData.append("file", imageSelected);
     formData.append("upload_preset", "itemImage");
 
-    await axios.post(
+    const response = await axios.post(
       "https://api.cloudinary.com/v1_1/dvsjfqm9e/image/upload",
       formData,
     );
 
-    setImageSelected(uploadImage.data);
+    console.log("success cloudinary", response?.data);
+
+    setImageSelected(response?.data);
 
     setItemImageIsOpen(false);
 
@@ -216,6 +240,7 @@ const ItemListPage = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         handleDelete={handleDelete}
+        // handleDeleteTrue={handleDeleteTrue}
       />
       <ItemList
         items={items}
