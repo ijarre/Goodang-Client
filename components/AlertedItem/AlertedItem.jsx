@@ -3,7 +3,7 @@ import { BellIcon } from "@heroicons/react/outline";
 
 const AlertedItem = ({ alert }) => {
   useEffect(() => {
-    console.log(alert);
+    // console.log(alert);
   }, [alert]);
   return (
     <div>
