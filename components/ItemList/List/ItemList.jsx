@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ItemTable from "./ItemTable";
-import Popup from "../ModalDeleteItem";
+import Popup from "../ModalDeleteItem/Popup";
 import {
   SearchIcon,
   ChevronLeftIcon,

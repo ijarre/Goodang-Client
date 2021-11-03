@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Modal } from "../components";
 import { EditItemModal } from "../components";
 // import { DeleteModal } from "../components";
-import { popUp } from "../components";
+// import { popUp } from "../components";
 import { useRouter } from "next/router";
 import { getAllItems } from "../services/getAllItems";
 import { useQuery, useQueryClient } from "react-query";

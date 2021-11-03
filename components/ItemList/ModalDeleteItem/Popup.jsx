@@ -1,30 +1,21 @@
 import React from "react";
 import { HiOutlineX } from "react-icons/hi";
-import { Dialog } from "@headlessui/react";
+// import { Dialog } from "@headlessui/react";
 
 function Popup({ handleDeleteTrue, handleDeleteFalse }) {
   return (
-    <div className="flex items-center justify-center">
-      <Dialog
-        as="div"
-        className="fixed flex inset-0 items-center justify-center"
-      >
-        <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-        <div className="bg-white p-4 rounded-md z-10 shadow-xl flex flex-col items-center justify-center">
-          <div className="flex w-full justify-end">
-            <button
-              type="button"
-              className="w-6 bg-white rounded-full z-100"
-              onClick={handleDeleteFalse}
-            >
-              <HiOutlineX />
-            </button>
-          </div>
-
-          <div className="w-full flex justify-center align-middle">
-            <Dialog.Title as="div" className="text-md">
-              Are you sure want to delete this item
-            </Dialog.Title>
+    <div className="md:min-h-full w-full h-full bg-black bg-opacity-30 inset-0 fixed flex justify-center items-center">
+      <div className="w-1/4 h-1/4 shadow-md bg-gray-50 grid grid-cols-1 relative z-10 rounded-md">
+        <div className="mt-9 justify-center items-center bg-gray-50">
+          <HiOutlineX
+            as="div"
+            aria-label="Close modal"
+            className="cursor-pointer absolute top-4 right-4 p-0 z-10 "
+            onClick={handleDeleteFalse}
+          />
+          <div className="mt-10">
+          <div className="flex justify-center align-middle">
+            Are you sure want to delete this item
           </div>
           <div className="flex justify-center w-full">
             <button
@@ -42,10 +33,11 @@ function Popup({ handleDeleteTrue, handleDeleteFalse }) {
               Yes
             </button>
           </div>
+          </div>
         </div>
-      </Dialog>
+      </div>
     </div>
   );
-};
+}
 
 export default Popup;
