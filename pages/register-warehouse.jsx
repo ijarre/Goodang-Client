@@ -43,10 +43,13 @@ const RegisterWarehousePage = () => {
 
   useEffect(() => {
     setCanCreate(false);
-
-    getWarehouses().then((warehouses) => {
-      setWarehouseData(warehouses.data);
-    });
+    if (!currentUser.accessToken) {
+      router.replace("/");
+    } else {
+      getWarehouses().then((warehouses) => {
+        setWarehouseData(warehouses.data);
+      });
+    }
   }, [getWarehouses]);
 
   //NEED TO CONFIGURE IF USER PRESS GO TO DASHBOARD, USEEFFECT BELOW NOT TRIGGERED

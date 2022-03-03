@@ -17,6 +17,9 @@ const DashboardPage = ({
   const currentUser = useSelector((state) => state.user.currentUser);
   const { warehouseId } = currentUser;
 
+  if (!currentUser) {
+    console.log("asd");
+  }
   // console.log("asset", assetValue);
   // console.log("stockIn", stockIn);
   // console.log("stockOut", stockOut);
@@ -59,6 +62,15 @@ export async function getServerSideProps({ req }) {
   // const warehouseId = await getWarehouseId(uid, token);
   const trxPage = 1;
   const size = 5;
+
+  if (!token && !uid) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
   const response = await getUserInfo(uid, token);
 
   const getAssetFromDB = await api.get(

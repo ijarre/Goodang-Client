@@ -34,6 +34,7 @@ const AuthLayout = ({ children }) => {
       dispatch(setLoading({ loading: false }));
     });
   }, [dispatch, isAuthenticated]);
+
   useEffect(() => {
     dispatch(setLoading({ loading: true }));
     onAuthStateChanged(auth, (user) => {
@@ -53,7 +54,7 @@ const AuthLayout = ({ children }) => {
   useEffect(() => {
     if (!warehouseId && uid) {
       getUserInfo(uid, accessToken).then((data) => {
-        if (data.profileImage) {
+        if (data && data.profileImage) {
           dispatch(setProfilePicture(data.profileImage));
         }
         if (!!data.warehouseId) {

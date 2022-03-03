@@ -166,7 +166,7 @@ const TransactionPage = () => {
   };
 
   if (!isAuthenticated && !loading) {
-    router.push("/");
+    router.replace("/");
   }
   return (
     <div className=" bg-white min-h-screen  mx-auto max-w-screen-xl text-left px-7 py-7 ">
