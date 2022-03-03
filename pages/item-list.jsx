@@ -37,6 +37,9 @@ const ItemListPage = () => {
 
   const router = useRouter();
   const { currentUser } = useSelector((state) => state.user);
+  if (!currentUser.accessToken) {
+    router.replace("/");
+  }
 
   //user read his items
   const { data } = useQuery(
