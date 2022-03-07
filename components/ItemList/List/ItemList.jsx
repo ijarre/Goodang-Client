@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useQueryClient} from "react-query";
+import { useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import ItemTable from "./ItemTable";
 import Popup from "../ModalDeleteItem/Popup";
@@ -17,9 +17,11 @@ const ItemList = ({
   openModal,
   openEditModal,
   // openDeleteModal,
-  //handleDelete,
+  openDeleteModal,
   page = 1,
   setPage,
+  setMode,
+  setFields,
 }) => {
   const [maxPage, setMaxPage] = useState();
   const [searchField, setSearchField] = useState("");
@@ -50,7 +52,7 @@ const ItemList = ({
 
   const handleSearchChange = (e) => {
     var str = e.target.value.toLowerCase().substring(0, 3);
-    var filteredArr = allItems.data.rows.filter((x) => {
+    var filteredArr = allItems?.data.rows.filter((x) => {
       var xSub = x.itemName.substring(0, 3).toLowerCase();
       return checkName(xSub, str);
     });
@@ -75,7 +77,7 @@ const ItemList = ({
   };
 
   // dimulai dari line ini sampai dengan line 108 untuk handle delete, kemudian liat line 166 sampai 171 itu untuk modal
-  const {currentUser}=useSelector((state) =>state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
   const [popup, setPopup] = useState({
@@ -83,25 +85,18 @@ const ItemList = ({
     id: null,
   });
 
-  const handleDelete = (id) => {
-    setPopup({
-      show: true,
-      id,
-    });
-  };
-
   const handleDeleteTrue = async () => {
     if (popup.show && popup.id) {
-        await api.get(`/item/delete/${popup.id}`, {
-          headers: {
-            Authorization: "bearer" + currentUser.accessToken,
-          },
-        });
-        setPopup({
-          show: false,
-        });
-        queryClient.invalidateQueries("items");
-      };
+      await api.get(`/item/delete/${popup.id}`, {
+        headers: {
+          Authorization: "bearer" + currentUser.accessToken,
+        },
+      });
+      setPopup({
+        show: false,
+      });
+      queryClient.invalidateQueries("items");
+    }
   };
 
   const handleDeleteFalse = () => {
@@ -136,7 +131,19 @@ const ItemList = ({
           <div className="items-end pl-2 mb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-full cursor-pointer"
-              onClick={openModal}
+              onClick={() => {
+                setFields({
+                  itemName: "",
+                  unit: "",
+                  stockQuantity: "",
+                  minimumQuantity: "",
+                  categoryName: "",
+                  itemImage: "",
+                  warehouseId: "",
+                });
+                openModal(true);
+                setMode("add");
+              }}
             >
               Add Item
             </button>
@@ -164,15 +171,9 @@ const ItemList = ({
                   : items?.rows
               }
               openEditModal={openEditModal}
-              handleDelete={handleDelete}
+              openDeleteModal={openDeleteModal}
             />
           </div>
-        )}
-        {popup.show && (
-          <Popup
-            handleDeleteTrue={handleDeleteTrue}
-            handleDeleteFalse={handleDeleteFalse}
-          />
         )}
 
         {!searchField || searchField?.length === 0 ? (
