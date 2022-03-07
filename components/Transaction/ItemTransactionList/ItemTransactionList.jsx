@@ -63,7 +63,6 @@ const ItemTransactionList = ({
       </thead>
       <tbody className=" divide-y ">
         {items?.map((el) => {
-          console.log(el.itemImage);
           return (
             <tr key={el.id}>
               <td className="px-6 py-4 whitespace-nowrap text-center">
