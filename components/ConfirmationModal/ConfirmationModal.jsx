@@ -103,7 +103,7 @@ const ConfirmationModal = ({ open, setOpen, toAction }) => {
                     handleDelete();
                   }}
                 >
-                  Yes, I'm sure
+                  Yes, I am sure
                 </button>
                 <button
                   type="button"
