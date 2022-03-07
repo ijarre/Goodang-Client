@@ -57,7 +57,7 @@ const AuthLayout = ({ children }) => {
         if (data && data.profileImage) {
           dispatch(setProfilePicture(data.profileImage));
         }
-        if (!!data.warehouseId) {
+        if (data && !!data.warehouseId) {
           dispatch(setWarehouseId({ warehouseId: data.warehouseId }));
           dispatch(setLoading({ loading: false }));
         } else {
